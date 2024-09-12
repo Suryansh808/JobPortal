@@ -1,0 +1,25 @@
+#AdminDashboard #ContMain .ContForm{
+    float: left;
+}
+#AdminDashboard #ContMain iframe{
+    background-color:aquamarine;
+    float: right;
+}
+
+
+
+#AdminDashboard #HrList form{
+    color: white;
+    text-align: center; 
+}
+#AdminDashboard #HrList form input{
+    margin:2px 10px;
+    padding: 0 10px;
+    border-radius: 10px;
+}
+#AdminDashboard #HrList form button{
+    background-color: lightblue;
+    color: black;
+    padding: 0 10px;
+    border-radius: 20px;
+}

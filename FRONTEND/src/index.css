@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family:' Montserrat';
+}
+
+html , body{
+    height: 100%;
+    width: 100%;
+    scroll-behavior: smooth;
+    background-color: black;
+    color: white;
+}
+/*home page*/
+@keyframes backgroundAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .bg-animated {
+    background: linear-gradient(270deg, #1b1677, #7c125c, #600a23);
+    background-size: 600% 600%;
+    animation: backgroundAnimation 8s ease infinite;
+  }
+
+
+  /* resume gif */
+.bg-gif {
+    background: url('https://i.pinimg.com/originals/1b/b3/2c/1bb32ca4b59964c4cc930a467dd5d228.gif') no-repeat center center fixed;
+    background-size: cover;
+ 
+  }
+  
+  
+  /* resume */
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes buttonHover {
+    from {
+      background-color: #2563eb;
+    }
+    to {
+      background-color: #3b82f6;
+    }
+  }
+  
+  .animate-fadeInUp {
+    animation: fadeInUp 0.5s ease-in-out;
+  }
+  
+  .button-animate:hover {
+    animation: buttonHover 0.3s ease-in-out;
+    animation-fill-mode: forwards;
+  }
+  
+  /* studentSignUp */
+  .animated-login {
+    background: linear-gradient(270deg, #6e02d2d3, #46089d, #4602c4);
+    background-size: 600% 600%;
+    animation: backgroundAnimation 8s ease infinite;
+  }
+
+  /* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 2px;
+}
+/* Width of the scrollbar */
+
+::-webkit-scrollbar-track {
+  background: #ffffff; 
+}
+/* Background of the scrollbar track */ 
+
+ ::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0); 
+  border-radius: 6px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(255, 255, 255) ; 
+}
+
+/* newsroom css */
+.gradient {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(243, 244, 246, 0.1),
+    rgba(0, 0, 0, 0.7)
+  );
+}
+
+.group:hover .group-hover\:translate-y-0 {
+  transform: translateY(0);
+}
+
+
+
+body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* upgrade package css */
+/* From Uiverse.io by cssbuttons-io */ 
+.fancy {
+  background-color: transparent;
+  border: 2px solid #000;
+  border-radius: 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  float: right;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 1.25em 2em;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: none;
+  transition: all 0.3s ease-in-out;
+  user-select: none;
+  font-size: 13px;
+ }
+ 
+ .fancy::before {
+  content: " ";
+  width: 1.5625rem;
+  height: 2px;
+  background: black;
+  top: 50%;
+  left: 1.5em;
+  position: absolute;
+  transform: translateY(-50%);
+  transform-origin: center;
+  transition: background 0.3s linear, width 0.3s linear;
+ }
+ 
+ .fancy .text {
+  font-size: 1.125em;
+  line-height: 1.33333em;
+  padding-left: 2em;
+  display: block;
+  text-align: left;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: black;
+ }
+ 
+ .fancy .top-key {
+  height: 2px;
+  width: 1.5625rem;
+  top: -2px;
+  left: 0.625rem;
+  position: absolute;
+  background: #e8e8e8;
+  transition: width 0.5s ease-out, left 0.3s ease-out;
+ }
+ 
+ .fancy .bottom-key-1 {
+  height: 2px;
+  width: 1.5625rem;
+  right: 1.875rem;
+  bottom: -2px;
+  position: absolute;
+  background: #e8e8e8;
+  transition: width 0.5s ease-out, right 0.3s ease-out;
+ }
+ 
+ .fancy .bottom-key-2 {
+  height: 2px;
+  width: 0.625rem;
+  right: 0.625rem;
+  bottom: -2px;
+  position: absolute;
+  background: #e8e8e8;
+  transition: width 0.5s ease-out, right 0.3s ease-out;
+ }
+ 
+ .fancy:hover {
+  color: white;
+  background: black;
+ }
+ 
+ .fancy:hover::before {
+  width: 0.9375rem;
+  background: white;
+ }
+ 
+ .fancy:hover .text {
+  color: white;
+  padding-left: 1.5em;
+ }
+ 
+ .fancy:hover .top-key {
+  left: -2px;
+  width: 0px;
+ }
+ 
+ .fancy:hover .bottom-key-1,
+  .fancy:hover .bottom-key-2 {
+  right: 0;
+  width: 0;
+ }
+
+ /* SubscribeButton.css */
+.button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: inherit;
+  transform: scale(0);
+  z-index: -1;
+  background-color: #E0B934;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.button:hover::before {
+  transform: scale(3);
+} 
+
+.button:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 0px 20px rgba(193, 163, 98, 0.4);
+}
+
+.button:active {
+  transform: scale(1);
+} 
+
+/* alertDialogSlider */
+.gradient {
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+}
+
+/* marquees css */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 16s linear infinite;
+}

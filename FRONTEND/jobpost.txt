@@ -1,0 +1,281 @@
+// import React, { useState } from "react";
+// import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
+
+// const JobPost = () => {
+//   const [jobDetails, setJobDetails] = useState({
+//     jobTitle: "",
+//     companyName: "",
+//     location: "",
+//     jobType: "",
+//     jobTiming: "",
+//     workingDays: "",
+//     salary: {
+//       minSalary: "",
+//       maxSalary: "",
+//       currency: "INR",
+//       per: "Year",
+//     },
+//     jobDescription: "",
+//     desiredSkills: "",
+//     experience: "",
+//     eligibility: "",
+//     companyLogo: "",
+//     applicationDeadline: "",
+//   });
+
+//   const [jobs, setJobs] = useState([]);
+//   const [open, setOpen] = useState(false);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+
+//     if (name === "minSalary" || name === "maxSalary") {
+//       setJobDetails((prevDetails) => ({
+//         ...prevDetails,
+//         salary: { ...prevDetails.salary, [name]: value },
+//       }));
+//     } else {
+//       setJobDetails({ ...jobDetails, [name]: value });
+//     }
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     setJobs([...jobs, jobDetails]);
+//     setJobDetails({
+//       jobTitle: "",
+//       companyName: "",
+//       location: "",
+//       jobType: "",
+//       jobTiming: "",
+//       workingDays: "",
+//       salary: {
+//         minSalary: "",
+//         maxSalary: "",
+//         currency: "INR",
+//         per: "Year",
+//       },
+//       jobDescription: "",
+//       desiredSkills: "",
+//       experience: "",
+//       eligibility: "",
+//       companyLogo: "",
+//       applicationDeadline: "",
+//     });
+//     setOpen(false);
+//     console.log("Job Posted:", jobDetails);
+//     // Post the job details to the backend
+//   };
+
+//   const handleAddJob = () => {
+//     setOpen(true);
+//   };
+
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
+
+//   return (
+//     <div className="flex flex-col items-center justify-center text-zinc-900 p-4">
+//       <h2 className="text-2xl font-bold mb-4 text-white">Job Listings</h2>
+      
+//       <table className="min-w-full border-collapse block md:table">
+//         <thead className="block md:table-header-group">
+//           <tr className="border border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative ">
+//             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
+//               Job Title
+//             </th>
+//             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
+//               Location
+//             </th>
+//             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
+//               Job Type
+//             </th>
+//             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
+//               Job Description
+//             </th>
+//             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
+//               Application Deadline
+//             </th>
+//           </tr>
+//         </thead>
+//         <tbody className="block md:table-row-group">
+//           {jobs.map((job, index) => (
+//             <tr key={index} className="bg-gray-300 border border-gray-500 md:border-none block md:table-row">
+//               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
+//                 {job.jobTitle}
+//               </td>
+//               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
+//                 {job.location}
+//               </td>
+//               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
+//                 {job.jobDescription}
+//               </td>
+//               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
+//                 {job.jobType}
+//               </td>
+//               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
+//                 {job.applicationDeadline}
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+
+//       <Button
+//         onClick={handleAddJob}
+//         className="bg-blue-800 text-white p-2 rounded mt-4"
+//       >
+//         Add/Post Job
+//       </Button>
+
+//       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+//         <DialogTitle>Post a New Job</DialogTitle>
+//         <DialogContent>
+//           <form onSubmit={handleSubmit}>
+//             <TextField
+//               name="jobTitle"
+//               label="Job Title"
+//               value={jobDetails.jobTitle}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="companyName"
+//               label="Company Name"
+//               value={jobDetails.companyName}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="location"
+//               label="Location"
+//               value={jobDetails.location}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="jobType"
+//               label="Job Type (e.g., In Office)"
+//               value={jobDetails.jobType}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="jobTiming"
+//               label="Job Timing (e.g., Full Time)"
+//               value={jobDetails.jobTiming}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="workingDays"
+//               label="Working Days (e.g., 5 Days)"
+//               value={jobDetails.workingDays}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="minSalary"
+//               label="Minimum Salary"
+//               type="number"
+//               value={jobDetails.salary.minSalary}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="maxSalary"
+//               label="Maximum Salary"
+//               type="number"
+//               value={jobDetails.salary.maxSalary}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="jobDescription"
+//               label="Job Description"
+//               value={jobDetails.jobDescription}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               multiline
+//               rows={4}
+//               required
+//             />
+//             <TextField
+//               name="desiredSkills"
+//               label="Desired Skills (comma separated)"
+//               value={jobDetails.desiredSkills}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="experience"
+//               label="Experience Required"
+//               value={jobDetails.experience}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="eligibility"
+//               label="Eligibility (e.g., Fresher)"
+//               value={jobDetails.eligibility}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="companyLogo"
+//               label="Company Logo URL"
+//               value={jobDetails.companyLogo}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <TextField
+//               name="applicationDeadline"
+//               label="Application Deadline"
+//               value={jobDetails.applicationDeadline}
+//               onChange={handleChange}
+//               fullWidth
+//               margin="dense"
+//               required
+//             />
+//             <DialogActions>
+//               <Button onClick={handleClose} color="primary">
+//                 Cancel
+//               </Button>
+//               <Button type="submit" color="primary">
+//                 Post Job
+//               </Button>
+//             </DialogActions>
+//           </form>
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+//   );
+// };
+
+// export default JobPost;

@@ -1,0 +1,145 @@
+*{
+    font-family: 'Montserrat';
+}
+
+link:hover{
+    color: #f50808;
+}
+.careerportal{
+    background-color: #021024;
+}
+.careerportal header {
+    position: fixed;
+  top: 0;
+  overflow: hidden;
+    color: white;
+    padding: 10px;
+    background-color: #021024;
+    width: 100%;
+    border-bottom: 1px solid white;
+}
+
+
+.careerportal header img{
+    float: left;
+}
+.careerportal nav  {
+    text-align: right;
+    margin-right: 20px;
+}
+.careerportal nav li {
+    display: inline-block;
+    margin-left: 10px;
+}
+.careerportal nav a {
+    text-decoration: none;
+    color: white;
+}
+.careerportal header nav ul .btn{
+    background-color: white;
+    color: #021024;
+    display: block;
+    border-radius: 20px;
+    padding: 5px;
+}
+.careerportal .hero{
+    padding: 20px;
+    /* max-width: 750px; */
+}
+.careerportal .user{
+    background-image: url(../assets/user.gif);
+    padding: 100px;
+    margin-top: 60px;
+    background-size: 100% 100%;
+    box-shadow: 0 0 10px 10px #021024 inset;
+    
+
+}
+.careerportal .user p{
+    margin-top: 30px;
+    width: 350px;
+    text-align: justify;
+
+}
+.careerportal .user button{
+    margin-top: 30px;
+    width: 150px;
+    color: white;
+    background-color: #021024;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+}
+
+
+.careerportal .hiring-partner{
+    padding: 100px;
+    text-align: center;
+    color: white;
+    
+}
+.careerportal .hiring-partner div{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+}
+.careerportal .hiring-partner div img{
+    width: 120px;
+    padding:10px 1px;
+    display: flex;
+}
+
+.careerportal .hiring{
+    background-image: url(../assets/hiring.gif);
+    /* border-radius: 30px; */
+    padding: 100px;
+    background-size: 100% 100%;
+    box-shadow: 0 0 10px 10px #021024 inset;
+}
+.careerportal .hiring p{
+    margin-top: 30px;
+    width: 350px;
+    text-align: justify;
+}
+.careerportal .hiring button{
+    margin-top: 30px;
+    width: 150px;
+    color: white;
+    background-color: #021024;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+}
+
+.careerfooter {
+    background-color: #021024;
+    border-top: 1px solid white;
+}
+.careerfooter .container{
+    padding:10px 1px;
+    display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.careerfooter .container div{
+    text-align: center;
+}
+
+.careerfooter ul {
+    list-style: none;
+}
+
+.careerfooter li {
+    display: inline-block;
+    margin: 0 10px;
+}
+.careerfooter a {
+    text-decoration: none;
+    color: white;
+}
+
+.careerfooter .social-links a {
+    color: #ffffff;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+}
