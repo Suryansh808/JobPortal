@@ -39,6 +39,7 @@ import HrPDashboard from './HrDashboard/HrDashboard';
 import HrLogin from './HrDashboard/HrLogin';
 import AdminLogInPage from './Owner/AdminLogInPage';
 import AllApplicationStatus from './pages/AllApplicationStatus';
+import ResumePreview from './Components/ResumePreview';
 
 
 
@@ -77,6 +78,7 @@ const App = () => {
           <Route index path ="/Resume" element={<Resume/>}/>
           <Route index path="/DashBoard" element={<DashBoard />}/>
           <Route path="/Profile" element={<Profile/>}/>
+          <Route path="/ResumePreview" element={<ResumePreview/>}/>
           <Route path="/StudentSignUp" element={<StudentSignUp/>} />
           <Route path="/StudentLogIn" element={<StudentLogIn/>} />
           <Route path="/StudentProfileView" element={<StudentProfileView/>} />

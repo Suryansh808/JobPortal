@@ -80,7 +80,7 @@ export default function Profile() {
       try {
         const id = localStorage.getItem('resumeId'); // Get the stored resume ID
         if (!id) throw new Error('Resume ID not found');
-        const response = await fetch(`http://localhost:5001/api/StudentData/${id}`);
+        const response = await fetch(`http://localhost:5000/api/StudentData/${id}`);
         const data = await response.json();
         setResumeDetails(data.StudentData);
       } catch (error) {
@@ -210,18 +210,39 @@ export default function Profile() {
 
   const navigate = useNavigate();
 
-  const handleEditResume = () => {
-    const resumeData = JSON.parse(localStorage.getItem('ResumeData')) || {};
-
-    navigate('/Resume', { state: { resumeData, isEditing: true } });
-  };
-  const handleDownloadResume = () => {
-    const id = localStorage.getItem('resumeId');
-    if (!id) {
+  const handleEditResume = async () => {
+    const resumeId = localStorage.getItem('resumeId');
+  
+    if (!resumeId) {
+      console.error('No resume ID found in local storage');
       return;
     }
-    window.open(`http://localhost:5000/api/StudentData/${id}/download`);
+  
+    try {
+      const response = await fetch(`http://localhost:5000/api/StudentData/${resumeId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch resume data');
+      }
+  
+      const data = await response.json();
+      // Assuming 'StudentData' is the field containing the resume details
+      const resumeData = data.StudentData || {};
+  
+      navigate('/Resume', {
+        state: { resumeData, isEditing: true }
+      });
+    } catch (error) {
+      console.error('Error fetching resume data:', error);
+    }
   };
+
+  // const handleDownloadResume = () => {
+  //   const id = localStorage.getItem('resumeId');
+  //   if (!id) {
+  //     return;
+  //   }
+  //   window.open(`http://localhost:5000/api/StudentData/${id}/download`);
+  // };
 
   const handleProfile = () => {
     navigate('/StudentProfileView');
@@ -237,7 +258,13 @@ export default function Profile() {
     navigate('/StudentLogIn');
   }
 
-
+  const handlePreviewResume = () => {
+    if (!resumeDetails) {
+      alert('Resume details not available');
+      return;
+    } 
+    navigate('/ResumePreview', { state: { resumeDetails } });
+  };
 
 
   return (
@@ -319,10 +346,17 @@ export default function Profile() {
           <button onClick={handleEditResume} className="hover:scale-110 ease-linear duration-300 w-[15rem] cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-xl">
             Edit your resume
           </button>
-          {/* onClick={downloadPDF} */}
-          <button onClick={handleDownloadResume} className="hover:scale-110 ease-linear duration-300 w-[15rem] cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-xl">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g id="Interface / Download"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path> </g> </g></svg>
-            Download Resume
+          <button onClick={handlePreviewResume} className="hover:scale-110 ease-linear duration-300 w-[15rem] cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-xl">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24px" width="24px">
+                <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
+               <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
+                 <g id="SVGRepo_iconCarrier">
+                   <g id="Interface / Download">
+                  <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2" stroke="#f1f1f1" d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" id="Vector"></path>
+                   </g>
+                </g>
+               </svg>
+              Preview Resume
           </button>
           <button className="hover:scale-110 ease-linear duration-300 w-[15rem] cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-xl">
             <Link to='/DashBoard' className="hover:text-white ">DashBoard</Link>

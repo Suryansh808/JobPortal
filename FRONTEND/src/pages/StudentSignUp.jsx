@@ -39,6 +39,7 @@ const StudentSignUp = () => {
         if (sendOtpResponse.data.userId) {
           // Store the user ID in local storage
           localStorage.setItem("userId", sendOtpResponse.data.userId);
+          localStorage.setItem("userID", sendOtpResponse.data.id);
         }
         setIsOtpSent(true);
       } else {

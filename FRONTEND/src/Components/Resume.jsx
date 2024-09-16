@@ -3,11 +3,8 @@
 
   const Resume = () => {
     const [formData, setFormData] = useState({
-      // imgFile: null,
       fullName: '',
-      // email: '',
-      // phone: '',
-      linkdinURL:'',
+      linkedinURL:'',
       githubURL:'',
       address: '',
       summary: '',
@@ -26,7 +23,8 @@
       projectDetails:'',
       skills: [], 
       achievement: '',
-      coverLetter: ''
+      coverLetter: '',
+      _id:''
     });
 
     const [showPopup, setShowPopup] = useState(false);
@@ -39,23 +37,39 @@
     useEffect(() => {
       if (location.state) {
         const { resumeData, isEditing } = location.state;
+        console.log('Received resumeData:', resumeData); // Debug log
         if (resumeData) {
-          setFormData(resumeData);
+          const data = resumeData.StudentData || {};
+        setFormData({
+          fullName: data.fullName || '',
+          address: data.address || '',
+          coverLetter: data.coverLetter || '',
+          education: Array.isArray(data.education) ? data.education : [],
+          experience: data.experience || '',
+          githubURL: data.githubURL || '',
+          linkedinURL: data.linkedinURL || '',
+          projectDetails: data.projectDetails || '',
+          skills: Array.isArray(data.skills) ? data.skills : [],
+          summary: data.summary || '',
+          achievement: data.achievement || '',
+          _id: resumeData._id || '',
+      });
         }
         setIsEditing(isEditing);
       }
     }, [location.state]);
+    
 
     const availableSkills = ['JavaScript', 'React', 'Node.js', 'CSS', 'HTML', 'Python'];
 
     const handleChange = (e) => {
-      const { name, value} = e.target;
-      // if (name === 'imgFile') {
-      //   setFormData({ ...formData, imgFile: files[0] });
-      // } else {
-        setFormData({ ...formData, [name]: value });
-      // }
+      const { name, value } = e.target;
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
     };
+  
 
     const handleEducationChange = (e, index) => {
       const updatedEducation = formData.education.map((edu, i) => {
@@ -112,14 +126,6 @@
       setFormData({ ...formData, skills: updatedSkills });
     };
 
-    // const handleFileChange = (e) => {
-    //   const file = e.target.files[0];
-    //   if (file) {
-    //     setFormData({ ...formData, imgFile: file });
-    //   }
-    // };
-    
-
     const navigate = useNavigate();
 
     const validateForm = () => {
@@ -128,7 +134,7 @@
           if (!formData.fullName) errors.fullName = 'Full name is required';
           // if (!formData.email) errors.email = 'Email is required';
           // if (!formData.phone) errors.phone = 'Mobile number is required';
-        if (!formData.linkdinURL) errors.linkdinURL = 'Linkedin URL is required';
+        if (!formData.linkedinURL) errors.linkdinURL = 'Linkedin URL is required';
         if (!formData.githubURL) errors.githubURL = 'githubURL  is required';
           if (!formData.address) errors.address = 'Address is required';
           if (!formData.summary) errors.summary = 'Summary is required';
@@ -153,16 +159,17 @@
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+
       if (!validateForm()) {
         alert('Please fill all the required fields.');
         return;
       }
-
       const formDataToSend = new FormData();
       const userId = localStorage.getItem('userId'); // Get the user ID from local storage
+      const userID = localStorage.getItem('userID');
       // formDataToSend.append('imgFile', formData.imgFile);
       formDataToSend.append('fullName', formData.fullName);
-      formDataToSend.append('linkdinURL', formData.linkdinURL);
+      formDataToSend.append('linkedinURL', formData.linkedinURL);
       formDataToSend.append('githubURL', formData.githubURL);
       formDataToSend.append('address', formData.address);
       formDataToSend.append('summary', formData.summary);
@@ -173,18 +180,18 @@
       formDataToSend.append('coverLetter', formData.coverLetter);
       formDataToSend.append('education', JSON.stringify(formData.education));
       formDataToSend.append('userId', userId);
+      formDataToSend.append('userID' , userID);
 
-// Log FormData contents
-for (let [key, value] of formDataToSend.entries()) {
-  console.log(`${key}: ${value}`);
-}
+      const { _id } = formData;
 
-
-
+      if (!_id) {
+        console.error('No resume ID found');
+        return;
+      }
 
       try {
         const url = isEditing 
-        ? `http://localhost:5000/api/StudentData/${formData._id}` 
+        ? `http://localhost:5000/api/StudentData/${_id}` 
         : 'http://localhost:5000/api/StudentData';
 
       const response = await fetch(url, {
@@ -201,7 +208,7 @@ for (let [key, value] of formDataToSend.entries()) {
           setShowPopup(true);
           setTimeout(() => {
             setShowPopup(false);
-            navigate('/Profile', { state: result.StudentData || result.Studentdata });
+            navigate(isEditing ? '/Profile' : '/StudentLogIn', { state: result.StudentData || result.Studentdata });
           }, 2000);
         } else {
           const errorResult = await response.json();
@@ -226,10 +233,6 @@ for (let [key, value] of formDataToSend.entries()) {
         <div className="w-full max-w-md m-2 backdrop-blur-md bg-white/40 rounded-lg p-6">
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-4">{isEditing ? 'Update Resume' : 'Create Resume'}.</h2>
           <form className="flex flex-col" onSubmit={handleSubmit}>
-            {/* <div className="flex flex-col mb-1">
-              <label>Profile Picture:</label>
-              <input type="file" name="imgFile" onChange={handleChange} required />
-            </div> */}
             {errors.imgFile && <span className="text-red-500">{errors.imgFile}</span>}
             <div className='flex flex-col'>
               <label>Full Name:</label>
@@ -247,8 +250,8 @@ for (let [key, value] of formDataToSend.entries()) {
               <input
                 className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-3 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 type="text"
-                name="linkdinURL"
-                value={formData.linkdinURL}
+                name="linkedinURL"
+                value={formData.linkedinURL}
                 onChange={(e) => handleChange(e)}
               />
             </div>
@@ -285,7 +288,7 @@ for (let [key, value] of formDataToSend.entries()) {
               />
             </div>
             {errors.summary && <span className="text-red-500">{errors.summary}</span>}
-            {formData.education.map((edu, index) => (
+            {formData.education && formData.education.map((edu, index) => (
               <div key={index} className="mb-4">
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Education {index + 1}</h3>
                 <div className='flex flex-col'>
@@ -298,7 +301,8 @@ for (let [key, value] of formDataToSend.entries()) {
                     onChange={(e) => handleEducationChange(e, index)}
                   />
                 </div>
-                {errors[`degree-${index}`] && <span className="text-red-500">{errors[`degree-${index}`]}</span>}
+                {errors[`degree-${index}`] && <span className="text-red-500">{errors[`degree-${index}`]}</span>
+                }
                 <div className='flex flex-col'>
                   <label>Branch:</label>
                   <input

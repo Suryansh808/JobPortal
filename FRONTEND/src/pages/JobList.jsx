@@ -80,8 +80,7 @@ const JobList = () => {
     handleSearch();
   }, [searchParams, selectedTypes]);  // Trigger when searchParams or selectedTypes change
 
-
-
+  
   const handleJobClick = (job) => {
     setSelectedJob(job);
   };
@@ -90,6 +89,7 @@ const JobList = () => {
   const [hasApplied, setHasApplied] = useState(false);
 
   const userId = localStorage.getItem('userObjectId');
+  
   const hasUserApplied = (job) => {
     return job.userApplicationIds.includes(userId);
   };
@@ -101,11 +101,13 @@ const JobList = () => {
 
     setIsApplying(true);
 
-    const userId = localStorage.getItem('userObjectId');
+    // const userId = localStorage.getItem('userObjectId');
+  
+    // const userResumeId = localStorage.getItem('resumeId');
     const hrName = job.hrName; // Assuming hrName is part of the job object
 
     // Check if the user has already applied
-    if (job.userApplicationIds.includes(userObjectId)) {
+    if (job.userApplicationIds.includes(userId)) {
       setDialogMessage('You have already applied for this position.');
       setOpenDialog(true);
       setIsApplying(false);
@@ -116,7 +118,8 @@ const JobList = () => {
       jobId: job._id,
       userId: userId,
       hrName: hrName,
-      status: 'pending'
+      status: 'pending',
+      // userResumeId: userResumeId,
     };
     // Send the application data to the server
     try {

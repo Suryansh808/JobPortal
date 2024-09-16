@@ -18,6 +18,7 @@ const SelectedApplicant = () => {
         const fetchedApplications = response.data;
         setFilteredApplications(fetchedApplications.filter(app => app.status === 'Accepted'));
         setApplications(fetchedApplications);
+        console.log(fetchedApplications);
         // Filter to show only applications with status 'pending'
       } catch (error) {
         console.error("Error fetching applications:", error);
@@ -52,7 +53,10 @@ const SelectedApplicant = () => {
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">S.No</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Company Name</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Job Title</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Name</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Mobile No </th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Email</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Resume</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">HR Name</th>
           </tr>
         </thead>
@@ -67,7 +71,10 @@ const SelectedApplicant = () => {
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
               <td  onClick={() => handleRowClick(application)} className="p-2 cursor-pointer md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.companyName}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.jobTitle}</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">Name</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.phone}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.email}</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">Resume</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.hrName}</td>
             </tr>
           ))}

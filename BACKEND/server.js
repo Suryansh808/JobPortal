@@ -10,9 +10,9 @@ const CompanyJobPostRoute = require('./routes/companyJobPostRoute');
 const companyRoutes = require('./routes/companyJobPostRoute');
 const authenticateToken = require('./middleware/authMiddleware');
 const authRoutes = require('./routes/companyAuth');
+const Resume = require('./models/resumeModel');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
- const { v4: uuidv4 } = require("uuid");
 const cors = require('cors');
 const Counter = require('./models/counter');
 const hrRoutes = require('./routes/hrRoutes');
@@ -23,6 +23,7 @@ const path = require('path');
 require('dotenv').config();
 const User = require("./models/User");
 const applicationRoutes = require('./routes/applications');
+const Application = require('./models/application');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -30,8 +31,6 @@ app.use(bodyParser.json({ limit: '300mb' }));
 app.use(bodyParser.urlencoded({ limit: '300mb', extended: true }));
 app.use(bodyParser.urlencoded({ extended: true })); // For URL encoded data
 app.use(express.json());
-
-
 
 // Routes
 app.use("/api", CompanyJobPostRoute);
@@ -57,62 +56,13 @@ mongoose.connect("mongodb://127.0.0.1:27017/otp-auth", {
 
 
 
-const resumeId = uuidv4();
-
-// Define schema and model
-const resumeSchema = new mongoose.Schema({
-  // imgURL: String,
-  fullName: String,
-  linkdinURL: String,
-  githubURL: String,
-  address: String,
-  summary: String,
-  education: [
-    {
-      degree: String,
-      branch: String,
-      cgpa: String,
-      university: String,
-      startDate: String,
-      endDate: String,
-    },
-  ],
-  experience: String,
-  projectDetails: String,
-  skills: [String],
-  achievement: String,
-  coverLetter: String,
-  resumeId: { type: String, default: resumeId },
-  createdAt: { type: Date, default: Date.now },
-  userId: String,
-
-});
-
-const Resume = mongoose.model("StudentData", resumeSchema);
-
-
-// Configure multer for file uploads
-// const resumeStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, path.join(__dirname, "resumeimages"));
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
-
-// const resumeimage = multer({ resumeStorage });
-
-// Serve static files from 'uploads' directory
-// app.use("/uploads", express.static(path.join(__dirname, "resumeimage")));
-
 const resume = multer(); // Configure multer as needed
 // Route for creating a new resume
 app.post("/api/StudentData", resume.none(),  async (req, res) => {
   try {
     const {
       fullName,
-      linkdinURL,
+      linkedinURL,
       githubURL,
       address,
       summary,
@@ -123,18 +73,14 @@ app.post("/api/StudentData", resume.none(),  async (req, res) => {
       coverLetter,
       education,
       userId,
+      userID,
      
     } = req.body;
-   // console.log('Received data:', req.body);
-
-
-
-    // const imgURL = req.file ? `/resumeimage/${req.file.filename}` : "";
 
     const newResume = new Resume({
       // imgURL,
       fullName,
-      linkdinURL,
+      linkedinURL,
       githubURL,
       address,
       summary,
@@ -145,14 +91,36 @@ app.post("/api/StudentData", resume.none(),  async (req, res) => {
       achievement,
       coverLetter,
       userId,
+      userID
       
     });
 
     await newResume.save();
+    console.log('Resume created:', newResume);
+    // Find user and update resumeId
+    const user = await User.findById(userID);
+    console.log(" userid ",user);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+   // Check if resumeId field exists in the schema
+   if (user.resumeId === undefined) {
+    console.error('resumeId field does not exist in the schema');
+  } else {
+    user.resumeId = newResume._id;
+    console.log('Updating user resumeId:', user.resumeId);
+    await user.save();
+
+    console.log('User updated with resumeId:', user.resumeId);
+  }
+
+
     res
       .status(201)
       .json({ message: "Resume saved successfully", StudentData: newResume });
   } catch (error) {
+    console.error('Error saving resume:', error); // Add detailed error logging
     res
       .status(400)
       .json({ message: "Error saving resume", error: error.message });
@@ -163,9 +131,14 @@ app.post("/api/StudentData", resume.none(),  async (req, res) => {
 app.put("/api/StudentData/:id", async (req, res) => {
   try {
     const { id } = req.params;
+        
+    if (!id) {
+      return res.status(400).json({ message: "Resume ID is required" });
+    }
+    
     const {
       fullName,
-      linkdinURL,
+      linkedinURL,
       githubURL,
       address,
       summary,
@@ -177,23 +150,24 @@ app.put("/api/StudentData/:id", async (req, res) => {
       education,
     } = req.body;
 
+    console.log("Update Request Data:", req.body); // Add logging
+
     const updateData = {
       fullName,
-      linkdinURL,
+      linkedinURL,
       githubURL,
       address,
       summary,
-      education: JSON.parse(education),
+      education: education ? JSON.parse(education) : [], // Handle optional fields
       experience,
       projectDetails,
-      skills: JSON.parse(skills),
+     skills: skills ? JSON.parse(skills) : [], // Handle optional fields
       achievement,
       coverLetter,
     };
+    
+console.log("Data to Update:", updateData); // Add logging
 
-    // if (req.file) {
-    //   updateData.imgURL = `/resumeimage/${req.file.filename}`;
-    // }
 
     const updatedResume = await Resume.findByIdAndUpdate(id, updateData, {
       new: true,
@@ -201,7 +175,6 @@ app.put("/api/StudentData/:id", async (req, res) => {
     if (!updatedResume) {
       return res.status(404).json({ message: "Resume not found" });
     }
-
     res
       .status(200)
       .json({
@@ -233,87 +206,22 @@ app.get("/api/StudentData/:id", async (req, res) => {
   }
 });
 
-// Route for downloading resume by ID
-app.get("/api/StudentData/:id/download", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const resume = await Resume.findById(id);
-    if (!resume) {
-      return res.status(404).json({ message: "Resume not found" });
-    }
-
-    // Generate the PDF
-    const doc = new PDFDocument();
-    res.setHeader("Content-Disposition", "attachment; filename=resume.pdf");
-    res.setHeader("Content-Type", "application/pdf");
-    doc.pipe(res);
-
-    // Add resume data to the PDF
-    doc.fontSize(20).text(`Resume: ${resume.fullName}`, { align: "center" });
-    doc.text(`linkdinURL: ${resume.linkdinURL}`);
-    doc.text(`githubURL: ${resume.githubURL}`);
-    doc.text(`Address: ${resume.address}`, 10, 40);
-    doc.text(`Summary: ${resume.summary}`, 10, 50);
-    resume.education.forEach((edu, index) => {
-      doc.text(`Education ${index + 1}:`, 10, 60 + index * 30);
-      doc.text(`Degree: ${edu.degree}`, 10, 70 + index * 30);
-      doc.text(`Branch: ${edu.branch}`, 10, 80 + index * 30);
-      doc.text(`CGPA: ${edu.cgpa}`, 10, 90 + index * 30);
-      doc.text(`University: ${edu.university}`, 10, 100 + index * 30);
-      doc.text(`Start Date: ${edu.startDate}`, 10, 110 + index * 30);
-      if (edu.currentlyPursuing) {
-        doc.text(`Currently Pursuing`, 10, 120 + index * 30);
-      } else {
-        doc.text(`End Date: ${edu.endDate}`, 10, 120 + index * 30);
-      }
-    });
-    doc.text(
-      `Experience: ${resume.experience}`,
-      10,
-      130 + resume.education.length * 30
-    );
-    doc.text(
-      `projectDetails: ${resume.projectDetails}`,
-      10,
-      140 + resume.education.length * 30
-    );
-    doc.text(
-      `Skills: ${resume.skills}`,
-      10,
-      150 + resume.education.length * 30
-    );
-    doc.text(
-      `Achievement: ${resume.achievement}`,
-      10,
-      160 + resume.education.length * 30
-    );
-    doc.text(
-      `Cover Letter: ${resume.coverLetter}`,
-      10,
-      170 + resume.education.length * 30
-    );
-    doc.end();
-  } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Error generating PDF", error: error.message });
-  }
-});
 
 
-const jobSchema = new mongoose.Schema({
-  title: String,
-  company: String,
-  location: String,
-  updatedOn: String,
-  impressions: Number,
-  daysLeft: Number,
-  description: String
-});
+// const jobSchema = new mongoose.Schema({
+//   title: String,
+//   company: String,
+//   location: String,
+//   updatedOn: String,
+//   impressions: Number,
+//   daysLeft: Number,
+//   description: String
+// });
 
-const Job = mongoose.model('Job', jobSchema);
+// const Job = mongoose.model('Job', jobSchema);
 
 app.use("/api", userRoutes);
+
 app.get('/api/users', async (req, res) => {
   try {
       const users = await User.find(); // Fetch all users
@@ -380,8 +288,8 @@ app.post('/api/verify-otp', async (req, res) => {
 });
 //Admin Login end
 
-// comapny server code starts
 
+// comapny server code starts
 // Set up multer for file upload handling
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -528,6 +436,26 @@ app.get('/CompanyDashBoard', authenticateToken, (req, res) => {
 });
 
 // comapny server code ends
+
+
+
+// Example Express route
+app.get('/api/applications/:id', async (req, res) => {
+  try {
+    const application = await Application.findById(req.params.id).populate('userId').exec();
+    console.log(application);
+    res.json(application);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+
+
+
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -16,6 +16,7 @@ const ApplicantList = ({ userId }) => {
       try {
         const response = await axios.get(`http://localhost:5000/api/applications`);
         const fetchedApplications = response.data;
+        console.log(fetchedApplications);
         setFilteredApplications(fetchedApplications.filter(app => app.status === 'pending'));
         setApplications(fetchedApplications);
         // Filter to show only applications with status 'pending'
@@ -27,12 +28,29 @@ const ApplicantList = ({ userId }) => {
     fetchApplications();
   }, [userId]);
 
+  const [resumeDetails, setResumeDetails] = useState(null);
+
   const handleRowClick = (application) => {
+    console.log(application);
     setSelectedApplication(application);
     setOpenDialog(true);
+    // If resumeId is present, fetch the resume details
+  if (application.userId && application.userId.resumeId) {
+    axios.get(`http://localhost:5000/api/resumes/${application.userId.id.resumeId}`)
+      .then(response => {
+        setResumeDetails(response.data); // Assume you have a state for resume details
+      })
+      .catch(error => {
+        console.error("Error fetching resume details:", error);
+      });
+  }
   };
 
   const handleStatusChange = (action) => {
+    if (!selectedApplication || !selectedApplication._id) {
+      console.error("No selected application or missing _id");
+      return;
+    }
     // Update status in the backend
     axios.put(`http://localhost:5000/api/applications/${selectedApplication._id}`, { status: action })
       .then(() => {
@@ -48,8 +66,9 @@ const ApplicantList = ({ userId }) => {
       });
   };
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event,application) => {
     setAnchorEl(event.currentTarget);
+    setSelectedApplication(application); 
   };
 
   const handleMenuClose = () => {
@@ -68,7 +87,10 @@ const ApplicantList = ({ userId }) => {
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">S.No</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Company Name</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Job Title</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Name</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Mobile No </th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Email</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Resume</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">HR Name</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Actions</th>
           </tr>
@@ -84,10 +106,13 @@ const ApplicantList = ({ userId }) => {
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
               <td  onClick={() => handleRowClick(application)} className="p-2 cursor-pointer md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.companyName}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.jobTitle}</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">Name</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.phone}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.email}</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">Resume</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.hrName}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
-                <Button onClick={handleMenuClick} aria-controls="simple-menu" aria-haspopup="true">
+                <Button onClick={(event) => handleMenuClick(event, application)}  aria-controls="simple-menu" aria-haspopup="true">
                   Actions
                 </Button>
                 <Menu
@@ -126,6 +151,11 @@ const ApplicantList = ({ userId }) => {
             <div className="text-md mb-2">
               Status: {selectedApplication.status}
             </div>
+            {resumeDetails && (
+        <div className="text-md mb-2">
+          Resume: {resumeDetails.fullName} {/* Display resume details here */}
+        </div>
+      )}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpenDialog(false)} color="primary">

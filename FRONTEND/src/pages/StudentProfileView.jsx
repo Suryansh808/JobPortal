@@ -5,12 +5,7 @@ import { Link } from "react-router-dom";
 
 const StudentProfileView = () => {
   const [jobApplications, setJobApplications] = useState([]);
-  const [studentDetails, setStudentDetails] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    major: "Computer Science",
-    year: "Senior",
-  });
+  const [studentDetails, setStudentDetails] = useState();
 
   // Function to fetch job applications from the API
   const fetchJobApplications = async () => {
@@ -41,7 +36,7 @@ const StudentProfileView = () => {
   return (
     <div className="p-6">
       {/* Student Details Section */}
-      <div className="border shadow-md rounded-lg p-6 mb-2">
+      {/* <div className="border shadow-md rounded-lg p-6 mb-2">
         <div className="flex items-center justify-end">
           <Link to="/Profile">Back</Link>
         </div>
@@ -52,7 +47,7 @@ const StudentProfileView = () => {
           <p><span className="font-semibold">Major:</span> {studentDetails.major}</p>
           <p><span className="font-semibold">Year:</span> {studentDetails.year}</p>
         </div>
-      </div>
+      </div> */}
 
       {/* Job Applications Section */}
       <div className="border shadow-md rounded-lg p-6">

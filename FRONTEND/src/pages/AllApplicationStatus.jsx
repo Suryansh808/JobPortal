@@ -19,9 +19,16 @@ const AllApplicationStatus = () => {
       const applications = response.data;
       console.log("Applications data:", applications);
       if (response.status === 200) {
-        setJobApplications(applications);
-        if (applications.length > 0) {
-          setSelectedApplication(applications[0]); // Default to the first application
+       // Filter out applications with status "Pending"
+       const filteredApplications = applications.filter(
+        (application) => application.status === "Accepted" || application.status === "Rejected"
+      );
+      setJobApplications(filteredApplications);
+
+        if (filteredApplications.length > 0) {
+          setSelectedApplication(filteredApplications[0]); // Default to the first application
+        }else {
+          setSelectedApplication(null); // No applications available, set selectedApplication to null
         }
       } else {
         console.error("Unexpected response status:", response.status);
@@ -90,10 +97,9 @@ const AllApplicationStatus = () => {
                     {selectedApplication.status}
                   </span>
                 </p>
-                {/* Add more details as needed */}
               </div>
             ) : (
-              <p>Select a job application to see the details.</p>
+              <p>Applications under review..</p>
             )}
           </div>
         </div>

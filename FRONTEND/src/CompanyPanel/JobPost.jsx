@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, DialogContentText } from "@mui/material";
 import axios from "axios";
 
 const JobPost = () => {
@@ -28,6 +28,8 @@ const JobPost = () => {
   const [jobs, setJobs] = useState([]);
   const [open, setOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null); // To track which job is being edited
+  const [confirmationOpen, setConfirmationOpen] = useState(false); // Confirmation dialog state
+  const [selectedJob, setSelectedJob] = useState(null); // Job to be sent to HR
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,9 +72,9 @@ const handleSubmit = async (e) => {
     if (editingIndex !== null) {
       // Update existing job
       const jobToEdit = jobs[editingIndex];
-      console.log("Editing Index:", editingIndex);
-      console.log("Jobs Array:", jobs);
-      console.log("Job to Edit:", jobToEdit);
+      // console.log("Editing Index:", editingIndex);
+      // console.log("Jobs Array:", jobs);
+      // console.log("Job to Edit:", jobToEdit);
       if (!jobToEdit || !jobToEdit._id) {
         throw new Error('Job to edit not found or missing ID');
       }
@@ -166,27 +168,53 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
     setEditingIndex(null);
   };
 
-  const handleSendToHR = async (job) => {
-   
-     // Create an updated job object with jobtoadmin set to true
-  const updatedJob = { ...job, jobtoadmin: true , admintohr:false };
+  // const handleSendToHR = async (job) => {
+  //    // Create an updated job object with jobtoadmin set to true
+  // const updatedJob = { ...job, jobtoadmin: true , admintohr:false };
+  // console.log('Updated job object:', updatedJob);
+  // try {
+  //   // Make a PUT request to update the job in the backend
+  //   const response = await axios.put(`http://localhost:5000/api/jobs/${job._id}`, updatedJob);
+  //   alert("Job has been sent to HR. Wait for HR updates.");
+  //   console.log("API Response Data:", response.data.message); // Show success message
+  //   // Optionally, update the job list in the UI
+  //   const updatedJobs = jobs.map((j) =>
+  //     j._id === job._id ? response.data : j
+  //   );
+  //   setJobs(updatedJobs);
+  // } catch (error) {
+  //   console.error('Error sending job to HR:', error.response?.data?.message || error.message);
+  // }
+  // };
 
-  console.log('Updated job object:', updatedJob);
+  const handleSendToHR = (job) => {
+    setSelectedJob(job);
+    setConfirmationOpen(true);
+  };
 
-  try {
-    // Make a PUT request to update the job in the backend
-    const response = await axios.put(`http://localhost:5000/api/jobs/${job._id}`, updatedJob);
-    alert("Job has been sent to HR. Wait for HR updates.");
-    console.log("API Response Data:", response.data.message); // Show success message
+  const handleConfirmSendToHR = async () => {
+    if (!selectedJob) return;
 
-    // Optionally, update the job list in the UI
-    const updatedJobs = jobs.map((j) =>
-      j._id === job._id ? response.data : j
-    );
-    setJobs(updatedJobs);
-  } catch (error) {
-    console.error('Error sending job to HR:', error.response?.data?.message || error.message);
-  }
+    const updatedJob = { ...selectedJob, jobtoadmin: true, admintohr: false };
+    try {
+      // const response = 
+      await axios.put(`http://localhost:5000/api/jobs/${selectedJob._id}`, updatedJob);
+      //alert("Job has been sent to HR. Wait for HR updates.");
+      // const updatedJobs = jobs.map((j) => (j._id === selectedJob._id ? response.data : j));
+      // setJobs(updatedJobs);
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== selectedJob._id));
+      alert("Job has been sent to HR. Wait for HR updates.");3
+      // setJobs(jobs.filter((job) => job._id !== selectedJob._id));
+    } catch (error) {
+      console.error('Error sending job to HR:', error.response?.data?.message || error.message);
+    }
+    setConfirmationOpen(false);
+    setSelectedJob(null);
+  };
+
+  const handleCancelSendToHR = () => {
+    setConfirmationOpen(false);
+    setSelectedJob(null);
   };
 
   const [companyLogo ,setCompanyLogo] = useState(null);
@@ -423,6 +451,20 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Confirmation Dialog for Sending Job to HR */}
+      <Dialog open={confirmationOpen} onClose={handleCancelSendToHR}>
+        <DialogTitle>Confirm Send to HR</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to send this job posting to HR? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelSendToHR}>Cancel</Button>
+          <Button onClick={handleConfirmSendToHR} color="primary">Confirm</Button>
+        </DialogActions>
+      </Dialog> 
     </div>
   );
 };

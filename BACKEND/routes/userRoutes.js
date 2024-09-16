@@ -2,9 +2,8 @@ const express = require("express");
 const User = require("../models/User");
 const userpicture = require("../multerConfig");
 const router = express.Router();
-const Resume = require('../server');
+const Resume = require('../models/resumeModel');
 const UserIdCounter = require("../models/userIdCounter");
-const { v4: uuidv4 } = require("uuid");
 
 
 
@@ -19,7 +18,7 @@ router.post("/check-user", async (req, res) => {
 
 router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
 
-  const {fullname, phone , email , } = req.body;
+  const {fullname, phone , email } = req.body;
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const otpExpiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
@@ -35,7 +34,8 @@ router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
       { new: true, upsert: true }
     );
     const userId = `user${String(userIdCounter.sequence_value).padStart(2, '0')}`;
-
+     
+  
     user = new User({
       userId,
       fullname,
@@ -44,7 +44,6 @@ router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
       otp,
       otpExpiration,
       imageUrl,
-      uuid: uuidv4() // Generate a unique UUID
     });
 
   } else {
@@ -68,12 +67,19 @@ router.post("/verify-otp", async (req, res) => {
   const user = await User.findOne({ phone, otp });
 
   if (user && user.otpExpiration > Date.now()) {
-    res.json({ success: true });
+    res.json({
+      success: true,
+      user: {
+        fullname: user.fullname,
+        email: user.email,
+        phone: user.phone,
+        imageUrl: user.imageUrl,  // Return image URL
+      }
+    });
   } else {
     res.json({ success: false });
   }
 });
-
 // Get all resumes with user details
 router.get('/resumes', async (req, res) => {
   try {
