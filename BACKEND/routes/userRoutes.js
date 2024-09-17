@@ -19,6 +19,7 @@ router.post("/check-user", async (req, res) => {
 router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
 
   const {fullname, phone , email } = req.body;
+  console.log(req.body);
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const otpExpiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
@@ -35,7 +36,7 @@ router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
     );
     const userId = `user${String(userIdCounter.sequence_value).padStart(2, '0')}`;
      
-  
+
     user = new User({
       userId,
       fullname,
@@ -48,12 +49,12 @@ router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
 
   } else {
     // Update existing user details
-    user.fullname = fullname;  // Update full name if user already exists
+    // user.fullname = fullname;  // Update full name if user already exists
     user.otp = otp;
     user.otpExpiration = otpExpiration;
-    user.imageUrl = imageUrl; // Update the image URL if a new image is uploaded
-   
-    // res.json({ success: true });
+    if(imageUrl){
+      user.imageUrl = imageUrl;
+    }
   }
   await user.save();
   // Replace with actual SMS sending logic
@@ -90,6 +91,21 @@ router.get('/resumes', async (req, res) => {
   }
 });
 
-// Route to get all users
+// Route to get user data by userId for render on Profile 
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    //console.log(userId);
+    // Fetch user from the database
+    const user = await User.findOne({ _id: userId });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
 
 module.exports = router;

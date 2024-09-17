@@ -26,14 +26,24 @@ const StudentSignUp = () => {
       formData.append("email", email);
       formData.append("phone", phone);
 
-      const checkUserResponse = await API.post("/check-user", formData, {
+        const checkUserResponse = await API.post("/check-user", {phone});
+
+
+      // const sendOtpResponse = await API.post("/send-otp", formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // });
+
+     if (!checkUserResponse.data.exists) {
+    
+      //  const sendOtpResponse =  await API.post("/send-otp", { fullname, phone, email});
+      
+      const sendOtpResponse = await API.post("/send-otp", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-     if (!checkUserResponse.data.exists) {
-    
-       const sendOtpResponse =  await API.post("/send-otp", { fullname, phone, email});
        console.log('Send OTP Response:', sendOtpResponse.data);
        if (sendOtpResponse.data.success) {
         if (sendOtpResponse.data.userId) {

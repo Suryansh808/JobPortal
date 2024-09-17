@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
     // Fetch all applications and populate jobId and userId fields
     const applications = await Application.find()
       .populate('jobId', 'jobTitle companyName location jobType jobTiming salary companyLogo') // Populate job details
-      .populate('userId', 'email phone'); // Populate user details
+      .populate('userId', 'email phone fullname resumeId'); // Populate user details
     
     res.status(200).json(applications);
   } catch (error) {

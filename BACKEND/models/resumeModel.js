@@ -24,7 +24,6 @@ const resumeSchema = new mongoose.Schema({
     skills: [String],
     achievement: String,
     coverLetter: String,
-    // resumeId: { type: String, default: resumeId },
     createdAt: { type: Date, default: Date.now },
     userId: String,
     userID: {

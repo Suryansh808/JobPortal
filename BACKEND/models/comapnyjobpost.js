@@ -15,7 +15,7 @@
       per: { type: String, default: "Year" },
     },
     jobDescription: { type: String, required: true },
-    desiredSkills: { type: String, required: true },
+    desiredSkills: [{ type: String, required: true }],
     experience: { type: Number, required: true },
     noofposition: { type: Number, required: true },
     companyLogo: { type: String, required: true },

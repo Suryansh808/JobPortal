@@ -40,6 +40,7 @@ import HrLogin from './HrDashboard/HrLogin';
 import AdminLogInPage from './Owner/AdminLogInPage';
 import AllApplicationStatus from './pages/AllApplicationStatus';
 import ResumePreview from './Components/ResumePreview';
+import ResumeView from './HrDashboard/ResumeView';
 
 
 
@@ -104,6 +105,8 @@ const App = () => {
 
           <Route path="/HrLogin" element={<HrLogin/>} />
           <Route path="/HrPDashboard" element={<HrPDashboard/>}/>
+          <Route path="/ResumeView" element={<ResumeView/>}/>
+
 
 
 

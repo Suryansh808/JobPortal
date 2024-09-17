@@ -168,25 +168,7 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
     setEditingIndex(null);
   };
 
-  // const handleSendToHR = async (job) => {
-  //    // Create an updated job object with jobtoadmin set to true
-  // const updatedJob = { ...job, jobtoadmin: true , admintohr:false };
-  // console.log('Updated job object:', updatedJob);
-  // try {
-  //   // Make a PUT request to update the job in the backend
-  //   const response = await axios.put(`http://localhost:5000/api/jobs/${job._id}`, updatedJob);
-  //   alert("Job has been sent to HR. Wait for HR updates.");
-  //   console.log("API Response Data:", response.data.message); // Show success message
-  //   // Optionally, update the job list in the UI
-  //   const updatedJobs = jobs.map((j) =>
-  //     j._id === job._id ? response.data : j
-  //   );
-  //   setJobs(updatedJobs);
-  // } catch (error) {
-  //   console.error('Error sending job to HR:', error.response?.data?.message || error.message);
-  // }
-  // };
-
+ 
   const handleSendToHR = (job) => {
     setSelectedJob(job);
     setConfirmationOpen(true);
@@ -199,12 +181,7 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
     try {
       // const response = 
       await axios.put(`http://localhost:5000/api/jobs/${selectedJob._id}`, updatedJob);
-      //alert("Job has been sent to HR. Wait for HR updates.");
-      // const updatedJobs = jobs.map((j) => (j._id === selectedJob._id ? response.data : j));
-      // setJobs(updatedJobs);
       setJobs((prevJobs) => prevJobs.filter((job) => job._id !== selectedJob._id));
-      alert("Job has been sent to HR. Wait for HR updates.");3
-      // setJobs(jobs.filter((job) => job._id !== selectedJob._id));
     } catch (error) {
       console.error('Error sending job to HR:', error.response?.data?.message || error.message);
     }

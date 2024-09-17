@@ -184,11 +184,6 @@
 
       const { _id } = formData;
 
-      if (!_id) {
-        console.error('No resume ID found');
-        return;
-      }
-
       try {
         const url = isEditing 
         ? `http://localhost:5000/api/StudentData/${_id}` 
@@ -204,7 +199,7 @@
 
           const resumeId = result.StudentData._id;
         localStorage.setItem('resumeId', resumeId); // Store the ID in localStorage
-        alert('Resume created successfully');
+        // alert('Resume created successfully');
           setShowPopup(true);
           setTimeout(() => {
             setShowPopup(false);

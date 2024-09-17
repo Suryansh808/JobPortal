@@ -96,14 +96,11 @@ const JobList = () => {
 
 
   const handleApplyClick = async (job) => {
-    console.log(job);
+
     if (isApplying || hasApplied) return;
 
     setIsApplying(true);
 
-    // const userId = localStorage.getItem('userObjectId');
-  
-    // const userResumeId = localStorage.getItem('resumeId');
     const hrName = job.hrName; // Assuming hrName is part of the job object
 
     // Check if the user has already applied
@@ -119,7 +116,6 @@ const JobList = () => {
       userId: userId,
       hrName: hrName,
       status: 'pending',
-      // userResumeId: userResumeId,
     };
     // Send the application data to the server
     try {
@@ -484,7 +480,7 @@ const JobList = () => {
 
   // FILTER ENDS
   return (
-    <div className="w-full">
+    <div className="w-full mt-5">
       {/* Centered Container for Search Bar and Buttons */}
       <div className="w-full flex flex-col items-center">
         <div className="flex flex-col md:flex-row items-center w-full gap-2">
@@ -663,13 +659,13 @@ const JobList = () => {
                 <h1>Job Description :</h1>
                 <p>{selectedJob.jobDescription}</p>
                 <h1>Desired Skills:</h1>
-                <ul className="px-4">
-                  {/* {selectedJob.desiredSkills.map((skills) => {
+                {/* <ul className="px-4">
+                  {selectedJob.desiredSkills.map((skills) => {
                         return (
                           <li className="list-disc" key={skills}>{skills}</li>
                         )
-                      })} */}
-                </ul>
+                      })}
+                </ul> */}
               </div>
               <div className="mb-2 w-full rounded-md bg-white shadow-sm p-2">
                 <h1 className="text-gray-700">Application Deadline:</h1>

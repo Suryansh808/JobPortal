@@ -24,6 +24,7 @@ require('dotenv').config();
 const User = require("./models/User");
 const applicationRoutes = require('./routes/applications');
 const Application = require('./models/application');
+const resumeRoutes = require('./routes/resumeRoutes');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -41,7 +42,7 @@ app.use('/api/hr', hrRoutes);
 app.use('/api/applications/:id', applicationRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use("/api", applicationRoutes);
-
+app.use('/api/resumes', resumeRoutes);
 
 mongoose.connect("mongodb://127.0.0.1:27017/otp-auth", {
   useNewUrlParser: true,

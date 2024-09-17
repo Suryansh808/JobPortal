@@ -1,22 +1,34 @@
-// // routes/resumeRoutes.js
-// const express = require('express');
-// const multer = require('multer');
-// const path = require('path');
-// const { saveResume } = require('../controllers/resumeController');
+const express = require('express');
+const mongoose = require('mongoose');
+const router = express.Router();
+const Resume = require('../models/resumeModel'); // Adjust the path if needed
 
-// const router = express.Router();
+// Route to get resume by ID
+router.get('/:resumeId', async (req, res) => {
+  try {
+    // Extract resumeId from route parameters
+    const { resumeId } = req.params;
+    console.log("Received resumeId:", resumeId);
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'uploads/');
-//   },
-//   filename: (req, file, cb) => {
-//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-//     cb(null, uniqueSuffix + path.extname(file.originalname));
-//   }
-// });
-// const upload = multer({ storage });
+    // Convert resumeId to mongoose ObjectId if it's a valid hexadecimal string
+    if (!mongoose.Types.ObjectId.isValid(resumeId)) {
+      return res.status(400).json({ message: 'Invalid resume ID' });
+    }
 
-// router.post('/api/Resumes', upload.single('imgFile'), saveResume);
+    // Find resume by ID
+    const resume = await Resume.findById(resumeId);
+    console.log("Fetched resume:", resume);
 
-// module.exports = router;
+    if (!resume) {
+      return res.status(404).json({ message: 'Resume not found' });
+    }
+
+    // Respond with resume data
+    res.status(200).json(resume);
+  } catch (error) {
+    console.error('Error fetching resume data:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+module.exports = router;

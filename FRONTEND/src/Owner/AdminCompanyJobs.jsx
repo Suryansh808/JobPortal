@@ -146,9 +146,7 @@ const handleAsignHr = async (jobId) => {
 
     if (response.status === 200) {
       setCompanyJobs(prevJobs =>
-        prevJobs.map(job =>
-          job._id === jobId ? response.data.updatedJob : job
-        )
+        prevJobs.filter(job => job._id !== jobId) // Remove the assigned job from the list
       );
       alert('Job assigned to HR successfully!');
     }

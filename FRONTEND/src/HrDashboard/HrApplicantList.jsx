@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from "@mui/material";
 import { FiFileText } from "react-icons/fi";
@@ -28,22 +29,10 @@ const ApplicantList = ({ userId }) => {
     fetchApplications();
   }, [userId]);
 
-  const [resumeDetails, setResumeDetails] = useState(null);
-
   const handleRowClick = (application) => {
-    console.log(application);
+//console.log("after click on companyName",application);
     setSelectedApplication(application);
     setOpenDialog(true);
-    // If resumeId is present, fetch the resume details
-  if (application.userId && application.userId.resumeId) {
-    axios.get(`http://localhost:5000/api/resumes/${application.userId.id.resumeId}`)
-      .then(response => {
-        setResumeDetails(response.data); // Assume you have a state for resume details
-      })
-      .catch(error => {
-        console.error("Error fetching resume details:", error);
-      });
-  }
   };
 
   const handleStatusChange = (action) => {
@@ -55,8 +44,12 @@ const ApplicantList = ({ userId }) => {
     axios.put(`http://localhost:5000/api/applications/${selectedApplication._id}`, { status: action })
       .then(() => {
         // Update state with new status
-        setApplications(applications.map(app =>
-          app._id === selectedApplication._id ? { ...app, status: action } : app
+        // setApplications(applications.map(app =>
+        //   app._id === selectedApplication._id ? { ...app, status: action } : app
+        // ));
+        // Remove application from the filtered list
+        setFilteredApplications(filteredApplications.filter(app =>
+          app._id !== selectedApplication._id
         ));
         setSelectedAction(action);
         setAnchorEl(null);
@@ -77,12 +70,21 @@ const ApplicantList = ({ userId }) => {
 
   const open = Boolean(anchorEl);
 
+      const navigate = useNavigate()
+  const handleResumeClick = (application) => {
+    console.log(application);
+    // Redirect to the resume page using resumeId from the user data
+    navigate('/ResumeView', { state: { resumeId: application.userId.resumeId } });
+  };
+
+
+
   return (
     <div className="flex flex-col items-center justify-center text-zinc-900 p-4">
       <h2 className="text-2xl font-bold mb-4 text-white">All Applicant Details</h2>
 
       <table className="min-w-full border-collapse block md:table">
-        <thead className="block md:table-header-group">
+        <thead className="block md:table-header-group whitespace-nowrap">
           <tr className="border border-gray-500 md:border-none block md:table-row">
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">S.No</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Company Name</th>
@@ -96,7 +98,7 @@ const ApplicantList = ({ userId }) => {
           </tr>
         </thead>
 
-        <tbody className="block md:table-row-group">
+        <tbody className="block md:table-row-group whitespace-nowrap">
           {filteredApplications.map((application, index) => (
             <tr 
               key={application._id} 
@@ -106,10 +108,10 @@ const ApplicantList = ({ userId }) => {
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
               <td  onClick={() => handleRowClick(application)} className="p-2 cursor-pointer md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.companyName}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.jobTitle}</td>
-              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">Name</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.fullname}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.phone}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.email}</td>
-              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">Resume</td>
+              <td  onClick={() => handleResumeClick(application)} className="p-2 md:border md:border-gray-500 text-left block md:table-cell cursor-pointer "><FiFileText/></td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.hrName}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
                 <Button onClick={(event) => handleMenuClick(event, application)}  aria-controls="simple-menu" aria-haspopup="true">
@@ -143,7 +145,7 @@ const ApplicantList = ({ userId }) => {
               Job Title: {selectedApplication.jobId.jobTitle}
             </div>
             <div className="text-md mb-2">
-              Candidate: {selectedApplication.userId.email} (Name: {selectedApplication.userId.name})
+              Candidate Name: {selectedApplication.userId.fullname} 
             </div>
             <div className="text-md mb-2">
               HR Name: {selectedApplication.hrName}
@@ -151,11 +153,6 @@ const ApplicantList = ({ userId }) => {
             <div className="text-md mb-2">
               Status: {selectedApplication.status}
             </div>
-            {resumeDetails && (
-        <div className="text-md mb-2">
-          Resume: {resumeDetails.fullName} {/* Display resume details here */}
-        </div>
-      )}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpenDialog(false)} color="primary">

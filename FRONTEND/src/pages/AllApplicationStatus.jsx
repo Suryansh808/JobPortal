@@ -99,7 +99,7 @@ const AllApplicationStatus = () => {
                 </p>
               </div>
             ) : (
-              <p>Applications under review..</p>
+              <p>No applications under review..</p>
             )}
           </div>
         </div>
