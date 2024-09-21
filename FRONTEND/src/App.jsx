@@ -44,6 +44,7 @@ import ResumeView from './HrDashboard/ResumeView';
 import TitleUpdater from '../TitleUpdater';
 import ViewResume from './CompanyPanel/ViewResume';
 import List from './CompanyPanel/List';
+import NewNavbar from './Components/Newnavbar';
 
 
 
@@ -68,7 +69,8 @@ const App = () => {
        <HashRouter>
         <TitleUpdater/>
       <ScrollToTop/>
-        <Navbar/>
+      <NewNavbar/>
+        {/* <Navbar/> */}
         <CompanyProvider>
         <AuthProvider>
         <Routes>

@@ -551,22 +551,10 @@ const handleSendMessage = async () => {
   }
 };
     // Scroll to the bottom of the chat whenever a new message is sent
-    useEffect(() => {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [chatMessages]);
-
-
-    // const textareaRef = useRef(null);
     // useEffect(() => {
-    //   // Adjust the height of the textarea based on content
-    //   const adjustHeight = () => {
-    //     if (textareaRef.current) {
-    //       textareaRef.current.style.height = 'auto'; // Reset height
-    //       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set height based on scrollHeight
-    //     }
-    //   };
-    //   adjustHeight(); // Call once on mount and whenever the message changes
-    // }, [msg.message]);
+    //   chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // }, [chatMessages]);
+
 
   
   // FILTER ENDS

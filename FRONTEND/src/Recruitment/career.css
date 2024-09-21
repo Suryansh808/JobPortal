@@ -1,145 +1,181 @@
-*{
-    font-family: 'Montserrat';
-}
-
-link:hover{
-    color: #f50808;
-}
-.careerportal{
-    background-color: #021024;
-}
-.careerportal header {
-    position: fixed;
-  top: 0;
-  overflow: hidden;
-    color: white;
-    padding: 10px;
-    background-color: #021024;
-    width: 100%;
-    border-bottom: 1px solid white;
-}
-
-
-.careerportal header img{
-    float: left;
-}
-.careerportal nav  {
-    text-align: right;
-    margin-right: 20px;
-}
-.careerportal nav li {
-    display: inline-block;
-    margin-left: 10px;
-}
-.careerportal nav a {
-    text-decoration: none;
-    color: white;
-}
-.careerportal header nav ul .btn{
-    background-color: white;
-    color: #021024;
-    display: block;
-    border-radius: 20px;
-    padding: 5px;
-}
-.careerportal .hero{
-    padding: 20px;
-    /* max-width: 750px; */
-}
-.careerportal .user{
-    background-image: url(../assets/user.gif);
-    padding: 100px;
-    margin-top: 60px;
-    background-size: 100% 100%;
-    box-shadow: 0 0 10px 10px #021024 inset;
-    
-
-}
-.careerportal .user p{
-    margin-top: 30px;
-    width: 350px;
-    text-align: justify;
-
-}
-.careerportal .user button{
-    margin-top: 30px;
-    width: 150px;
-    color: white;
-    background-color: #021024;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-}
-
-
-.careerportal .hiring-partner{
-    padding: 100px;
-    text-align: center;
-    color: white;
-    
-}
-.careerportal .hiring-partner div{
-  display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-}
-.careerportal .hiring-partner div img{
-    width: 120px;
-    padding:10px 1px;
+#RecruitmentNavbar{
+    background-color: black;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  #RecruitmentNavbar .web-view {
+    padding: 10px 0px 10px 10px;
+    border-bottom: 1px solid rgb(185, 184, 184);
     display: flex;
-}
-
-.careerportal .hiring{
-    background-image: url(../assets/hiring.gif);
-    /* border-radius: 30px; */
-    padding: 100px;
-    background-size: 100% 100%;
-    box-shadow: 0 0 10px 10px #021024 inset;
-}
-.careerportal .hiring p{
-    margin-top: 30px;
-    width: 350px;
-    text-align: justify;
-}
-.careerportal .hiring button{
-    margin-top: 30px;
-    width: 150px;
-    color: white;
-    background-color: #021024;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-}
-
-.careerfooter {
-    background-color: #021024;
-    border-top: 1px solid white;
-}
-.careerfooter .container{
-    padding:10px 1px;
+  }
+  
+  #RecruitmentNavbar h1 {
+    cursor: pointer;
+  }
+  
+  #RecruitmentNavbar span {
+    font-size: larger;
+    font-weight: 900;
+    color: rgb(38, 0, 255);
+    animation: mymove 1s infinite;
+  }
+  
+  @keyframes mymove {
+    50% {
+      font-style: italic;
+    }
+  }
+  #RecruitmentNavbar .web-view ul {
+    margin-left: auto;
     display: flex;
-   justify-content: space-between;
-   align-items: center;
-}
-.careerfooter .container div{
-    text-align: center;
-}
-
-.careerfooter ul {
     list-style: none;
-}
-
-.careerfooter li {
+  }
+  
+  #RecruitmentNavbar .web-view ul li {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+  
+  #RecruitmentNavbar ul li:hover {
+    color: rgb(174, 228, 223);
+  }
+  #RecruitmentNavbar .mobile-view{
+    display: none;
+    padding: 10px;
+    width: 100%;
+    /* margin-left: auto; */
+    list-style: none;
+    position: absolute;
+    background-color: rgb(0, 0, 0,0.8);
+  }
+  #RecruitmentNavbar .mobile-view li{
+    padding: 5px;
+    text-align: center;
+  }
+  
+  
+  .careerportal {
+    background-color: black;
+  }
+  
+  .careerportal .user {
+    color: black;
+    background-image: url(../assets/user.gif);
+    padding: 50px;
+    /* margin-top: 60px; */
+    background-size: 100% 100%;
+    border-bottom-right-radius: 100px;
+    /* box-shadow: 0 0 10px 10px #021024 inset; */
+  
+  
+  }
+  
+  .careerportal .user p {
+    margin-top: 30px;
+    width: 350px;
+    text-align: justify;
+  
+  }
+  
+  .careerportal .user button {
+    margin-top: 30px;
+    width: 150px;
+    color: white;
+    background-color: #021024;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+  }
+  
+  
+  .careerportal .hiring-partner {
+    padding: 100px;
+    text-align: center;
+    color: white;
+    background-color: black;
+    border-top-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+  
+  }
+  
+  .careerportal .hiring-partner div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .careerportal .hiring-partner div img {
+    width: 120px;
+    padding: 10px 1px;
+    display: flex;
+  }
+  
+  .careerportal .hiring {
+    background-image: url(../assets/hiring.gif);
+    color: black;
+    /* border-radius: 30px; */
+    padding: 50px;
+    background-size: 100% 100%;
+  
+  
+    border-top-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+    /* border-top-right-radius: 150px; */
+    /* box-shadow: 0 0 10px 10px #021024 inset; */
+  }
+  
+  .careerportal .hiring p {
+    margin-top: 30px;
+    width: 350px;
+    text-align: justify;
+  }
+  
+  .careerportal .hiring button {
+    margin-top: 30px;
+    width: 150px;
+    color: white;
+    background-color: #021024;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+  }
+  
+  #RecruitmentFooter {
+    position: sticky;
+    bottom: 0;
+    /* background-color: #021024; */
+    background-color: black;
+    border-top: 1px solid rgb(108, 107, 107);
+  }
+  
+  #RecruitmentFooter .container {
+    /* padding:5px 0; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #RecruitmentFooter .container div {
+    text-align: center;
+  }
+  
+  #RecruitmentFooter ul {
+    list-style: none;
+  }
+  
+  #RecruitmentFooter li {
     display: inline-block;
     margin: 0 10px;
-}
-.careerfooter a {
+  }
+  
+  #RecruitmentFooter a {
     text-decoration: none;
     color: white;
-}
-
-.careerfooter .social-links a {
-    color: #ffffff;
+  }
+  
+  #RecruitmentFooter .social-links a {
+    color: white;
     margin: 0 5px;
     transition: color 0.3s ease;
-}
+  }

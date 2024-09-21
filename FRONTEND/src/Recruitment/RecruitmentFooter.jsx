@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const RecruitmentFooter = () => {
   return (
     <>
-    <footer class="careerfooter">
+    <footer id="RecruitmentFooter">
         <div class="container">
             <div>
                 <ul>
