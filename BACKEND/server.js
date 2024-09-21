@@ -25,6 +25,7 @@ const User = require("./models/User");
 const applicationRoutes = require('./routes/applications');
 const Application = require('./models/application');
 const resumeRoutes = require('./routes/resumeRoutes');
+const chatBox = require('./routes/chatBox');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -43,6 +44,7 @@ app.use('/api/applications/:id', applicationRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use("/api", applicationRoutes);
 app.use('/api/resumes', resumeRoutes);
+app.use('/jobs', chatBox);
 
 mongoose.connect("mongodb://127.0.0.1:27017/otp-auth", {
   useNewUrlParser: true,
@@ -223,6 +225,7 @@ app.get("/api/StudentData/:id", async (req, res) => {
 
 app.use("/api", userRoutes);
 
+
 app.get('/api/users', async (req, res) => {
   try {
       const users = await User.find(); // Fetch all users
@@ -232,14 +235,14 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-app.get('/jobs', async (req, res) => {
-  try {
-    const jobs = await Job.find();
-    res.json(jobs);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+// app.get('/jobs', async (req, res) => {
+//   try {
+//     const jobs = await Job.find();
+//     res.json(jobs);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
 
 //Admin Login start
 // Nodemailer setup
@@ -450,11 +453,6 @@ app.get('/api/applications/:id', async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
-
-
-
-
 
 
 

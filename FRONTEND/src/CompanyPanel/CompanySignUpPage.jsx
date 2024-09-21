@@ -39,27 +39,12 @@ const CompanySignUpPage = () => {
         // Handle other input types
         setFormData((prevData) => ({
           ...prevData,
-          [name]: value,
+          [name]: name === "companyName" ? value.trim() : value,
         }));
       }
     };
 
-  // const handleChangeFile = (e) => {
-  //   const { files } = e.target;
 
-  //   if (type === 'file') {
-  //     // Handle file input
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       [name]: files[0], // Store the file object
-  //     }));
-  //   } else {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       [name]: value,
-  //     }));
-  //   }
-  // };
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShow) => !prevShow);
   };
@@ -111,9 +96,6 @@ const CompanySignUpPage = () => {
         },
       }
      );
-
-     // Store companyName in localStorage
-    //  localStorage.setItem('companyName', formData.companyName);
 
       alert('Signup successfully');
       navigate("/CompanyLogInPage");

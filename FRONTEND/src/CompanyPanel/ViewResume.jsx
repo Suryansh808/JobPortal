@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FaPrint } from "react-icons/fa";
 import { MdOutlineClose } from "react-icons/md";
 
-const ResumeView = () => {
+const ViewResume = () => {
   const location = useLocation();
   const { resumeId } = location.state || {};
 
@@ -58,7 +58,7 @@ const ResumeView = () => {
           title="Print"
         >
           {/* <FaPrint className="text-xl" /> */}
-         <Link to='/HrPDashboard'><MdOutlineClose /></Link>
+         <Link to='/CompanyDashBoard'><MdOutlineClose /></Link>
         </button>
       </div>
     </div>
@@ -176,4 +176,4 @@ const ResumeView = () => {
   );
 };
 
-export default ResumeView;
+export default ViewResume;

@@ -72,6 +72,10 @@ export default function Profile() {
 
   // const { applicationStatus } = useContext(ApplicationStatusContext);
 
+
+
+
+
   useEffect(() => {
     const fetchResume = async () => {
       try {
@@ -273,7 +277,7 @@ export default function Profile() {
       <p className="text-md font-semibold capitalize pb-2">{userData?.fullname}</p>
       <a href={`mailto:${userData?.email}`} className="text-md font-semibold pb-2 ">{userData?.email}</a>
       <a href={`tel:+${userData?.phone}`} className="text-md font-semibold pb-2 ">{userData?.phone}</a>
-    </div>
+          </div>
         <Divider />
         <div className="flex items-center justify-center flex-col gap-2 mt-3 mb-3">
           <button onClick={handleProfile} className="hover:scale-110 ease-linear duration-300 w-[15rem] cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-xl">

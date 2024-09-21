@@ -7,6 +7,8 @@ import Candidates from "./Candidates";
 import Interviews from "./Interviews";
 import Payment from "./Payment";
 import { useAuth } from './AuthContext';
+import RejectedCandidates from "./RejectedCandidates";
+import List from "./List";
 
 const CompanyDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,10 +30,14 @@ const CompanyDashboard = () => {
         return <JobPost/>;
       case "HRupdates":
         return <HRUpdates/>;
+      case "List":
+        return <List/>;
         case "Candidate":
           return <Candidates/>
           case "Interview":
             return <Interviews/>
+          case "RejectedCandidates":
+            return <RejectedCandidates/>
           case "Payment":
             return <Payment/>
         default:
@@ -53,10 +59,10 @@ const CompanyDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-blue-600 h-[8vh] text-white p-3 flex justify-between items-center">
+      <header className="bg-black h-[8vh] text-white p-3 flex justify-between items-center border-b">
         <h1 className="text-xl">Company Dashboard</h1>
         <button
-          className="bg-blue-500 text-white p-2 rounded"
+          className="bg-[#1d1c1c60] text-white p-2 rounded"
           onClick={toggleSidebar}
         >
           Menu
@@ -67,7 +73,7 @@ const CompanyDashboard = () => {
       <div className="flex-1 flex">
         {/* Sidebar */}
         <div
-          className={`fixed top-[8vh] right-0 h-[92vh] bg-gray-800 text-white w-64 transform ${
+          className={`fixed top-[8vh] right-0 h-[92vh] bg-[#000] border-l text-white w-64 transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out z-50`}
         >
@@ -110,6 +116,16 @@ const CompanyDashboard = () => {
             <li
               className="mb-4 cursor-pointer"
               onClick={() => {
+                setActiveComponent("List");
+                // navigate("/company-dashboard/hr-updates");
+                toggleSidebar();
+              }}
+            >
+              List
+            </li>
+            <li
+              className="mb-4 cursor-pointer"
+              onClick={() => {
                 setActiveComponent("Candidate");
                 // navigate("/company-dashboard/candidates");
                 toggleSidebar();
@@ -126,6 +142,16 @@ const CompanyDashboard = () => {
               }}
             >
               Interview Update
+            </li>
+            <li
+              className="mb-4 cursor-pointer"
+              onClick={() => {
+                setActiveComponent("RejectedCandidates");
+                // navigate("/company-dashboard/interviews");
+                toggleSidebar();
+              }}
+            >
+              Rejected candidates
             </li>
             <li
               className="mb-4 cursor-pointer"
@@ -147,15 +173,8 @@ const CompanyDashboard = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-6 ">
+        <div className="flex-1">
           {renderContent()}
-          {/* <Routes>
-            <Route path="/company/:id" element={<CompanyProfile />} />
-            <Route path="/company-dashboard/post-jobs" element={<JobPost />} />
-            <Route path="/company-dashboard/hr-updates" element={<HRUpdates />} />
-            <Route path="/company-dashboard/candidates" element={<Candidates />} />
-            <Route path="/company-dashboard/interviews" element={<Interviews />} />
-          </Routes> */}
           </div>
       </div>
     </div>

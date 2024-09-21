@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useContext, startTransition } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
-// import FilterComponent from "../layouts/FilterComponent";
 import { RiSearch2Line } from "react-icons/ri";
 import CustomizedDialogs from "../layouts/CustomizedDialogs";
 import { CiLocationOn } from "react-icons/ci";

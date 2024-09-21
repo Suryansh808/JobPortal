@@ -9,7 +9,7 @@ const Job = require('../models/comapnyjobpost');
 // POST /api/applications
 router.post('/', async (req, res) => {
   try {
-    const { jobId, userId, hrName, status } = req.body;
+    const { jobId, userId, hrName, status , statusByCompany } = req.body;
 
     console.log(req.body);
 
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
       userId,
       hrName,
       status,
-      // userResumeId,
+      statusByCompany
     });
 
     await newApplication.save();
@@ -57,7 +57,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+//Route to update status from HR portal
+router.put('/status/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -78,5 +79,44 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+//Route to update status by comapny from company portal
+router.put('/statusByCompany/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+  //  console.log(id);
+   // console.log('Updating application with ID:', id);
+    const { statusByCompany ,jobId } = req.body;
+  //  console.log("getting value from frontend" ,req.body);
+
+    if (!statusByCompany) {
+      return res.status(400).json({ message: 'statusByCompany is required' });
+    }
+
+  // Validate the ID format
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(400).json({ message: 'Invalid application ID' });
+  }
+
+     const application = await Application.findOneAndUpdate(
+      { userId: id , jobId: jobId}, // Ensure it matches both ID and userId
+      { statusByCompany : statusByCompany },
+      { new: true } // Return the updated document
+    );
+   // console.log("find the value and update in the database  ", application);
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    res.status(200).json(application); // Return the updated application
+  } catch (error) {
+    console.error('Error updating application status:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+
+
 
 module.exports = router;

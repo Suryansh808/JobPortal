@@ -17,7 +17,7 @@ export default function Footer() {
     navigate(`/Who-We-Are#${section}`);
   }
   const location = useLocation();
-  const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage' ,'/CompanySignUpPage' , '/StudentLogIn','/AllApplicationStatus' , '/StudentSignUp', '/StudentProfileView' , '/AdminLogInPage' ,'/HrLogin' ,'/HRHome','/Recruitment','/AdminDashboard','/HrPDashboard'];
+  const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage', "/ViewResume",'/ResumeView' ,'/CompanySignUpPage' , '/StudentLogIn','/AllApplicationStatus' , '/StudentSignUp', '/StudentProfileView' , '/AdminLogInPage' ,'/HrLogin' ,'/HRHome','/Recruitment','/AdminDashboard','/HrPDashboard'];
   const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
    
   return (

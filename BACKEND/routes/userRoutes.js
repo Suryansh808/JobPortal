@@ -108,4 +108,22 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
+// Route to get users by IDs for the company portal
+router.get('/users', async (req, res) => {
+  try {
+    const { ids } = req.query; // Get the ids from the query parameters
+    if (!ids) {
+      return res.status(400).json({ message: 'No user IDs provided' });
+    }
+    
+    const userIds = ids.split(',').map(id => id.trim()); // Split the string into an array and trim whitespace
+    const users = await User.find({ _id: { $in: userIds } }); // Fetch users with the specified IDs
+
+    res.json(users); // Return the found users
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 module.exports = router;

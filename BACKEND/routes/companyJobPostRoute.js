@@ -47,7 +47,6 @@ router.post("/jobs", async (req, res) => {
       noofposition,
       companyLogo,
       applicationDeadline,
-      // companyId, 
     });
 
     await newJob.save();
@@ -82,12 +81,12 @@ router.put("/jobs/:id", async (req, res) => {
 //Route to get company job post data based on companyName
 router.get('/jobs/:companyName', async (req, res) => {
   const { companyName } = req.params; // Fetch the companyName from query parameters
- // console.log("Received companyName in backend:", companyName);  // Add this line
+ //console.log("Received companyName in backend:", companyName);  // Add this line
   try {
     if (companyName) {
-    //  console.log("Fetching jobs for companyName:", companyName);  // Debugging line
-      const jobs = await Job.find({ companyName}); // Filter jobs by companyName
-     // console.log("Jobs found:", jobs);  // Debugging line
+  //   console.log("Fetching jobs for companyName:", companyName);  // Debugging line
+      const jobs = await Job.find({companyName}); // Filter jobs by companyName
+    //  console.log("Jobs found:", jobs);  // Debugging line
       res.json(jobs);
     } else {
      // console.log("Company name is missing in the query parameter.");  // Debugging line

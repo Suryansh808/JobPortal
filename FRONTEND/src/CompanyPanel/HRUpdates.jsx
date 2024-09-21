@@ -1,95 +1,8 @@
-// import React, { useEffect, useState } from 'react';
-
-// const HRUpdates = () => {
-//   const [data, setData] = useState([]);
-
-//   // Fetch data from the HR portal
-//   useEffect(() => {
-//     fetchData();
-//   }, []);
-
-//   const fetchData = async () => {
-//     try {
-//       // Replace with your API endpoint to fetch data
-//       const response = await fetch('https://your-api-endpoint.com/hr-updates');
-//       const result = await response.json();
-//       setData(result);
-//     } catch (error) {
-//       console.error('Error fetching HR updates:', error);
-//     }
-//   };
-
-//   return (
-//     <div className="p-4">
-//       <h1 className="text-2xl font-bold mb-4">HR Updates</h1>
-//       <div className="overflow-x-auto">
-//       <table className="min-w-full border-collapse block md:table">
-//   <thead className="block md:table-header-group">
-//     <tr className="border border-gray-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative">
-//       <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
-//         Job Title
-//       </th>
-//       <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
-//         Status
-//       </th>
-//       <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
-//         Applicant Name
-//       </th>
-//       <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">
-//         Date Applied
-//       </th>
-//     </tr>
-//   </thead>
-//   <tbody className="block md:table-row-group">
-//             {data.length > 0 ? (
-//               data.map((item, index) => (
-//                 <tr key={index} className=''>
-//                   <td className="py-2 px-4 border-b">{item.updateId}</td>
-//                   <td className="py-2 px-4 border-b">{item.jobTitle}</td>
-//                   <td className="py-2 px-4 border-b">{item.applicantName}</td>
-//                   <td className={`py-2 px-4 border-b ${item.status === 'Approved' ? 'text-green-600' : 'text-red-600'}`}>
-//                     {item.status}
-//                   </td>
-//                   <td className="py-2 px-4 border-b">{new Date(item.date).toLocaleDateString()}</td>
-//                 </tr>
-//               ))
-//             ) : (
-//               <tr>
-//                 <td colSpan="5" className="py-2 px-4 text-center">No updates available</td>
-//               </tr>
-//             )}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default HRUpdates;
-
-
-
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const HRUpdates = () => {
   const [data, setData] = useState([]);
-
-  // Fetch data from the HR portal
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      // Replace with your API endpoint to fetch data
-      const response = await fetch('https://your-api-endpoint.com/hr-updates');
-      const result = await response.json();
-      setData(result);
-    } catch (error) {
-      console.error('Error fetching HR updates:', error);
-    }
-  };
 
 
   const [companyName, setCompanyName] = useState(null); 
@@ -97,6 +10,7 @@ const HRUpdates = () => {
     const fetchCompanyNameAndJobs = async () => {
       // Fetch company name from localStorage
       const storedCompanyName = localStorage.getItem('companyName');
+      console.log(storedCompanyName);
       if (storedCompanyName) {
         console.log("Company name fetched from localStorage:", storedCompanyName); // Debugging line
         setCompanyName(storedCompanyName); // Set the companyName state

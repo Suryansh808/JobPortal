@@ -41,6 +41,9 @@ import AdminLogInPage from './Owner/AdminLogInPage';
 import AllApplicationStatus from './pages/AllApplicationStatus';
 import ResumePreview from './Components/ResumePreview';
 import ResumeView from './HrDashboard/ResumeView';
+import TitleUpdater from '../TitleUpdater';
+import ViewResume from './CompanyPanel/ViewResume';
+import List from './CompanyPanel/List';
 
 
 
@@ -63,6 +66,7 @@ const App = () => {
     <div>
       <SmoothScroll/>
        <HashRouter>
+        <TitleUpdater/>
       <ScrollToTop/>
         <Navbar/>
         <CompanyProvider>
@@ -95,6 +99,8 @@ const App = () => {
           <Route path="/company/:companyId" element={<CompanyProfile />} />
           <Route path="/CompanySignUpPage" element={<CompanySignUpPage/>} />
           <Route path="/ForgotPassword" element={<ForgotPassword/>} />
+          <Route path="/ViewResume" element={<ViewResume/>}/>
+          <Route path="/List" element={<List/>}/>
 
           <Route path="*" element={<NotFound/>}/>s
 

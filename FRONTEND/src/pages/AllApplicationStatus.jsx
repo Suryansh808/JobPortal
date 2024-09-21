@@ -15,21 +15,17 @@ const AllApplicationStatus = () => {
         throw new Error("userId not found in local storage");
       }
 
-      const response = await axios.get(`http://localhost:5000/api/applications?userId=${userId}`);
+      const response = await axios.get(`http://localhost:5000/api/applications`, {
+        params: { userId: userId }
+      });
       const applications = response.data;
       console.log("Applications data:", applications);
       if (response.status === 200) {
-       // Filter out applications with status "Pending"
-       const filteredApplications = applications.filter(
-        (application) => application.status === "Accepted" || application.status === "Rejected"
-      );
-      setJobApplications(filteredApplications);
-
-        if (filteredApplications.length > 0) {
-          setSelectedApplication(filteredApplications[0]); // Default to the first application
-        }else {
-          setSelectedApplication(null); // No applications available, set selectedApplication to null
-        }
+      const userApplications = applications.filter(app => app.userId._id === userId);
+      setJobApplications(userApplications);
+      if (userApplications.length > 0) {
+        setSelectedApplication(userApplications[0]);
+      }
       } else {
         console.error("Unexpected response status:", response.status);
       }
@@ -52,7 +48,6 @@ const AllApplicationStatus = () => {
           {/* Left Side: Application List */}
           <div className="flex-none w-1/3 border-r border-gray-200 pr-4">
             {jobApplications
-              .filter((application) => application.status === "Accepted" || application.status === "Rejected")
               .map((application) => (
                 <div
                   key={application._id}
@@ -77,11 +72,10 @@ const AllApplicationStatus = () => {
                 </div>
               ))}
           </div>
-
           {/* Right Side: Application Details */}
           <div className="flex-1 pl-4">
             {selectedApplication ? (
-              <div className="bg-gray-200 text-black h-full rounded-lg p-4 ">
+            <div className="bg-gray-200 text-black h-full rounded-lg p-4 ">
                 <h3 className="text-xl font-bold mb-2">{selectedApplication.jobId.jobTitle}</h3>
                 <p><span className="font-semibold">Company:</span> {selectedApplication.jobId.companyName}</p>
                 <p><span className="font-semibold">Location:</span> {selectedApplication.jobId.location}</p>
@@ -98,9 +92,8 @@ const AllApplicationStatus = () => {
                   </span>
                 </p>
               </div>
-            ) : (
-              <p>No applications under review..</p>
-            )}
+            ) : null
+            }
           </div>
         </div>
       </div>

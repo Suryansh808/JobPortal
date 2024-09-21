@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from "@mui/material";
 import { FiFileText } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Candidates = () => {
   const [applications, setApplications] = useState([]);
@@ -32,8 +33,30 @@ const Candidates = () => {
     setOpenDialog(true);
   };
 
-  const handleMenuClick = (event) => {
+  const handleStatusChange = (action) => {
+    if (!selectedApplication || !selectedApplication._id) {
+      console.error("No selected application or missing _id");
+      return;
+    }
+     console.log('action: ', action)
+    // Update status in the backend
+    axios.put(`http://localhost:5000/api/applications/${selectedApplication._id}`, { statusByCompany: action })
+      .then(response => {
+        const updatedApplication = response.data; // Get the updated application from the response
+        setFilteredApplications(filteredApplications.map(app =>
+          app._id === updatedApplication._id ? updatedApplication : app
+        ));
+        setSelectedAction(action);
+        setAnchorEl(null);
+      })
+      .catch((error) => {
+        console.error("Error updating application status:", error);
+      });
+  }
+
+  const handleMenuClick = (event,application) => {
     setAnchorEl(event.currentTarget);
+    setSelectedApplication(application); 
   };
 
   const handleMenuClose = () => {
@@ -42,18 +65,27 @@ const Candidates = () => {
 
   const open = Boolean(anchorEl);
 
+  const navigate = useNavigate()
+  const handleResumeClick = (application) => {
+    console.log(application);
+    // Redirect to the resume page using resumeId from the user data
+   navigate('/ViewResume', { state: { resumeId: application.userId.resumeId } });
+  };
+
+
   return (
-    <div className="flex flex-col items-center justify-center text-zinc-900 p-4">
+    <div className="flex flex-col items-center justify-center text-zinc-900 p-4 capitalize">
       <h2 className="text-2xl font-bold mb-4 text-white">Applicant Selected By HR</h2>
 
       <table className="min-w-full border-collapse block md:table">
         <thead className="block md:table-header-group">
           <tr className="border border-gray-500 md:border-none block md:table-row">
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">S.No</th>
-            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Company Name</th>
+            {/* <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Company Name</th> */}
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Job Title</th>
-            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Email</th>
-            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">HR Name</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Name</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Resume</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Actions</th>
           </tr>
         </thead>
 
@@ -64,11 +96,27 @@ const Candidates = () => {
               className="bg-gray-300 border border-gray-500 md:border-none block md:table-row hover:bg-gray-100 "
              
             >
-              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
-              <td  onClick={() => handleRowClick(application)} className="p-2 cursor-pointer md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.companyName}</td>
+              <td  className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
+              {/* <td   className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.companyName}</td> */}
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.jobTitle}</td>
-              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.email}</td>
-              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.hrName}</td>
+              <td onClick={() => handleRowClick(application)} className="p-2  cursor-pointer   md:border md:border-gray-500 text-left block md:table-cell">{application.userId.fullname}</td>
+              <td  onClick={() => handleResumeClick(application)} className="p-2 md:border md:border-gray-500 text-left block md:table-cell cursor-pointer "><FiFileText/></td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
+                <Button onClick={(event) => handleMenuClick(event, application)}  aria-controls="simple-menu" aria-haspopup="true">
+                  Actions
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={open}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={() => handleStatusChange('Under Process')}>Accept</MenuItem>
+                  <MenuItem onClick={() => handleStatusChange('Rejected')}>Reject</MenuItem>
+                  <MenuItem onClick={() => handleStatusChange('Hire')}>Hire</MenuItem>
+                </Menu>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -78,7 +126,7 @@ const Candidates = () => {
       {selectedApplication && (
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle>Application Details</DialogTitle>
-          <DialogContent>
+          <DialogContent className="capitalize">
             <div className="text-lg font-semibold mb-2">
               Company: {selectedApplication.jobId.companyName}
             </div>
@@ -86,7 +134,7 @@ const Candidates = () => {
               Job Title: {selectedApplication.jobId.jobTitle}
             </div>
             <div className="text-md mb-2">
-              Candidate: {selectedApplication.userId.email} (Name: {selectedApplication.userId.name})
+              Candidate Name: {selectedApplication.userId.fullname}
             </div>
             <div className="text-md mb-2">
               HR Name: {selectedApplication.hrName}

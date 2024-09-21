@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   otp: String,
   otpExpiration: Date,
-  createdAt: { type: Date, default: Date.now },
+  createdAt: {type: String, default: () => new Date().toLocaleDateString('en-GB'), },
   jobLimit:{type:Number, default:2},
   userId: { type: String, required: true, unique: true},
   resumeId: { type: mongoose.Schema.Types.ObjectId, default: null, ref: 'StudentData' },

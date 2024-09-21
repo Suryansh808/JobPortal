@@ -70,7 +70,7 @@ function ResponsiveAppBar() {
     }, [anchorElNav]);
 
   const location = useLocation();
-  const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage' , '/AdminLogInPage' ,'/CompanySignUpPage', '/StudentLogIn','/AllApplicationStatus', '/StudentSignUp', '/StudentProfileView' ,'/Profile', '/HrLogin' ,'/HRHome','/AdminDashboard','/Recruitment','/HrPDashboard'];
+  const noHeaderFooterRoutes = ['/CompanyDashBoard', '/ResumeView' , "/ViewResume", '/CompanyLogInPage' , '/AdminLogInPage' ,'/CompanySignUpPage', '/StudentLogIn','/AllApplicationStatus', '/StudentSignUp', '/StudentProfileView' ,'/Profile', '/HrLogin' ,'/HRHome','/AdminDashboard','/Recruitment','/HrPDashboard'];
   const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
   const navigate = useNavigate();
 

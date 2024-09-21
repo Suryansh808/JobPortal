@@ -20,6 +20,11 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'accepted', 'rejected'],
     default: 'pending'
+  },
+  statusByCompany: {
+    type: String,
+    enum: ['accepted', 'rejected' , 'hired'],
+    default: null
   }
 });
 
