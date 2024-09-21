@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminProfile from "./AdminProfile";
 import AdminControlMain from "./AdminContMain";
 import AdminControlCareer from "./AdminContCareer";
@@ -41,6 +42,11 @@ const AdminDashboard = () => {
         return <AdminProfile />;
     }
   };
+
+  const navigate = useNavigate();
+  const handleLogout =()=>{
+    navigate('/AdminLogInPage')
+  }
 
   return (
     <div id="AdminDashboard" className="min-h-screen flex flex-col">
@@ -142,7 +148,7 @@ const AdminDashboard = () => {
               COMPANY LIST
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-4 cursor-pointer"onClick={handleLogout}
             >
               LOGOUT
             </li>

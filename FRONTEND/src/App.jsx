@@ -95,8 +95,7 @@ const App = () => {
           <Route path="/PaymentPage" element={<PaymentPage/>} />
           <Route path="/PaymentSuccess" element={<PaymentSuccess/>} />
           <Route path="/CompanyLogInPage" element={<CompanyLogInPage/>} />
-          <Route element={<ProtectedRoute/>}>
-          </Route>
+          <Route element={<ProtectedRoute/>}></Route>
           <Route path="/CompanyDashBoard" element={<CompanyDashboard/>}/>
           <Route path="/company/:companyId" element={<CompanyProfile />} />
           <Route path="/CompanySignUpPage" element={<CompanySignUpPage/>} />

@@ -26,6 +26,11 @@ const applicationRoutes = require('./routes/applications');
 const Application = require('./models/application');
 const resumeRoutes = require('./routes/resumeRoutes');
 const chatBox = require('./routes/chatBox');
+const Compotp = require("./models/Compotp");
+const adminMail = require("./models/adminMail");
+// const nodemailer = require("nodemailer");
+const expressAsyncHandler = require("express-async-handler");
+// const Otp = require("./models/adminModel");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -38,6 +43,7 @@ app.use(express.json());
 app.use("/api", CompanyJobPostRoute);
 app.use("/api/jobs", CompanyJobPostRoute);
 app.use('/api', companyRoutes);
+app.use("/api", userRoutes);
 app.use(authRoutes); // Register the auth routes
 app.use('/api/hr', hrRoutes);
 app.use('/api/applications/:id', applicationRoutes);
@@ -223,7 +229,7 @@ app.get("/api/StudentData/:id", async (req, res) => {
 
 // const Job = mongoose.model('Job', jobSchema);
 
-app.use("/api", userRoutes);
+
 
 
 app.get('/api/users', async (req, res) => {
@@ -245,51 +251,98 @@ app.get('/api/users', async (req, res) => {
 // });
 
 //Admin Login start
-// Nodemailer setup
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
+
+// inserting  admin into db using api and postman
+app.post("/api/admin", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const newAdmin = new adminMail({ email });
+    await newAdmin.save();
+    res.status(200).json({ message: "Admin email saved successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to save admin email" });
+  }
+});
+
+// admin otp verfication through mail id
+
+let otpStore = {}; // Store OTPs temporarily
+
+// Setup Nodemailer transporter
+let transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: 'saxena.suryansh@krutanic.net',
-    pass: 'wuve esae ixbx ccvk',
+    user: process.env.SMTP_MAIL, // generated ethereal user
+    pass: process.env.SMTP_PASSWORD, // generated ethereal password
   },
 });
 
-// Send OTP endpoint
-app.post('/api/send-otp', async (req, res) => {
-  const { email } = req.body;
-  const otp = crypto.randomInt(100000, 999999).toString();
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
+// after verification if the admin mail is matched from database the otp is sent directly to the matched mail or not
+app.post(
+  "/api/otp-send",
+  expressAsyncHandler(async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+    try {
+      // Fetch the admin email from the database
+      const admin = await adminMail.findOne({});
+      if (!admin) {
+        return res.status(500).json({ error: "Admin email not found" });
+      }
+      // Check if provided email matches the stored admin email
+      if (email !== admin.email) {
+        return res.status(401).json({ error: "You are not admin" });
+      }
+      // If email matches, generate OTP
+      const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
+      otpStore[email] = otp; // Store OTP for the email (assuming otpStore is in memory or session)
+      // Setup email options
+      var mailOptions = {
+        from: process.env.SMTP_MAIL,
+        to: email,
+        subject: "Your OTP Code",
+        text: `Welcome Back Admin. Your OTP code is: ${otp}`, // OTP in email body
+      };
+      // Send email with OTP using Nodemailer
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({ error: "Failed to send email" });
+        } else {
+          console.log("Email sent: " + info.response);
+          return res
+            .status(200)
+            .json({ message: "OTP sent successfully to your email!" });
+        }
+      });
+    } catch (error) {
+      return res.status(500).json({ error: "Failed to process request" });
+    }
+  })
+);
 
-  await Otp.updateOne({ email }, { otp, expiresAt }, { upsert: true });
-
-  const mailOptions = {
-    from: 'saxena.suryansh@krutanic.net',
-    to: email,
-    subject: 'Your OTP Code',
-    text: `Your OTP code is ${otp}`,
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    res.status(200).send('OTP sent successfully');
-  } catch (error) {
-    res.status(500).send('Failed to send OTP');
-  }
-});
-
-// Verify OTP endpoint
-app.post('/api/verify-otp', async (req, res) => {
+// Route to verify OTP admin
+app.post("/api/otp-verify", (req, res) => {
   const { email, otp } = req.body;
 
-  const record = await Otp.findOne({ email, otp, expiresAt: { $gt: new Date() } });
+  if (!email || !otp) {
+    return res.status(400).json({ error: "Email and OTP are required" });
+  }
 
-  if (record) {
-    await Otp.deleteOne({ email }); // Clean up the OTP record
-    res.status(200).send('OTP verified successfully');
+  if (otpStore[email] == otp) {
+    delete otpStore[email]; // Clear OTP after verification
+    return res
+      .status(200)
+      .json({ message: "OTP verified successfully, login allowed!" });
   } else {
-    res.status(400).send('Invalid or expired OTP');
+    return res.status(400).json({ error: "Invalid OTP" });
   }
 });
+
 //Admin Login end
 
 
@@ -385,28 +438,68 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-app.post("/api/send-otp", async (req, res) => {
+// sending otp
+app.post("/api/comp-send-otp", async (req, res) => {
   const { email } = req.body;
+ 
   const user = await Company.findOne({ email });
-  if (!user) return res.status(404).json({ success: false, message: "Company not found" });
+ 
+  if (!user)
+    return res
+      .status(404)
+      .json({ success: false, message: "Company not found" });
 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  user.otp = otp;
-  user.otpExpires = Date.now() + 15 * 60 * 1000; // OTP expires in 15 minutes
-  await user.save();
+  const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit OTP
+  
+  // Save the OTP in the database
+  const otpEntry = new Compotp({
+    email,
+    otp,
+    createdAt: Date.now(),
+  });
+ 
+  await otpEntry.save();
 
-  // Send OTP via email (use any email service like SendGrid, Nodemailer, etc.)
-  // For now, just log it
-  console.log(`OTP sent to ${email}: ${otp}`);
+  // Nodemailer to send the OTP via email
+  const mailOptions = {
+    from: process.env.EMAIL_USER, // Sender email address
+    to: email, // Receiver email address
+    subject: "Your OTP Code",
+    text: `Your OTP for resetting your password is ${otp}. This OTP is valid for 5 minutes.`,
+  };
 
-  res.json({ success: true, message: "OTP sent" });
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending OTP email:", error);
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to send OTP" });
+    } else {
+      console.log("OTP email sent:", info.response);
+      return res.json({ success: true, message: "OTP sent" });
+    }
+  });
 });
 
-app.post("/api/verify-otp", async (req, res) => {
+// Verify OTP route
+app.post("/api/comp-verify-otp", async (req, res) => {
   const { email, otp } = req.body;
-  const user = await Company.findOne({ email, otp });
-  if (!user || user.otpExpires < Date.now()) return res.status(400).json({ success: false, message: "Invalid or expired OTP" });
 
+  // Find the OTP entry in the database
+  const otpRecord = await Compotp.findOne({ email, otp, used: false });
+
+  if (!otpRecord || otpRecord.createdAt.getTime() + 300000 < Date.now()) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid or expired OTP" });
+  }
+
+  // Mark OTP as used
+  otpRecord.used = true;
+  await otpRecord.save();
+
+  // OTP is valid
   res.json({ success: true, message: "OTP verified" });
 });
 

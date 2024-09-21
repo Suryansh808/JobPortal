@@ -16,7 +16,7 @@ const StudentLogIn = () => {
     try {
       const response = await API.post("/check-user", { phone });
       if (response.data.exists) {
-        const sendOtpResponse = await API.post("/send-otp", { phone });
+        const sendOtpResponse = await API.post("/send-otp", { phone ,email });
         console.log(sendOtpResponse.data);
         if (sendOtpResponse.data.success) {
           if (sendOtpResponse.data.userId) {

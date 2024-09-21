@@ -12,7 +12,7 @@ const ForgotPassword = () => {
   const handleSendOtp = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/send-otp", { email });
+      const res = await axios.post("http://localhost:5000/api/comp-send-otp", { email });
       if (res.data.success) {
         setStep(2);
       } else {
@@ -26,7 +26,7 @@ const ForgotPassword = () => {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/verify-otp", { email, otp });
+      const res = await axios.post("http://localhost:5000/api/comp-verify-otp", { email, otp });
       if (res.data.success) {
         setStep(3);
       } else {

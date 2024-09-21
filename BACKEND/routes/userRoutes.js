@@ -4,10 +4,15 @@ const userpicture = require("../multerConfig");
 const router = express.Router();
 const Resume = require('../models/resumeModel');
 const UserIdCounter = require("../models/userIdCounter");
+const { sendEmail }  = require("../controllers/emailController")
 
 
-
-
+// Helper function to send OTP via email
+async function sendOtpEmail(email, otp) {
+  const subject = "Your OTP Code";
+  const message = `Your OTP code is ${otp}. It is valid for 10 minutes.`;
+  await sendEmail({ body: { email, subject, message } });
+}
 
 router.post("/check-user", async (req, res) => {
   const { phone } = req.body;
@@ -15,18 +20,20 @@ router.post("/check-user", async (req, res) => {
   res.json({ exists: !!user });
 });
 
+router.post("/send-otp", userpicture.single("image"), async (req, res) => {
+  const { fullname, phone, email } = req.body;
+  // Check if email and phone are provided
+  if (!email || !phone) {
+    return res.status(400).json({ success: false, message: 'Email and phone are required' });
+  }
 
-router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
-
-  const {fullname, phone , email } = req.body;
-  console.log(req.body);
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const otpExpiration = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
-  let user = await User.findOne({ phone });
-  const imageUrl = req.file ? req.file.path : null;
+  // Check if user exists
+  let user = await User.findOne({ phone, email });
 
- 
+  // Generate the userId if this is a new user
   if (!user) {
     // Get the next user ID
     let userIdCounter = await UserIdCounter.findOneAndUpdate(
@@ -35,8 +42,8 @@ router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
       { new: true, upsert: true }
     );
     const userId = `user${String(userIdCounter.sequence_value).padStart(2, '0')}`;
-     
 
+    // Create a new user
     user = new User({
       userId,
       fullname,
@@ -44,43 +51,54 @@ router.post("/send-otp", userpicture.single("image"),  async (req, res) => {
       email,
       otp,
       otpExpiration,
-      imageUrl,
     });
-
   } else {
-    // Update existing user details
-    // user.fullname = fullname;  // Update full name if user already exists
+    // Update OTP and expiration for existing user
     user.otp = otp;
     user.otpExpiration = otpExpiration;
-    if(imageUrl){
-      user.imageUrl = imageUrl;
-    }
   }
-  await user.save();
-  // Replace with actual SMS sending logic
-  console.log(`OTP sent to ${phone}: ${otp}`);
-  res.json({ success: true, userId: user.userId , id: user.id });
-});
 
+  // Update image URL if provided
+  if (req.file) {
+    user.imageUrl = req.file.path;
+  }
+
+  await user.save();
+
+  // Send OTP via email
+  try {
+    await sendOtpEmail(email, otp);
+    console.log(`OTP sent to ${email}: ${otp}`);
+    res.json({ success: true, userId: user.userId, id: user.id });
+  } catch (error) {
+    console.error('Error sending OTP via email:', error);
+    res.status(500).json({ success: false, message: 'Failed to send OTP email' });
+  }
+});
 
 router.post("/verify-otp", async (req, res) => {
   const { phone, otp } = req.body;
   const user = await User.findOne({ phone, otp });
 
   if (user && user.otpExpiration > Date.now()) {
+    user.isVerified = true; // Example field to mark the user as verified
+    user.lastLogin = new Date(); // Update last login time
+    await user.save();
+
     res.json({
       success: true,
       user: {
         fullname: user.fullname,
         email: user.email,
         phone: user.phone,
-        imageUrl: user.imageUrl,  // Return image URL
+        imageUrl: user.imageUrl, // Return image URL
       }
     });
   } else {
     res.json({ success: false });
   }
 });
+
 // Get all resumes with user details
 router.get('/resumes', async (req, res) => {
   try {
@@ -90,6 +108,7 @@ router.get('/resumes', async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 });
+
 
 // Route to get user data by userId for render on Profile 
 router.get('/user/:userId', async (req, res) => {

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import {useNavigate } from "react-router-dom";
+
 const AdminLogInPage = () => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [error, setError] = useState('');
+
   const navigate = useNavigate();
+
   const handleSendOtp = async () => {
     if (!email) {
       setError('Email is required');
@@ -15,11 +18,11 @@ const AdminLogInPage = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/send-otp', { email });
+      await axios.post('http://localhost:5000/api/otp-send', { email });
       setIsOtpSent(true);
       setError('');
     } catch (err) {
-      setError('Failed to send OTP');
+      setError('You are not Admin');
     }
   };
 
@@ -30,7 +33,7 @@ const AdminLogInPage = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/verify-otp', { email, otp });
+      await axios.post('http://localhost:5000/api/otp-verify', { email, otp });
       setIsOtpVerified(true);
       navigate('/AdminDashboard');
       setError('');
