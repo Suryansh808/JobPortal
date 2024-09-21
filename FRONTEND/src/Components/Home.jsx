@@ -79,7 +79,7 @@ const Home = () => {
     
   return (
     <>  
-      <section className='w-full h-screen bg-black max-[600px]:h-1/2'>
+      <section id='top' className='w-full h-screen bg-black max-[600px]:h-1/2'>
        <Swiper
        ref={sliderRef}
       modules={[Navigation, Pagination, Scrollbar, A11y , Autoplay ,]}
@@ -216,13 +216,12 @@ const Home = () => {
      </section>
      <section ref={addToRefs} className='  join-our-team w-full  py-5 bg-black text-white text-xl flex items-center flex-col justify-center gap-4'>
          <h1 className='text-center text-[3rem] max-[600px]:leading-snug max-[600px]:text-[2rem]'>Uncover your future.</h1>
-         <h1 className='text-center text-[1rem]'>Realize your potential.</h1>
+         <h1 className='text-center text-[1rem]'>  Realize your potential.</h1>
         <div className='hover:scale-110 ease-linear duration-700 hover:bg-white hover:text-black  border rounded-full px-8 py-2'>
           <Link to='/career' className='flex items-center hover:text-black gap-2' >Explore careers <MdCallMade /></Link>
         </div>
      </section>
   </>
-    
   )
 }
 

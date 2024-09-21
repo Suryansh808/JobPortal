@@ -6,7 +6,6 @@ import comp2 from "../assets/2.png"
 import comp3 from "../assets/3.png"
 import comp4 from "../assets/4.png"
 import RecruitmentFooter from "./RecruitmentFooter";
-import "./career.css";
 import RecruitmentNavbar from "./RecruitmentNavbar";
 
 

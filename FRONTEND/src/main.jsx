@@ -2,9 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-
-import './/Recruitment/career.css'
 import './/Owner/Admin.css'
+
+
+import './Style/navbarmain.css'
+import './Style/careerpage.css'
+import './Style/navbar2career.css'
+import './Style/careerpagefooter.css'
 
 
 

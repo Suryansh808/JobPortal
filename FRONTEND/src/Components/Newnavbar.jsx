@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import './Newnavbar.css'
 import ToggleComponent from './Switch';
 import { useLocation } from 'react-router-dom';
 
