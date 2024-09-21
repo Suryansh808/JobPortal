@@ -71,7 +71,7 @@ const App = () => {
       <ScrollToTop/>
       <NewNavbar/>
         {/* <Navbar/> */}
-        <CompanyProvider>s
+        <CompanyProvider>
         <AuthProvider>
         <Routes>
           <Route index path="/" element={<Home/>} />
