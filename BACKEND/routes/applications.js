@@ -22,14 +22,29 @@ router.post('/', async (req, res) => {
     });
 
     await newApplication.save();
-      
-    // Add userId to the job's userApplicationIds array
-    const jobUpdate = await Job.findByIdAndUpdate(
+
+     // Prepare the update data
+     const updateData = { 
+      $addToSet: { 
+        userApplicationIds: userId // Add userId and default status
+      } 
+    };
+  
+     // Update the job with userId and status
+     const jobUpdate = await Job.findByIdAndUpdate(
       jobId,
-      { $addToSet: { userApplicationIds: userId} },  // Use $addToSet to avoid duplicates
+      updateData,
       { new: true, useFindAndModify: false }
     );
+    
 
+    // Add userId to the job's userApplicationIds array
+    // const jobUpdate = await Job.findByIdAndUpdate(
+    //   jobId,
+    //   { $addToSet: { userApplicationIds: userId , status:null} },  // Use $addToSet to avoid duplicates
+    //   { new: true, useFindAndModify: false }
+    // );
+     console.log(jobUpdate);
     if (!jobUpdate) {
       return res.status(404).json({ message: 'Job not found' });
     }
@@ -45,9 +60,9 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
 
-    // Fetch all applications and populate jobId and userId fields
+    // Fetch all applications and populate jobId and userId fields in hr page - all applicant details
     const applications = await Application.find()
-      .populate('jobId', 'jobTitle companyName location jobType jobTiming salary companyLogo') // Populate job details
+      .populate('jobId', 'jobTitle companyName location jobType jobTiming salary companyLogo desiredSkills') // Populate job details
       .populate('userId', 'email phone fullname resumeId'); // Populate user details
     
     res.status(200).json(applications);
@@ -61,7 +76,9 @@ router.get('/', async (req, res) => {
 router.put('/status/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     const { status } = req.body;
+    console.log(status);
 
     if (!status) {
       return res.status(400).json({ message: 'Status is required' });

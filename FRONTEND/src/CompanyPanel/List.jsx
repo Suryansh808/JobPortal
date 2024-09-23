@@ -1,11 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  startTransition,
-} from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { RiSearch2Line } from "react-icons/ri";
 import CustomizedDialogs from "../layouts/CustomizedDialogs";
@@ -14,7 +8,7 @@ import { RiHandbagLine } from "react-icons/ri";
 import { AiOutlineClose } from "react-icons/ai";
 // import ApplyMsg from "./ApplyMsg";
 import { ApplicationStatusContext } from "../ApplicationStatusContext";
-import { FiFileText } from "react-icons/fi";
+import { GrDocumentUser } from "react-icons/gr";
 import { Button, Menu, MenuItem } from "@mui/material";
 
 const List = () => {
@@ -48,7 +42,7 @@ const List = () => {
         //console.log("Jobs response:", response.data);
 
         // Now fetch user details based on userApplicationIds
-        const userIds = response.data.flatMap((job) => job.userApplicationIds); // Flatten the array of IDs
+        const userIds = response.data.flatMap((job) => job.userApplicationIds ); // Flatten the array of IDs
         const uniqueUserIds = [...new Set(userIds)]; // Get unique user IDs
 
         if (uniqueUserIds.length > 0) {
@@ -56,7 +50,8 @@ const List = () => {
             `http://localhost:5000/api/users?ids=${uniqueUserIds.join(",")}`
           );
           setUsers(usersResponse.data); // Assuming this returns an array of user objects
-          // console.log("user id data", usersResponse.data);
+          console.log("user id data", usersResponse.data);
+         // setSelectedJobUsers(usersResponse.data);
         }
         setFilteredJobs(response.data);
       } catch (error) {
@@ -83,15 +78,15 @@ const List = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (filteredJobs.length > 0) {
-      setSelectedJob(filteredJobs[0]);
-      setNoJobsFound(false);
-    } else {
-      setSelectedJob(null);
-      setNoJobsFound(true);
-    }
-  }, [filteredJobs]);
+  // useEffect(() => {
+  //   if (filteredJobs.length > 0) {
+  //     setSelectedJob(filteredJobs[0]);
+  //     setNoJobsFound(false);
+  //   } else {
+  //     setSelectedJob(null);
+  //     setNoJobsFound(true);
+  //   }
+  // }, [filteredJobs]);
 
   const handleSearch = () => {
     const filtered = jobs.filter(
@@ -465,37 +460,68 @@ const List = () => {
 
   const [selectedApplication, setSelectedApplication] = useState(null);
 
+  // const handleJobClick = (job) => {
+  //    setSelectedJob(job);
+  //   // Filter users based on the selected job's userApplicationIds
+  //   const relatedUsers = users.filter((user) =>
+  //     job.userApplicationIds.includes(user._id)
+  // );
+ 
+  // console.log("Selected Job:", selectedJob);
+  // setSelectedJobUsers(relatedUsers);
+  // };
+
+  const [applications, setApplications] = useState([]);
+ // Fetch applications when the component mounts
+ useEffect(() => {
+  const fetchApplications = async () => {
+    try {
+      // Replace with your actual API endpoint
+      const response = await fetch("http://localhost:5000/api/applications"); 
+      const data = await response.json();
+      console.log("getting application data",data);
+      setApplications(data); // Set the fetched applications data
+      console.log(applications)
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+    }
+  };
+
+  fetchApplications();
+}, []);
+
   const handleJobClick = (job) => {
     setSelectedJob(job);
-    // console.log("job id",job._id);
-
-    // Filter users based on the selected job's userApplicationIds
-    const relatedUsers = users.filter((user) =>
-      job.userApplicationIds.includes(user._id)
-    );
-    // console.log("selected job in user data ", relatedUsers);
+    
+    // Filter users based on the selected job's userApplicationIds and accepted status
+    const relatedUsers = users.filter((user) => {
+      // Find the application related to this user and job
+      const application = applications.find(
+        (app) => app.userId._id === user._id && app.jobId._id === job._id
+      );
+      console.log("Found application for user:", application);
+      // Check if the application exists and its status is 'accepted'
+      return job.userApplicationIds.includes(user._id) && application?.status === 'Accepted';
+    });
+    console.log("Filtered related users:", relatedUsers);
     setSelectedJobUsers(relatedUsers);
   };
+  
 
   const handleMenuClick = (event, user) => {
     setAnchorEl(event.currentTarget);
-    // console.log('Selected Application:', user);
+    console.log("Selected Application:", user);
     setSelectedApplication(user);
   };
 
   const handleStatusChange = (action) => {
     // console.log('action:', action);
-
     if (!selectedApplication || !selectedApplication._id) {
       console.error("No selected application or missing _id");
       return;
     }
-
     const id = selectedApplication._id;
     const jobId = selectedJob._id;
-    // console.log('Job ID:', jobId);
-    //console.log('User ID:', id);
-
     // Update status in the backend
     axios
       .put(`http://localhost:5000/api/applications/statusByCompany/${id}`, {
@@ -503,9 +529,8 @@ const List = () => {
         jobId: jobId,
       })
       .then((response) => {
-        // console.log('Update response:', response.data); // Check the response
         const updatedApplication = response.data; // Get the updated application from the response
-        // console.log('Updated Application:', updatedApplication);
+        console.log("Updated Application:", updatedApplication);
         setAnchorEl(null);
       })
       .catch((error) => {
@@ -520,43 +545,54 @@ const List = () => {
   const open = Boolean(anchorEl);
 
   const [chatMessages, setChatMessages] = useState([]);
-const [newMessage, setNewMessage] = useState('');
-const chatEndRef = useRef(null);
+  const [newMessage, setNewMessage] = useState("");
 
-const handleSendMessage = async () => {
-  if (newMessage.trim()) {
-    const chatMessage = { user: 'cm', message: newMessage };
-    const jobId = selectedJob._id;
-    console.log(jobId);
-    // Send the message to the server
-    try {
-      const response = await fetch(`http://localhost:5000/jobs/${jobId}/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(chatMessage),
-      });
+  const handleSendMessage = async () => {
+    if (newMessage.trim()) {
+      const chatMessage = { user: "cm", message: newMessage };
+      const jobId = selectedJob._id;
+      console.log(jobId);
+      // Send the message to the server
+      try {
+        const response = await fetch(
+          `http://localhost:5000/jobs/${jobId}/chat`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(chatMessage),
+          }
+        );
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
+        if (!response.ok) {
+          throw new Error("Failed to send message");
+        }
+
+        const updatedChat = await response.json();
+        setChatMessages(updatedChat); // Update local chat messages
+        setNewMessage("");
+      } catch (error) {
+        console.error("Error sending message:", error);
       }
-
-      const updatedChat = await response.json();
-      setChatMessages(updatedChat); // Update local chat messages
-      setNewMessage('');
-    } catch (error) {
-      console.error('Error sending message:', error);
     }
-  }
-};
-    // Scroll to the bottom of the chat whenever a new message is sent
-    // useEffect(() => {
-    //   chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    // }, [chatMessages]);
+  };
 
+  const navigate = useNavigate();
+  const handleViewResume = (resumeId) => {
+    navigate(`/Cv/${resumeId}`);
+  };
+ 
+  const preStyle = {
+    minWidth: "40%", // Limit maximum width
+    width: "auto",
+    padding: "0.5rem 1rem", // Corresponds to px-3 py-1
+    borderRadius: "1.5rem", // Adjust for your rounded classes
+    overflow: "auto",
+    whiteSpace: "pre-wrap",
+    wordWrap: "break-word", // Ensures long words break to the next line
+  };
 
-  
   // FILTER ENDS
   return (
     <div className="w-full bg-white">
@@ -675,7 +711,7 @@ const handleSendMessage = async () => {
       </div>
       <div className="w-full flex flex-grow mt-1 bg-slate-100 ">
         {/* Job Listings */}
-        <div className=" w-1/5 p-2 h-[80vh] overflow-y-auto ">
+        <div className=" w-1/5 p-2 h-[80vh] overflow-y-auto border-r-2">
           {filteredJobs.map((job, index) => (
             <div
               key={index}
@@ -700,7 +736,7 @@ const handleSendMessage = async () => {
         </div>
         {/* Job Details */}
         <div className="w-full p-2 h-[80vh]   ">
-          {selectedJob && (
+          {selectedJob ?(
             <div className=" h-full w-full bg-white rounded-lg p-1 group flex gap-3">
               <div className="mb-2 min-w-[55vw] rounded-md shadow-sm px-2 py-2 overflow-y-auto scrollbar-hide">
                 <div className="flex gap-2 mb-1">
@@ -728,7 +764,7 @@ const handleSendMessage = async () => {
                 </strong>
                 <div className="overflow-x-auto text-black mt-4">
                   <h3 className="text-lg font-bold">Applicants:</h3>
-                  <table className="border-collapse border w-full whitespace-nowrap border-gray-300">
+                  <table className="border-collapse border w-full capitalize whitespace-nowrap border-gray-300">
                     <thead>
                       <tr>
                         <th className="border border-gray-300 px-2 py-1">
@@ -760,8 +796,11 @@ const handleSendMessage = async () => {
                           <td className="border border-gray-300 px-2 py-1">
                             {user.fullname}
                           </td>
-                          <td className="border border-gray-300 px-2 py-1">
-                            <FiFileText />
+                          <td
+                            onClick={() => handleViewResume(user.resumeId)}
+                            className="border cursor-pointer border-gray-300 text-red-600 px-2 py-1"
+                          >
+                            <GrDocumentUser />
                           </td>
                           <td className="border border-gray-300 px-2 py-1">
                             <Button
@@ -801,33 +840,35 @@ const handleSendMessage = async () => {
                   </table>
                 </div>
               </div>
-              <div className="mb-2 h-[100%] min-w-[25vw] overflow-hidden border relative rounded-md bg-blue-700 shadow-sm py-2">
+              <div className="mb-2 h-[100%] min-w-[25vw] overflow-hidden  border relative rounded-md bg-blue-700 shadow-sm py-2">
                 <div className="h-[5%]">
                   <h1 className="text-center font-bold">Chat with HR</h1>
                 </div>
-                <div className="h-[76%] bg-slate-400 relative text-black px-3 py-1 w-full overflow-y-auto">
-             <div className="absolute bottom-0">
-             {chatMessages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex ${msg.user === 'cm' ? 'justify-end' : 'justify-start'} mb-2`}
-          >
-             <textarea
-        value={msg.message}
-        className={`resize-none ${
-          msg.user === 'cm'
-            ? 'bg-blue-200 rounded-l-3xl rounded-br-3xl' // User message styling
-            : 'bg-white rounded-r-3xl rounded-bl-3xl' // HR message styling
-        } h-20 px-3 py-1`} // Adjust max-width if necessary
-        readOnly
-      />
-          </div>
-        ))}
-        {/* Empty div to act as a scroll target */}
-        <div ref={chatEndRef} />
-             </div>
-      </div>
-                <div className="h-[20%] w-[100%] flex bg-red-800 absolute bottom-0">
+                <div className="h-[76%] bg-slate-400 relative text-black px-3 py-1 w-full overflow-hidden">
+                  <div className="absolute h-full w-full overflow-y-scroll">
+                    {chatMessages.map((msg, index) => (
+                      <div
+                        key={index}
+                        className={`flex ${
+                          msg.user === "cm" ? "justify-end" : "justify-start"
+                        } mb-2`}
+                      >
+                        <pre
+                          style={preStyle}
+                          className={`resize-none ${
+                            msg.user === "cm"
+                              ? "bg-blue-200 rounded-l-3xl rounded-br-3xl text-start" // User message styling
+                              : "bg-white rounded-r-3xl rounded-bl-3xl text-start" // HR message styling
+                          }  px-3 py-1`} // Adjust max-width if necessary
+                          readOnly
+                        >
+                          {msg.message}{" "}
+                        </pre>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="h-[20%] w-[100%] flex absolute bottom-0">
                   <textarea
                     className="bg-white text-black w-[85%] h-[100%] resize-none px-1"
                     value={newMessage}
@@ -842,6 +883,10 @@ const handleSendMessage = async () => {
                 </div>
               </div>
             </div>
+          ):(
+           <div className=" h-full w-full flex items-center justify-center uppercase">
+             <p className="text-black font-semibold">select a job to see the details</p>
+           </div>
           )}
         </div>
       </div>

@@ -29,7 +29,7 @@ const ResumePreview = () => {
             />
             <div>
               <h2 className="text-3xl font-semibold text-gray-900">{resumeDetails.fullName}</h2>
-              <p className="text-lg text-gray-600">{resumeDetails.linkdinURL}</p>
+              <p className="text-lg text-gray-600">{resumeDetails.linkedinURL}</p>
               <p className="text-lg text-gray-600">{resumeDetails.githubURL}</p>
               <p className="text-lg text-gray-600">{resumeDetails.email}</p>
               <p className="text-lg text-gray-600">{resumeDetails.phone}</p>

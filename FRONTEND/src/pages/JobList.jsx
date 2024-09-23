@@ -407,7 +407,10 @@ const JobList = () => {
     setSeletedSortBy('');
     setSelectedLocations([]);
     setSearchLocation('');
+    setAfterFilteredJobs(jobs);
+    setFilteredJobs(jobs);
   };
+
   const handleApplyFilters = () => {
     applyFilters();
     setFilteredJobs(afterFilteredJobs);
@@ -452,8 +455,10 @@ const JobList = () => {
 
     // Update the displayed jobs
     setAfterFilteredJobs(filtered);
+    setFilteredJobs(filtered);
     console.log("Filtered Jobs After Applying Filters:", filtered);
   };
+
   const handleLocationChange = (location) => {
     setSelectedLocations((prevSelected) =>
       prevSelected.includes(location)
@@ -561,6 +566,19 @@ const JobList = () => {
               </div>
             )}
           </div>
+          <div className=" absolute top-[50%] left-[50%] translate-x-[50%] translate-y-[50%]">
+        {filteredJobs.length === 0 ? (
+          <p className="text-black text-2xl">No jobs available</p>
+        ) : (
+          <ul>
+            {filteredJobs.map((job) => (
+              <li key={job.id} className="p-4 border-b">
+                
+              </li>
+            ))}
+          </ul>
+        ) }
+      </div>
           <div className="flex items-center border rounded-full">
             <input
               type="text"
@@ -658,13 +676,13 @@ const JobList = () => {
                 <h1>Job Description :</h1>
                 <p>{selectedJob.jobDescription}</p>
                 <h1>Desired Skills:</h1>
-                {/* <ul className="px-4">
+                <ul className="px-4">
                   {selectedJob.desiredSkills.map((skills) => {
                         return (
                           <li className="list-disc" key={skills}>{skills}</li>
                         )
                       })}
-                </ul> */}
+                </ul>
               </div>
               <div className="mb-2 w-full rounded-md bg-white shadow-sm p-2">
                 <h1 className="text-gray-700">Application Deadline:</h1>

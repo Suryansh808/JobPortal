@@ -15,7 +15,7 @@ router.post('/:jobId/chat', async (req, res) => {
     return res.status(400).send("User and message are required");
   }
 
-  console.log("Received message:", req.body);
+  //console.log("Received message:", req.body);
 
   try {
     // Check if jobId is a valid ObjectId
@@ -25,7 +25,7 @@ router.post('/:jobId/chat', async (req, res) => {
 
     // Find the job
     const job = await Job.findById(jobId);
-    console.log("Job found:", job);
+    //console.log("Job found:", job);
 
     if (!job) {
       return res.status(404).send("Job not found");
@@ -35,7 +35,7 @@ router.post('/:jobId/chat', async (req, res) => {
     job.chatBox.push({ user, message, timestamp: new Date() });
     await job.save();
 
-    console.log("Updated chatBox:", job.chatBox); // Log the updated chatBox
+//console.log("Updated chatBox:", job.chatBox); // Log the updated chatBox
     return res.status(200).send(job.chatBox);
   } catch (error) {
     console.error("Error saving message:", error); // Log the error for debugging

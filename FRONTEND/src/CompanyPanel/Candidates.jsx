@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from "@mui/material";
-import { FiFileText } from "react-icons/fi";
+import { GrDocumentUser } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
 const Candidates = () => {
@@ -19,6 +19,7 @@ const Candidates = () => {
         const fetchedApplications = response.data;
         setFilteredApplications(fetchedApplications.filter(app => app.status === 'Accepted'));
         setApplications(fetchedApplications);
+        console.log("fetch application data",response.data);
         // Filter to show only applications with status 'pending'
       } catch (error) {
         console.error("Error fetching applications:", error);
@@ -67,8 +68,6 @@ const Candidates = () => {
 
   const navigate = useNavigate()
   const handleResumeClick = (application) => {
-    console.log(application);
-    // Redirect to the resume page using resumeId from the user data
    navigate('/ViewResume', { state: { resumeId: application.userId.resumeId } });
   };
 
@@ -77,7 +76,7 @@ const Candidates = () => {
     <div className="flex flex-col items-center justify-center text-zinc-900 p-4 capitalize">
       <h2 className="text-2xl font-bold mb-4 text-white">Applicant Selected By HR</h2>
 
-      <table className="min-w-full border-collapse block md:table">
+      <table className="min-w-[90vw] border-collapse block md:table">
         <thead className="block md:table-header-group">
           <tr className="border border-gray-500 md:border-none block md:table-row">
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">S.No</th>
@@ -99,8 +98,8 @@ const Candidates = () => {
               <td  className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
               {/* <td   className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.companyName}</td> */}
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.jobTitle}</td>
-              <td onClick={() => handleRowClick(application)} className="p-2  cursor-pointer   md:border md:border-gray-500 text-left block md:table-cell">{application.userId.fullname}</td>
-              <td  onClick={() => handleResumeClick(application)} className="p-2 md:border md:border-gray-500 text-left block md:table-cell cursor-pointer "><FiFileText/></td>
+              <td onClick={() => handleRowClick(application)} className="p-2 cursor-pointer  md:border md:border-gray-500 text-left block md:table-cell">{application.userId.fullname}</td>
+              <td  onClick={() => handleResumeClick(application)} className="p-2 md:border md:border-gray-500 text-left text-red-700 block md:table-cell cursor-pointer "><GrDocumentUser /></td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
                 <Button onClick={(event) => handleMenuClick(event, application)}  aria-controls="simple-menu" aria-haspopup="true">
                   Actions

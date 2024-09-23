@@ -55,7 +55,7 @@ const ViewResume = () => {
         <button
           type="button"
           className="absolute bottom-0 rounded-full w-[40px] h-[40px] m-[4px_auto] bg-blue-500 text-white flex items-center justify-center shadow-lg"
-          title="Print"
+          title="Back"
         >
           {/* <FaPrint className="text-xl" /> */}
          <Link to='/CompanyDashBoard'><MdOutlineClose /></Link>
@@ -69,24 +69,23 @@ const ViewResume = () => {
               <h1 className="text-3xl text-black font-semibold">
                 {resume.fullName}
               </h1>
-              <p className="text-gray-600"></p>
+              <p className="text-gray-600">
+                {resume.linkedinURL}
+              </p>
+              <p className="text-gray-600">
+                {resume.githubURL}
+              </p>
 
               <hr className="my-4" />
 
               <h2 className="text-xl font-semibold mb-2">Summary</h2>
               <p className="text-gray-700">
-                Experienced web developer with a passion for creating responsive
-                and user-friendly websites. Proficient in HTML, CSS, JavaScript,
-                and various web development frameworks.
+               {resume.summary}
               </p>
 
               <h2 className="text-xl font-semibold mt-4 mb-2">Skills</h2>
               <ul className="list-disc list-inside text-gray-700">
-                <li>HTML/CSS</li>
-                <li>JavaScript</li>
-                <li>React</li>
-                <li>Node.js</li>
-                <li>Responsive Web Design</li>
+                  {resume.skills}
               </ul>
 
               <h2 className="text-xl font-semibold mt-4 mb-2">Experience</h2>

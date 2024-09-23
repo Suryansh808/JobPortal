@@ -45,6 +45,7 @@ import TitleUpdater from '../TitleUpdater';
 import ViewResume from './CompanyPanel/ViewResume';
 import List from './CompanyPanel/List';
 import NewNavbar from './Components/Newnavbar';
+import Cv from './CompanyPanel/Cv';
 
 
 
@@ -101,6 +102,7 @@ const App = () => {
           <Route path="/CompanySignUpPage" element={<CompanySignUpPage/>} />
           <Route path="/ForgotPassword" element={<ForgotPassword/>} />
           <Route path="/ViewResume" element={<ViewResume/>}/>
+          <Route path="/Cv/:resumeId" element={<Cv/>}/>
           <Route path="/List" element={<List/>}/>
 
           <Route path="*" element={<NotFound/>}/>s

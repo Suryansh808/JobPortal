@@ -301,9 +301,9 @@ export default function Profile() {
                </svg>
               Preview Resume
           </button>
-          <button className="hover:scale-110 ease-linear duration-300 w-[15rem] cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-xl">
+          {/* <button className="hover:scale-110 ease-linear duration-300 w-[15rem] cursor-pointer flex items-center justify-center gap-1.5 px-4 py-2 bg-black bg-opacity-80 text-[#f1f1f1] rounded-3xl hover:bg-opacity-70 transition font-semibold shadow-xl">
             <Link to='/DashBoard' className="hover:text-white ">DashBoard</Link>
-          </button>
+          </button> */}
         </div>
         <Divider />
         <div className="flex flex-col-reverse h-full items-center gap-2 mt-3 mb-3">

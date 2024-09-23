@@ -25,6 +25,7 @@ router.post("/jobs", async (req, res) => {
       noofposition,
       companyLogo,
       applicationDeadline,
+      // userApplicationIds: [],
     } = req.body;
 
     
@@ -47,6 +48,7 @@ router.post("/jobs", async (req, res) => {
       noofposition,
       companyLogo,
       applicationDeadline,
+      // userApplicationIds: [],
     });
 
     await newJob.save();
@@ -178,14 +180,18 @@ router.patch('/jobs/:jobId/apply', async (req, res) => {
     }
 
     // Check if the user ID is already in the array
-    if (job.userApplicationIds.includes(userId)) {
+    // if (job.userApplicationIds.includes(userId)) {
+    //   return res.status(400).json({ message: 'User already applied' });
+    // }
+    const existingApplication = job.userApplicationIds.find(app => app.userId === userId);
+    if (existingApplication) {
       return res.status(400).json({ message: 'User already applied' });
     }
 
     // Add the user ID to the array
-    job.userApplicationIds.push(userId);
+    job.userApplicationIds.push({userId});
     await job.save();
-
+      console.log(job);
     res.status(200).json({ success: true });
   } catch (error) {
     console.error('Error updating job:', error);

@@ -33,7 +33,7 @@ const NewNavbar = () => {
         setActiveMobileMenuOption(prev => (prev === optionId ? null : optionId));
     };
     const location = useLocation();
-    const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage', '/AdminLogInPage', '/CompanySignUpPage', '/StudentLogIn', '/StudentSignUp', '/StudentProfileView', '/HrLogin', '/HRHome', '/AdminDashboard', '/HrPDashboard','/Recruitment'];
+    const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage', '/AdminLogInPage', '/CompanySignUpPage', '/StudentLogIn', '/StudentSignUp', '/StudentProfileView', '/HrLogin', '/HRHome', '/Cv/:resumeId', '/AdminDashboard', '/HrPDashboard','/Recruitment'];
     const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
 
     return (

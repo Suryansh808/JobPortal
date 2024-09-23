@@ -55,7 +55,7 @@ const ResumeView = () => {
         <button
           type="button"
           className="absolute bottom-0 rounded-full w-[40px] h-[40px] m-[4px_auto] bg-blue-500 text-white flex items-center justify-center shadow-lg"
-          title="Print"
+          title="Back"
         >
           {/* <FaPrint className="text-xl" /> */}
          <Link to='/HrPDashboard'><MdOutlineClose /></Link>

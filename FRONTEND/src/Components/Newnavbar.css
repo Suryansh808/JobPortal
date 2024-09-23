@@ -73,7 +73,7 @@
   border-radius: 20px;
 
 }
-li:hover span {
+#header li:hover span {
   transform: rotate(180deg);
 }
 

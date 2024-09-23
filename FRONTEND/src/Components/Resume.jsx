@@ -30,6 +30,7 @@
     const [showPopup, setShowPopup] = useState(false);
     const [errors, setErrors] = useState({});
     const [isEditing, setIsEditing] = useState(false);
+    const [showDialog, setShowDialog] = useState(true); // State to control dialog visibility
 
     const location = useLocation();
     // const navigate = useNavigate();
@@ -215,7 +216,27 @@
         alert('Error submitting resume. Please try again.');
       }
     };
+    const handleCloseDialog = () => {
+      setShowDialog(false); // Close the dialog
+    };
+    
+     
     return (
+      <div className="bg-black w-full h-full flex flex-col items-center justify-center max-[600px]:w-full">
+      {showDialog ? (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-2xl text-black font-bold mb-4">Resume Creation Instructions</h2>
+            <p className="mb-4 text-black">Please follow the steps to create your resume properly...</p>
+            <button
+              onClick={handleCloseDialog}
+              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      ) : (
       <div className="bg-black w-full h-full flex flex-col bg-current items-center justify-center max-[600px]:w-full">
         {showPopup && (
           <div className="fixed z-[999] inset-0 flex items-center justify-center">
@@ -452,6 +473,8 @@
             </button>
           </form>
         </div>
+      </div>
+      )}
       </div>
     );
   };

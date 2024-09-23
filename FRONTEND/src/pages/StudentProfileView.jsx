@@ -158,7 +158,7 @@ const StudentProfileView = () => {
                 ))}
                     </>
               ): (
-                <p>No pending application founds</p>
+                <p className="">No pending application founds</p>
               )
              }
             </tbody>

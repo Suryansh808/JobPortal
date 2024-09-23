@@ -31,4 +31,19 @@ router.get('/:resumeId', async (req, res) => {
   }
 });
 
+//route to render the resume data in the comapny portal - chatbox ke pass
+// Get resume by ID
+router.get('/:resumeId', async (req, res) => {
+  try {
+    const resume = await Resume.findById(req.params.resumeId);
+    console.log("reciveing data from frontend", resume);
+    if (!resume) {
+      return res.status(404).json({ message: 'Resume not found' });
+    }
+    res.json(resume);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
 module.exports = router;

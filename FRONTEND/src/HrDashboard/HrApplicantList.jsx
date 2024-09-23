@@ -41,7 +41,7 @@ const ApplicantList = ({ userId }) => {
       return;
     }
     // Update status in the backend
-    axios.put(`http://localhost:5000/api/applications/${selectedApplication._id}`, { status: action })
+    axios.put(`http://localhost:5000/api/applications/status/${selectedApplication._id}`, { status: action })
       .then(() => {
         // Update state with new status
         // setApplications(applications.map(app =>
@@ -92,6 +92,7 @@ const ApplicantList = ({ userId }) => {
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Name</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Mobile No </th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Candidate Email</th>
+            <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Skills Required</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Resume</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">HR Name</th>
             <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-gray-500 text-left block md:table-cell">Actions</th>
@@ -111,6 +112,7 @@ const ApplicantList = ({ userId }) => {
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.fullname}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.phone}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.email}</td>
+              <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.desiredSkills}</td>
               <td  onClick={() => handleResumeClick(application)} className="p-2 md:border md:border-gray-500 text-left block md:table-cell cursor-pointer "><FiFileText/></td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.hrName}</td>
               <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">

@@ -23,9 +23,9 @@
     jobtoadmin:{type:Boolean , default:false},
     admintohr:{type:Boolean , default:null},
     hrName:{type:String , default:null},
-    userApplicationIds:[String],
+    userApplicationIds: [String],
     updatedOn: { type: Date, default: Date.now },
-    chatBox: [  {    user: { type: String},    message: { type: String },    timestamp: { type: Date, default: Date.now },  },],
+    chatBox: [  {    user: { type: String},    message: { type: String },    timestamp: {type: String, default: () => new Date().toLocaleTimeString()}},],
   });
 
   const Job = mongoose.model("CompanyJobPostData", jobSchema);

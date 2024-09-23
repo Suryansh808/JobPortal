@@ -50,6 +50,7 @@ app.use('/api/applications/:id', applicationRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use("/api", applicationRoutes);
 app.use('/api/resumes', resumeRoutes);
+app.use('/api/studentDatas', resumeRoutes); // Add this line
 app.use('/jobs', chatBox);
 
 mongoose.connect("mongodb://127.0.0.1:27017/otp-auth", {
@@ -216,22 +217,6 @@ app.get("/api/StudentData/:id", async (req, res) => {
 });
 
 
-
-// const jobSchema = new mongoose.Schema({
-//   title: String,
-//   company: String,
-//   location: String,
-//   updatedOn: String,
-//   impressions: Number,
-//   daysLeft: Number,
-//   description: String
-// });
-
-// const Job = mongoose.model('Job', jobSchema);
-
-
-
-
 app.get('/api/users', async (req, res) => {
   try {
       const users = await User.find(); // Fetch all users
@@ -279,10 +264,8 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-// after verification if the admin mail is matched from database the otp is sent directly to the matched mail or not
-app.post(
-  "/api/otp-send",
-  expressAsyncHandler(async (req, res) => {
+ // after verification if the admin mail is matched from database the otp is sent directly to the matched mail or not
+ app.post("/api/otp-send", expressAsyncHandler(async (req, res) => {
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
@@ -426,11 +409,7 @@ app.post("/api/login", async (req, res) => {
 
     const token = jwt.sign({ id: company._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
      
-    // // Example of creating a token with companyId
-    // const token = jwt.sign({ id: company.companyId, companyId: user.companyId }, process.env.JWT_SECRET, { expiresIn: '1h' });
-// Debugging: Check the company object and companyName
-// console.log("Company Object:", company); // Check the entire company object
-// console.log("Company Name:", company.companyName); // Ensure this is a string
+   
 
     res.json({ token, success: true , companyName: company.companyName, });
   } catch (err) {
