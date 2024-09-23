@@ -2,13 +2,14 @@
     background-color: black;
     position: sticky;
     top: 0;
-    z-index: 1000;
+   
   }
   
   #RecruitmentNavbar .web-view {
     padding: 10px 0px 10px 10px;
     border-bottom: 1px solid rgb(185, 184, 184);
     display: flex;
+    z-index: 1000;
   }
   
   #RecruitmentNavbar h1 {
@@ -50,13 +51,37 @@
     list-style: none;
     position: absolute;
     background-color: rgb(0, 0, 0, 0.8);
+    opacity: 0;
+
+
+    transform: translateY(-100px); /* Start position */
+    animation: fadeInUp 0.5s forwards; /* Animation name and duration */
+    
+
   }
   
   #RecruitmentNavbar .mobile-view li {
     padding: 5px;
     text-align: center;
   }
+  #RecruitmentNavbar .careeroption{
+    display: none;
+    margin-left: auto;
+  }
 
 
+  @media (max-width: 510px) {
+  
+    #RecruitmentNavbar .web-view ul {
+      display: none;
+    }
+  
+    #RecruitmentNavbar .careeroption {
+      display: block;
+    }
+    #RecruitmentNavbar .mobile-view{
+      display: block;
+    }
+  }
 
  

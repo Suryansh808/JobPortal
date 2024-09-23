@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import ToggleComponent from "../Components/Switch";
 import comp1 from "../assets/1.webp"
@@ -10,6 +10,7 @@ import RecruitmentNavbar from "./RecruitmentNavbar";
 
 
 const Recruitment = () => {
+  
   return (
     <>
       <div className="careerportal">
@@ -26,11 +27,24 @@ const Recruitment = () => {
           <div className="hiring-partner">
 
             <h2>COMPANY</h2>
-            <div>
+            <div >
+           
+               <img  src={comp2} alt="" />
+               <img src={comp3} alt="" />
+               <img src={comp4} alt="" />
               <img src={comp1} alt="" />
+               <img src={comp2} alt="" />
+               <img src={comp3} alt="" />
+               <img src={comp4} alt="" />
+               <img src={comp1} alt="" />
+               <img src={comp2} alt="" />
+               <img src={comp3} alt="" />
+              <img src={comp4} alt="" />
+               <img src={comp1} alt="" />
               <img src={comp2} alt="" />
               <img src={comp3} alt="" />
-              <img src={comp4} alt="" />
+               <img src={comp4} alt="" />
+            
             </div>
           </div>
           </div>
@@ -45,7 +59,15 @@ const Recruitment = () => {
           <div class="hiring-partner" 
            style={{borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}>
             <h2>HIRING PARTNERS</h2>
-            <div>
+            <div >
+              <img src={comp1} alt="" />
+              <img src={comp2} alt="" />
+              <img src={comp3} alt="" />
+              <img src={comp4} alt="" />
+              <img src={comp1} alt="" />
+              <img src={comp2} alt="" />
+              <img src={comp3} alt="" />
+              <img src={comp4} alt="" />
               <img src={comp1} alt="" />
               <img src={comp2} alt="" />
               <img src={comp3} alt="" />
