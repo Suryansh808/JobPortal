@@ -1,15 +1,14 @@
 .careerportal .user {
     color: black;
     background-image: url(../assets/user.gif);
-    padding: 50px;
-    /* margin-top: 60px; */
+    padding:100px 50px;
     background-size: 100% 100%;
     border-bottom-right-radius: 100px;
   }
   
   .careerportal .user p {
     margin-top: 30px;
-    width: 350px;
+    max-width: 350px;
     text-align: justify;
   }
   
@@ -29,28 +28,36 @@
     color: white;
     background-color: black;
     border-top-left-radius: 100px;
-    border-bottom-right-radius: 100px;
+    border-bottom-left-radius: 100px;
+
   }
-  
+
+ 
   .careerportal .hiring-partner div {
+    margin-top: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+
   }
   
   .careerportal .hiring-partner div img {
     width: 120px;
     padding: 10px 1px;
-    display: flex;
+    /* display: flex; */
+
+
+
   }
   
   .careerportal .hiring {
     background-image: url(../assets/hiring.gif);
     color: black;
     /* border-radius: 30px; */
-    padding: 50px;
+    padding:100px 50px;
     background-size: 100% 100%;
-    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
     border-bottom-right-radius: 100px;
     /* border-top-right-radius: 150px; */
     /* box-shadow: 0 0 10px 10px #021024 inset; */
@@ -58,7 +65,7 @@
   
   .careerportal .hiring p {
     margin-top: 30px;
-    width: 350px;
+    max-width: 350px;
     text-align: justify;
   }
   

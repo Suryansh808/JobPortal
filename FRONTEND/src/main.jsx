@@ -4,10 +4,12 @@ import App from './App.jsx'
 import './index.css'
 import './/Owner/Admin.css'
 
+
 import './Style/navbarmain.css'
 import './Style/careerpage.css'
 import './Style/navbar2career.css'
 import './Style/careerpagefooter.css'
+import './Style/switch.css'
 
 
 

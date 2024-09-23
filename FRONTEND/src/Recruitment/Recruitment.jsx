@@ -22,7 +22,7 @@ const Recruitment = () => {
               <button><Link to='/StudentLogIn'>Apply</Link></button>
             </div>
           </div>
-          <div style={{backgroundImage:'conic-gradient(black 0deg, black 90deg, #fefdfe 90deg, #fefdfe 180deg, green 180deg, green 270deg, #9bd7e0 270deg)'}}>
+          <div style={{backgroundImage:'conic-gradient(black 0deg, black 90deg, #fefdfe 90deg, #fefdfe 180deg, #fefdfe 180deg, #fefdfe 270deg, #9bd7e0 270deg)'}}>
           <div className="hiring-partner">
 
             <h2>COMPANY</h2>
@@ -42,7 +42,8 @@ const Recruitment = () => {
             </div>
           </div>
           <div style={{backgroundColor:'white'}}>
-          <div class="hiring-partner" style={{borderBottomRightRadius:'0px'}}>
+          <div class="hiring-partner" 
+           style={{borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}>
             <h2>HIRING PARTNERS</h2>
             <div>
               <img src={comp1} alt="" />

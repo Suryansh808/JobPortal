@@ -75,10 +75,10 @@ const NewNavbar = () => {
                                     WHAT WE DO
                                     {activeMobileMenuOption === 'option2' && (
                                         <ul>
-                                            <li>OVERVIEW</li>
-                                            <li>INDUSTRIES</li>
-                                            <li>SERVICES</li>
-                                            <li>PRODUCT AND PLATFORM</li>
+                                            <li><span>&#11162;</span> OVERVIEW</li>
+                                            <li><span>&#11162;</span>INDUSTRIES</li>
+                                            <li><span>&#11162;</span>SERVICES</li>
+                                            <li><span>&#11162;</span>PRODUCT AND PLATFORM</li>
                                         </ul>
                                     )}
                                 </li>
@@ -86,10 +86,10 @@ const NewNavbar = () => {
                                     WHO WE ARE
                                     {activeMobileMenuOption === 'option3' && (
                                         <ul>
-                                            <li>OUR MISSION</li>
-                                            <li>OUR VISSION</li>
-                                            <li>OUR PROJECT</li>
-                                            <li>ABOUT US</li>
+                                            <li><span>&#11162;</span>OUR MISSION</li>
+                                            <li><span>&#11162;</span>OUR VISSION</li>
+                                            <li><span>&#11162;</span>OUR PROJECT</li>
+                                            <li><span>&#11162;</span>ABOUT US</li>
                                         </ul>
                                     )}
                                 </li>
@@ -97,10 +97,10 @@ const NewNavbar = () => {
                                     INSIGHT
                                     {activeMobileMenuOption === 'option4' && (
                                         <ul>
-                                            <li>OPTION 1</li>
-                                            <li>OPTION 1</li>
-                                            <li>OPTION 1</li>
-                                            <li>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
                                         </ul>
                                     )}
                                 </li>

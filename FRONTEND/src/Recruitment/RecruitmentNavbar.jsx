@@ -16,6 +16,8 @@ const RecruitmentNavbar = () => {
                         <li >PARTNER</li>
                         <li >COMPANY</li>
                     </ul>
+                    <div><h1>&#9776;</h1></div>
+                    
                     <div>
                         <ToggleComponent />
                     </div>

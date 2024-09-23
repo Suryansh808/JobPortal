@@ -11,6 +11,7 @@
     background-color: black;
     border-bottom: 1px solid rgb(104, 102, 102);
     display: flex;
+    z-index: 500;
   }
   
   #header .navbar h1 {
@@ -141,6 +142,10 @@
   .mobile-menu li {
     padding: 10px;
     cursor: pointer;
+
+  }
+  .mobile-menu li span{
+    margin-right: 15px;
   }
   
   .mobile-menu ul ul {
@@ -152,6 +157,11 @@
     display: none;
     width: 100%;
     position: absolute;
+    opacity: 0;
+    /* text-align: center; */
+
+    transform: translateY(-100px); /* Start position */
+    animation: fadeInUp 0.5s forwards; /* Animation name and duration */
   }
   
   /* Media Query for Mobile View */
@@ -175,5 +185,16 @@
     width: 100%;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.9);
-    transition: all opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease;
+    /* transition: all opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease; */
+    opacity: 0;
+
+    transform: translateY(-100px); /* Start position */
+    animation: fadeInUp 0.5s forwards; /* Animation name and duration */
   }
+
+  @keyframes fadeInUp {
+    to {
+        opacity: 1; /* End opacity */
+        transform: translateY(0); /* End position */
+    }
+}
