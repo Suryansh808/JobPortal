@@ -1,0 +1,19 @@
+#mainpage{
+    height:80vh;
+    padding: 30px;
+    text-align: center;
+    transform: translateY(100px); /* Start position */
+    animation: fadeInUp 0.5s forwards; /* Animation name and duration */
+    margin-bottom: 50px;
+}
+#mainpage div{
+    padding: 20px;
+}
+#mainpage div h2{
+    transform: translateX(-100px); /* Start position */
+    animation: fadeInUp 0.5s forwards; /* Animation name and duration */
+}
+#mainpage div p{
+    margin-top: 20px;
+    text-align: justify;
+}

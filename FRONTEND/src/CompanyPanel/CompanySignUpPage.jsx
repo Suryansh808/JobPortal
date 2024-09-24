@@ -120,7 +120,7 @@ const CompanySignUpPage = () => {
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
       <div className="max-w-md mx-auto text-[#000000d3] px-3 py-2 border rounded shadow-md">
-       <Link to='/career' className="text-white flex items-center justify-end"><BsArrowLeftCircle /></Link>
+       <Link to='/Recruitment' className="text-white flex items-center justify-end"><BsArrowLeftCircle /></Link>
         <h1 className="text-2xl font-bold text-white mb-3">Company Signup</h1>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <input

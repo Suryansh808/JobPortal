@@ -80,7 +80,7 @@ const StudentSignUp = () => {
   return (
     <div className="w-full h-screen animated-login flex items-center justify-center flex-col">
       <div className="max-w-md w-full bg-gradient-to-r from-blue-800 to-purple-600 rounded-xl shadow-2xl overflow-hidden p-8 space-y-8">
-      <Link to='/career' className="text-white flex items-center justify-end"><BsArrowLeftCircle /></Link>
+      <Link to='/Recruitment' className="text-white flex items-center justify-end"><BsArrowLeftCircle /></Link>
         <h2 className="text-center text-4xl font-extrabold text-white">Welcome</h2>
         <p className="text-center text-gray-200">Sign up for a new account</p>
         <form onSubmit={isOtpSent ? handleOtpVerification : handleSubmit} className="space-y-6">

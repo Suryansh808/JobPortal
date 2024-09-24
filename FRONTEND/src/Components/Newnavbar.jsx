@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import './Newnavbar.css'
 import ToggleComponent from './Switch';
 import { useLocation } from 'react-router-dom';
 
@@ -33,7 +32,7 @@ const NewNavbar = () => {
         setActiveMobileMenuOption(prev => (prev === optionId ? null : optionId));
     };
     const location = useLocation();
-    const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage', '/AdminLogInPage', '/CompanySignUpPage', '/StudentLogIn', '/StudentSignUp', '/StudentProfileView', '/HrLogin', '/HRHome', '/Cv/:resumeId', '/AdminDashboard', '/HrPDashboard','/Recruitment'];
+    const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage', '/AdminLogInPage', '/CompanySignUpPage', '/StudentLogIn', '/StudentSignUp', '/StudentProfileView', '/HrLogin', '/HRHome', '/AdminDashboard', '/HrPDashboard','/Recruitment'];
     const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
 
     return (
@@ -52,7 +51,7 @@ const NewNavbar = () => {
                             <li onClick={() => toggleDropdown('what_we_do')}>WHAT WE DO</li>
                             <li onClick={() => toggleDropdown('who_we_are')}>WHO WE ARE</li>
                             <li onClick={() => toggleDropdown('insight')}>INSIGHT</li>
-                            <li onClick={() => toggleDropdown()}>CONTACT US</li>
+                            <li onClick={() => toggleDropdown()}><Link to='/contact-us'> CONTACT US</Link></li>
                         </ul>
                         <label class="hamburger" >
                             <input type="checkbox" />
@@ -76,10 +75,10 @@ const NewNavbar = () => {
                                     WHAT WE DO
                                     {activeMobileMenuOption === 'option2' && (
                                         <ul>
-                                            <li>OVERVIEW</li>
-                                            <li>INDUSTRIES</li>
-                                            <li>SERVICES</li>
-                                            <li>PRODUCT AND PLATFORM</li>
+                                            <li><span>&#11162;</span> OVERVIEW</li>
+                                            <li><span>&#11162;</span>INDUSTRIES</li>
+                                            <li><span>&#11162;</span>SERVICES</li>
+                                            <li><span>&#11162;</span>PRODUCT AND PLATFORM</li>
                                         </ul>
                                     )}
                                 </li>
@@ -87,10 +86,10 @@ const NewNavbar = () => {
                                     WHO WE ARE
                                     {activeMobileMenuOption === 'option3' && (
                                         <ul>
-                                            <li>OUR MISSION</li>
-                                            <li>OUR VISSION</li>
-                                            <li>OUR PROJECT</li>
-                                            <li>ABOUT US</li>
+                                            <li><span>&#11162;</span>OUR MISSION</li>
+                                            <li><span>&#11162;</span>OUR VISSION</li>
+                                            <li><span>&#11162;</span>OUR PROJECT</li>
+                                            <li><span>&#11162;</span>ABOUT US</li>
                                         </ul>
                                     )}
                                 </li>
@@ -98,10 +97,10 @@ const NewNavbar = () => {
                                     INSIGHT
                                     {activeMobileMenuOption === 'option4' && (
                                         <ul>
-                                            <li>OPTION 1</li>
-                                            <li>OPTION 1</li>
-                                            <li>OPTION 1</li>
-                                            <li>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
+                                            <li><span>&#11162;</span>OPTION 1</li>
                                         </ul>
                                     )}
                                 </li>
@@ -114,10 +113,10 @@ const NewNavbar = () => {
                             <div className="option">
                                 <div className="dropdown_option">
                                     <ul >
-                                        <li onMouseOver={() => selectOption('Option1')}> <Link to='/what-we-do'> Overview <span>&#11162;</span></Link> </li>
-                                        <li onMouseOver={() => selectOption('Option2')}> <Link to='/what-we-do'>Industries <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option3')}> <Link to='/what-we-do'>Services <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option4')}> <Link to='/what-we-do'>Product and Platform <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option1')}> <Link to='/Overview'> Overview <span>&#11162;</span></Link> </li>
+                                        <li onMouseOver={() => selectOption('Option2')}> <Link to='/Industries'>Industries <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option3')}> <Link to='/Services'>Services <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option4')}> <Link to='/Product'>Product and Platform <span>&#11162;</span></Link></li>
                                     </ul>
                                 </div>
                                 {activeOption === 'Option1' && (
@@ -170,10 +169,10 @@ const NewNavbar = () => {
                             <div className="option">
                                 <div className="dropdown_option">
                                     <ul>
-                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/who-we-are'>Our Mission <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/who-we-are'>Our Vission<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/who-we-are'>Our Project<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/who-we-are'>About Us<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/Mission'>Our Mission <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/Vission'>Our Vission<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/Project'>Our Project<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/About'>About Us<span>&#11162;</span></Link></li>
                                     </ul>
                                 </div>
                                 {activeOption === 'Option1' && (
@@ -215,10 +214,10 @@ const NewNavbar = () => {
                             <div className="option">
                                 <div className="dropdown_option">
                                     <ul>
-                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/insights'>Insight First <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/insights'>Insight Secind<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/insights'>Insight 3<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/insights'>Insight 4<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/Insight1'>Insight First <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/Insight2'>Insight Secind<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/Insight3'>Insight 3<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/Insight4'>Insight 4<span>&#11162;</span></Link></li>
                                     </ul>
                                 </div>
                                 {activeOption === 'Option1' && (

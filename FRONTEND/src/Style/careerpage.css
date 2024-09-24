@@ -1,0 +1,93 @@
+.careerportal .user {
+    color: black;
+    background-image: url(../assets/user.gif);
+    padding:100px 50px;
+    background-size: 100% 100%;
+    border-bottom-right-radius: 100px;
+  }
+  
+  .careerportal .user p {
+    margin-top: 30px;
+    max-width: 350px;
+    text-align: justify;
+  }
+  
+  .careerportal .user button {
+    margin-top: 30px;
+    width: 150px;
+    color: white;
+    background-color: #021024;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+  }
+  
+  .careerportal .hiring-partner {
+    padding:  100px 50px;
+    text-align: center;
+    color: white;
+    background-color: black;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+
+  }
+
+ 
+  .careerportal .hiring-partner div {
+    /* margin-top: 50px; */
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    padding: 50px;
+    /* background-color:red; */
+    overflow: auto;
+    white-space: nowrap;
+    /* border: 1px solid white;
+    border-radius: 100px; */
+  }
+
+  .careerportal .hiring-partner div::-webkit-scrollbar{
+    display: none;
+}
+
+  
+  .careerportal .hiring-partner div img {
+    width: 120px;
+    margin-right: 40px;
+    margin-left: 40px;
+    padding: 10px 0;
+    display: inline-block;
+  }
+
+  
+  
+  .careerportal .hiring {
+    background-image: url(../assets/hiring.gif);
+    color: black;
+    /* border-radius: 30px; */
+    padding:100px 50px;
+    background-size: 100% 100%;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    /* border-top-right-radius: 150px; */
+    /* box-shadow: 0 0 10px 10px #021024 inset; */
+  }
+  
+  .careerportal .hiring p {
+    margin-top: 30px;
+    max-width: 350px;
+    text-align: justify;
+  }
+  
+  .careerportal .hiring button {
+    margin-top: 30px;
+    width: 150px;
+    color: white;
+    background-color: #021024;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+  }
+  .careerportal {
+    background-color: black;
+  }

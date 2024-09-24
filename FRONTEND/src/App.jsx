@@ -48,6 +48,22 @@ import NewNavbar from './Components/Newnavbar';
 import Cv from './CompanyPanel/Cv';
 
 
+import WhatwedoOverview from './NavPages/what-we-do-overview';
+import WhatwedoIndustries from './NavPages/what-we-do-industries';
+import WhatwedoService from './NavPages/what-we-do-services';
+import WhatwedoProduct from './NavPages/what-we-do-product';
+
+import WhoweareMission from './NavPages/who-we-are-Mission';
+import WhoweareVission from './NavPages/who-we-are-vission';
+import WhoweareProject from './NavPages/who-we-are-project';
+import WhoweareAbout from './NavPages/who-we-are-aboutus';
+
+import Insight1 from './NavPages/insight1';
+import Insight2 from './NavPages/insight2';
+import Insight3 from './NavPages/insight3';
+import Insight4 from './NavPages/insight4';
+
+
 
 const App = () => {
  
@@ -116,6 +132,22 @@ const App = () => {
           <Route path="/HrPDashboard" element={<HrPDashboard/>}/>
           <Route path="/ResumeView" element={<ResumeView/>}/>
 
+
+
+          <Route path="/Overview" element={<WhatwedoOverview/>}/>
+          <Route path="/Industries" element={<WhatwedoIndustries/>}/>
+          <Route path="/Services" element={<WhatwedoService/>}/>
+          <Route path="/Product" element={<WhatwedoProduct/>}/>
+
+          <Route path="/Mission" element={<WhoweareMission/>}/>
+          <Route path="/Vission" element={<WhoweareVission/>}/>
+          <Route path="/Project" element={<WhoweareProject/>}/>
+          <Route path="/About" element={<WhoweareAbout/>}/>
+
+          <Route path="/Insight1" element={<Insight1/>}/>
+          <Route path="/Insight2" element={<Insight2/>}/>
+          <Route path="/Insight3" element={<Insight3/>}/>
+          <Route path="/Insight4" element={<Insight4/>}/>
 
 
 

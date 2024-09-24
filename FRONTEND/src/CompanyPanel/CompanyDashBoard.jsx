@@ -59,7 +59,7 @@ const CompanyDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-black h-[8vh] text-white p-3 flex justify-between items-center border-b">
+      <header className="bg-black h-[8vh] text-white p-3 flex justify-between items-center ">
         <h1 className="text-xl">Company Dashboard</h1>
         <button
           className="bg-[#1d1c1c60] text-white p-2 rounded"
@@ -73,7 +73,7 @@ const CompanyDashboard = () => {
       <div className="flex-1 flex">
         {/* Sidebar */}
         <div
-          className={`fixed top-[8vh] right-0 h-[92vh] bg-[#000] border-l text-white w-64 transform ${
+          className={`fixed top-[8vh] right-0 h-[92vh] bg-[#000]  text-white w-64 transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           } transition-transform duration-300 ease-in-out z-50`}
         >

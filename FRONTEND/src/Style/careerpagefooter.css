@@ -1,0 +1,36 @@
+#RecruitmentFooter {
+    position: sticky;
+    bottom: 0;
+    background-color: black;
+    border-top: 1px solid rgb(108, 107, 107);
+  }
+  
+  #RecruitmentFooter .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #RecruitmentFooter .container div {
+    text-align: center;
+  }
+  
+  #RecruitmentFooter ul {
+    list-style: none;
+  }
+  
+  #RecruitmentFooter li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  
+  #RecruitmentFooter a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  #RecruitmentFooter .social-links a {
+    color: white;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+  }

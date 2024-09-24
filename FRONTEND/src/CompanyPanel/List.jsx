@@ -547,11 +547,13 @@ const List = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
+  
+
   const handleSendMessage = async () => {
     if (newMessage.trim()) {
       const chatMessage = { user: "cm", message: newMessage };
       const jobId = selectedJob._id;
-      console.log(jobId);
+      console.log("jobId",jobId);
       // Send the message to the server
       try {
         const response = await fetch(
@@ -570,13 +572,37 @@ const List = () => {
         }
 
         const updatedChat = await response.json();
-        setChatMessages(updatedChat); // Update local chat messages
+        setChatMessages( updatedChat); // Update local chat messages
         setNewMessage("");
       } catch (error) {
         console.error("Error sending message:", error);
       }
     }
   };
+  // Fetch existing chat messages when the component mounts
+  // useEffect(() => {
+  //   const fetchChatMessages = async () => {
+  //     if (!selectedJob) return; // Guard clause for null selectedJob
+  //     const jobId = selectedJob._id;
+  //     try {
+  //       const response = await fetch(`http://localhost:5000/jobs/${jobId}/chat`);
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch chat messages");
+  //       }
+  //       const existingMessages = await response.json();
+  //       // Initialize chat messages or start a new chat if none exist
+  //       if (existingMessages.length === 0) {
+  //         console.log("No existing messages. Starting a new chat.");
+  //       } else {
+  //         setChatMessages(existingMessages); // Set the fetched messages
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching chat messages:", error);
+  //     }
+  //   };
+
+  //   fetchChatMessages();
+  // }, [selectedJob._id]);
 
   const navigate = useNavigate();
   const handleViewResume = (resumeId) => {
@@ -845,7 +871,7 @@ const List = () => {
                   <h1 className="text-center font-bold">Chat with HR</h1>
                 </div>
                 <div className="h-[76%] bg-slate-400 relative text-black px-3 py-1 w-full overflow-hidden">
-                  <div className="absolute h-full w-full overflow-y-scroll">
+                  {/* <div className="absolute h-full w-full overflow-y-scroll">
                     {chatMessages.map((msg, index) => (
                       <div
                         key={index}
@@ -866,7 +892,31 @@ const List = () => {
                         </pre>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
+                   <div className="absolute h-full w-full overflow-y-scroll">
+          {chatMessages.length === 0 ? (
+            <div className="text-center text-gray-500">Start the conversation!</div>
+          ) : (
+            chatMessages.map((msg, index) => (
+              <div
+                key={index}
+                className={`flex ${msg.user === "cm" ? "justify-end" : "justify-start"} mb-2`}
+              >
+                <pre
+                  style={preStyle}
+                  className={`resize-none ${
+                    msg.user === "cm"
+                      ? "bg-blue-200 rounded-l-3xl rounded-br-3xl text-start"
+                      : "bg-white rounded-r-3xl rounded-bl-3xl text-start"
+                  } px-3 py-1`}
+                  readOnly
+                >
+                  {msg.message}
+                </pre>
+              </div>
+            ))
+          )}
+        </div>
                 </div>
                 <div className="h-[20%] w-[100%] flex absolute bottom-0">
                   <textarea
