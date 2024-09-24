@@ -113,10 +113,10 @@ const NewNavbar = () => {
                             <div className="option">
                                 <div className="dropdown_option">
                                     <ul >
-                                        <li onMouseOver={() => selectOption('Option1')}> <Link to='/what-we-do'> Overview <span>&#11162;</span></Link> </li>
-                                        <li onMouseOver={() => selectOption('Option2')}> <Link to='/what-we-do'>Industries <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option3')}> <Link to='/what-we-do'>Services <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option4')}> <Link to='/what-we-do'>Product and Platform <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option1')}> <Link to='/Overview'> Overview <span>&#11162;</span></Link> </li>
+                                        <li onMouseOver={() => selectOption('Option2')}> <Link to='/Industries'>Industries <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option3')}> <Link to='/Services'>Services <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option4')}> <Link to='/Product'>Product and Platform <span>&#11162;</span></Link></li>
                                     </ul>
                                 </div>
                                 {activeOption === 'Option1' && (
@@ -169,10 +169,10 @@ const NewNavbar = () => {
                             <div className="option">
                                 <div className="dropdown_option">
                                     <ul>
-                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/who-we-are'>Our Mission <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/who-we-are'>Our Vission<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/who-we-are'>Our Project<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/who-we-are'>About Us<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/Mission'>Our Mission <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/Vission'>Our Vission<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/Project'>Our Project<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/About'>About Us<span>&#11162;</span></Link></li>
                                     </ul>
                                 </div>
                                 {activeOption === 'Option1' && (
@@ -214,10 +214,10 @@ const NewNavbar = () => {
                             <div className="option">
                                 <div className="dropdown_option">
                                     <ul>
-                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/insights'>Insight First <span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/insights'>Insight Secind<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/insights'>Insight 3<span>&#11162;</span></Link></li>
-                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/insights'>Insight 4<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option1')}><Link to='/Insight1'>Insight First <span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option2')}><Link to='/Insight2'>Insight Secind<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option3')}><Link to='/Insight3'>Insight 3<span>&#11162;</span></Link></li>
+                                        <li onMouseOver={() => selectOption('Option4')}><Link to='/Insight4'>Insight 4<span>&#11162;</span></Link></li>
                                     </ul>
                                 </div>
                                 {activeOption === 'Option1' && (
