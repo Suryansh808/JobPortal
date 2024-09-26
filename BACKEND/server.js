@@ -44,8 +44,10 @@ app.use("/api", CompanyJobPostRoute);
 app.use("/api/jobs", CompanyJobPostRoute);
 app.use('/api', companyRoutes);
 app.use("/api", userRoutes);
+app.use("/api/allUser", userRoutes);
 app.use(authRoutes); // Register the auth routes
 app.use('/api/hr', hrRoutes);
+app.use('/api/hr/profile', hrRoutes);
 app.use('/api/applications/:id', applicationRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use("/api", applicationRoutes);
@@ -226,17 +228,9 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// app.get('/jobs', async (req, res) => {
-//   try {
-//     const jobs = await Job.find();
-//     res.json(jobs);
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });
+
 
 //Admin Login start
-
 // inserting  admin into db using api and postman
 app.post("/api/admin", async (req, res) => {
   const { email } = req.body;
@@ -264,7 +258,8 @@ let transporter = nodemailer.createTransport({
   },
 });
 
- // after verification if the admin mail is matched from database the otp is sent directly to the matched mail or not
+    // after verification if the admin mail is matched from database the otp is sent directly to the matched mail or not
+
  app.post("/api/otp-send", expressAsyncHandler(async (req, res) => {
     const { email } = req.body;
     if (!email) {
@@ -342,9 +337,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+app.get('/getAllCompanyUser', async (req, res) => {
+  try {
+    const allCompanyUser = await Company.find(); 
+    if (!allCompanyUser || allCompanyUser.length === 0) {
+      return res.status(404).json({ message: 'No allCompanyUser found' });
+    }
+    res.status(200).json(allCompanyUser); 
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching HR data', error });
+  }
+});
+
 app.post("/api/signup", upload.single('companyLogo'), async (req, res) => {
   try {
-    const { companyName, companyLocation, companyType, otherCompanyType, position, businessmodel, email, password ,confirmPassword} = req.body;
+    const { companyName, companyType, otherCompanyType, position, businessmodel, email, password ,confirmPassword} = req.body;
     // console.log("Received Data:", req.body); // Log incoming data
     const companyLogo = req.file?.path; // Retrieve the file path
     if (!companyName || !email || !password || !companyLogo ) {
@@ -369,7 +376,6 @@ app.post("/api/signup", upload.single('companyLogo'), async (req, res) => {
 
     const company = new Company({
       companyName,
-      // companyLocation,
       companyType,
       otherCompanyType,
       position,

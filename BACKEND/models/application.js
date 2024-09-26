@@ -25,7 +25,8 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     enum: ['accepted', 'rejected' , 'hired'],
     default: null
-  }
+  },
+
 });
 
 module.exports = mongoose.model('Application', applicationSchema);

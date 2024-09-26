@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import ToggleComponent from './Switch';
 import { useLocation } from 'react-router-dom';
+import gsap from 'gsap';
 
 const NewNavbar = () => {
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -35,12 +36,22 @@ const NewNavbar = () => {
     const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage', '/AdminLogInPage', '/CompanySignUpPage', '/StudentLogIn', '/StudentSignUp', '/StudentProfileView', '/HrLogin', '/HRHome', '/AdminDashboard', '/HrPDashboard','/Recruitment'];
     const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
 
+    const headerRef = useRef(null);
+
+    useEffect(() => {
+      gsap.fromTo(
+        headerRef.current,
+        { y: -100, opacity: 0 }, // Start from bottom and transparent
+        { y: 0, opacity: 1, duration: 1  } // Move to top and fully visible
+      );
+    }, []);
+
     return (
         <>
             {
                 showHeaderFooter &&
                 <div id="header" >
-                    <div className="navbar" >
+                    <div ref={headerRef} className="navbar" >
                         <div onClick={() => toggleDropdown()}>
                         <Link to='/'> 
                             <h1><span>D</span>-Solution</h1> </Link>

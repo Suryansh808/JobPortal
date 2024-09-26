@@ -181,7 +181,7 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
 
   return (
     <div className="flex flex-col items-center justify-center text-zinc-900 p-4">
-      <h2 className="text-2xl font-bold mb-4 text-white">Job Listings By Hr {companyName}</h2>
+      <h2 className="text-2xl font-bold mb-4 text-white">Job Listings </h2>
       
       <table className="min-w-full border-collapse block md:table">
         <thead className="block md:table-header-group">

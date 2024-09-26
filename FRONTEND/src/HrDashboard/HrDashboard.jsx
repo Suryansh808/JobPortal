@@ -36,14 +36,14 @@ const HrPDashboard = () => {
         return <HrProfile />;
       case "CompanyJob":
         return <HrCompanyJob />;
-      case "HrJobPost":
-        return <HrJobPost />;
+      // case "HrJobPost":
+      //   return <HrJobPost />;
       case "ApplicantList":
         return <ApplicantList />;
-      case "SelectedByCompany":
-        return <SelectedByCompany />;
       case "InterViewProcessList":
         return <InterViewProcessList/>;
+        case "SelectedByCompany":
+          return <SelectedByCompany />;
       case "RejectedByCompany":
         return <RejectedByCompany />;
       case "SelectedApplicant":
@@ -89,7 +89,7 @@ const HrPDashboard = () => {
                 toggleSidebar();
               }}
             >
-              PROFILE
+              Profile
             </li>
             <li
               className="mb-4 cursor-pointer"
@@ -98,17 +98,17 @@ const HrPDashboard = () => {
                 toggleSidebar();
               }}
             >
-              COMPANY JOBS
+              Jobs Posted By Company
             </li>
-            <li
+            {/* <li
               className="mb-4 cursor-pointer"
               onClick={() => {
                 setActiveComponent("HrJobPost");
                 toggleSidebar();
               }}
             >
-              JOB POST
-            </li>
+              Job Post Here
+            </li> */}
             <li
               className="mb-4 cursor-pointer"
               onClick={() => {
@@ -116,7 +116,17 @@ const HrPDashboard = () => {
                 toggleSidebar();
               }}
             >
-              APPLICANT LIST
+              Applicant Lists
+            </li>
+            
+            <li
+              className="mb-4 cursor-pointer"
+              onClick={() => {
+                setActiveComponent("InterViewProcessList");
+                toggleSidebar();
+              }}
+            >
+              Interview Process
             </li>
             <li
               className="mb-4 cursor-pointer"
@@ -125,16 +135,7 @@ const HrPDashboard = () => {
                 toggleSidebar();
               }}
             >
-              SELECTED BY COMPANY
-            </li>
-            <li
-              className="mb-4 cursor-pointer"
-              onClick={() => {
-                setActiveComponent("InterViewProcessList");
-                toggleSidebar();
-              }}
-            >
-              Applicate List By company for interview Process
+              Seleted By Company
             </li>
             <li
               className="mb-4 cursor-pointer"
@@ -143,25 +144,7 @@ const HrPDashboard = () => {
                 toggleSidebar();
               }}
             >
-              REJECTED BY COMPANY
-            </li>
-            <li
-              className="mb-4 cursor-pointer"
-              onClick={() => {
-                setActiveComponent("SelectedApplicant");
-                toggleSidebar();
-              }}
-            >
-              SELECTED APPLICANT
-            </li>
-            <li
-              className="mb-4 cursor-pointer"
-              onClick={() => {
-                setActiveComponent("RejectedApplicant");
-                toggleSidebar();
-              }}
-            >
-              REJECTED APPLICANT
+              Rejected By Company
             </li>
             <li
               className="mb-4 cursor-pointer"
@@ -170,13 +153,32 @@ const HrPDashboard = () => {
                 toggleSidebar();
               }}
             >
-              HIRED CANDIDATE
+              Hired By Company
             </li>
+            <li
+              className="mb-4 cursor-pointer"
+              onClick={() => {
+                setActiveComponent("SelectedApplicant");
+                toggleSidebar();
+              }}
+            >
+              Selected Applicant By HR
+            </li>
+            <li
+              className="mb-4 cursor-pointer"
+              onClick={() => {
+                setActiveComponent("RejectedApplicant");
+                toggleSidebar();
+              }}
+            >
+              Rejected Applicant By HR
+            </li>
+           
             <li
               className="mb-4 cursor-pointer"
                onClick={handleLogout} // Add onClick event
             >
-              LOGOUT
+              Log Out
             </li>
           </ul>
         </div>

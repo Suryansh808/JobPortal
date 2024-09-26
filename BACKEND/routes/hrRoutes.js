@@ -6,13 +6,14 @@ const generateHrId = require('../utils/generatedHrId');
 // Create a new HR
 router.post('/create', async (req, res) => {
   try {
-    const { hrName, hrUserId, hrPassword } = req.body;
+    const { hrName, hrUserId, hrNumber, hrPassword } = req.body;
     
     const hrId = await generateHrId();
 
     const newHR = new HR({
       hrName,
       hrUserId,
+      hrNumber,
       hrPassword,
       hrId
     });
@@ -25,12 +26,30 @@ router.post('/create', async (req, res) => {
 });
 
 // Fetch all HRs
+router.get('/:hrName', async (req, res) => {
+  try {
+    const hrName = req.params.hrName;
+    // console.log(hrName);
+    const hr = await HR.find({hrName : hrName}); // Assuming you're using MongoDB and HR is a model
+    // console.log(hr);
+    if (!hr) {
+      return res.status(404).json({ message: 'HR not found' });
+    }
+    res.status(200).json(hr); 
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching HR data', error });
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
-    const hrs = await HR.find();
-    res.status(200).json(hrs);
+    const hrs = await HR.find(); // Fetch all HR records
+    if (!hrs || hrs.length === 0) {
+      return res.status(404).json({ message: 'No HRs found' });
+    }
+    res.status(200).json(hrs); 
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching HRs', error });
+    res.status(500).json({ message: 'Error fetching HR data', error });
   }
 });
 

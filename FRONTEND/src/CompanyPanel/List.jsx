@@ -31,6 +31,7 @@ const List = () => {
   const [selectedJobUsers, setSelectedJobUsers] = useState([]);
   const [users, setUsers] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [chatBox, setChatBox] = useState([]);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -51,9 +52,9 @@ const List = () => {
           );
           setUsers(usersResponse.data); // Assuming this returns an array of user objects
           console.log("user id data", usersResponse.data);
-         // setSelectedJobUsers(usersResponse.data);
         }
         setFilteredJobs(response.data);
+        console.log('API Response:', response.data); // Log the full response
       } catch (error) {
         console.error("There was an error fetching the jobs!", error);
       }
@@ -459,18 +460,6 @@ const List = () => {
   };
 
   const [selectedApplication, setSelectedApplication] = useState(null);
-
-  // const handleJobClick = (job) => {
-  //    setSelectedJob(job);
-  //   // Filter users based on the selected job's userApplicationIds
-  //   const relatedUsers = users.filter((user) =>
-  //     job.userApplicationIds.includes(user._id)
-  // );
- 
-  // console.log("Selected Job:", selectedJob);
-  // setSelectedJobUsers(relatedUsers);
-  // };
-
   const [applications, setApplications] = useState([]);
  // Fetch applications when the component mounts
  useEffect(() => {
@@ -499,12 +488,14 @@ const List = () => {
       const application = applications.find(
         (app) => app.userId._id === user._id && app.jobId._id === job._id
       );
-      console.log("Found application for user:", application);
+      //console.log("Found application for user:", application);
+      //console.log("selectedapplication data", application.statusByCompany);
       // Check if the application exists and its status is 'accepted'
-      return job.userApplicationIds.includes(user._id) && application?.status === 'Accepted';
+      return job.userApplicationIds.includes(user._id) && application?.status === 'Accepted' ;
     });
-    console.log("Filtered related users:", relatedUsers);
-    setSelectedJobUsers(relatedUsers);
+    //console.log("Filtered related users:", relatedUsers , applications);
+    setSelectedJobUsers(relatedUsers , applications);
+    
   };
   
 
@@ -514,8 +505,7 @@ const List = () => {
     setSelectedApplication(user);
   };
 
-  const handleStatusChange = (action) => {
-    // console.log('action:', action);
+  const handleStatusChange = ( newStatus, user) => {
     if (!selectedApplication || !selectedApplication._id) {
       console.error("No selected application or missing _id");
       return;
@@ -525,7 +515,7 @@ const List = () => {
     // Update status in the backend
     axios
       .put(`http://localhost:5000/api/applications/statusByCompany/${id}`, {
-        statusByCompany: action,
+        statusByCompany: newStatus,
         jobId: jobId,
       })
       .then((response) => {
@@ -536,6 +526,16 @@ const List = () => {
       .catch((error) => {
         console.error("Error updating application status:", error);
       });
+
+
+      const application = applications.find(
+        (app) => app.userId._id === user._id && app.jobId._id === selectedJob._id
+      );
+    
+      if (application) {
+        application.statusByCompany = newStatus;
+        setApplications([...applications]); // Update state to re-render
+      }
   };
 
   const handleMenuClose = () => {
@@ -572,37 +572,13 @@ const List = () => {
         }
 
         const updatedChat = await response.json();
-        setChatMessages( updatedChat); // Update local chat messages
+        setChatMessages(updatedChat); // Update local chat messages
         setNewMessage("");
       } catch (error) {
         console.error("Error sending message:", error);
       }
     }
   };
-  // Fetch existing chat messages when the component mounts
-  // useEffect(() => {
-  //   const fetchChatMessages = async () => {
-  //     if (!selectedJob) return; // Guard clause for null selectedJob
-  //     const jobId = selectedJob._id;
-  //     try {
-  //       const response = await fetch(`http://localhost:5000/jobs/${jobId}/chat`);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch chat messages");
-  //       }
-  //       const existingMessages = await response.json();
-  //       // Initialize chat messages or start a new chat if none exist
-  //       if (existingMessages.length === 0) {
-  //         console.log("No existing messages. Starting a new chat.");
-  //       } else {
-  //         setChatMessages(existingMessages); // Set the fetched messages
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching chat messages:", error);
-  //     }
-  //   };
-
-  //   fetchChatMessages();
-  // }, [selectedJob._id]);
 
   const navigate = useNavigate();
   const handleViewResume = (resumeId) => {
@@ -788,6 +764,7 @@ const List = () => {
                 <strong className="text-gray-700">
                   Updated On: <span> {selectedJob.updatedOn}</span>
                 </strong>
+                
                 <div className="overflow-x-auto text-black mt-4">
                   <h3 className="text-lg font-bold">Applicants:</h3>
                   <table className="border-collapse border w-full capitalize whitespace-nowrap border-gray-300">
@@ -805,9 +782,12 @@ const List = () => {
                         <th className="border border-gray-300 px-2 py-1">
                           Action
                         </th>
+                        <th className="border border-gray-300 px-2 py-1">
+                          Status 
+                        </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    {/* <tbody>
                       {selectedJobUsers.map((user, index) => (
                         <tr key={index}>
                           <td className="border border-gray-300 px-2 py-1">
@@ -860,9 +840,65 @@ const List = () => {
                               </MenuItem>
                             </Menu>
                           </td>
+                          <td className="border border-gray-300 px-2 py-1">
+                      {selectedJobUsers.statusByCompany}
+                          </td>
                         </tr>
                       ))}
-                    </tbody>
+                    </tbody> */}
+                    <tbody>
+      {selectedJobUsers.map((user, index) => {
+        const application = applications.find(
+          (app) => app.userId._id === user._id && app.jobId._id === selectedJob._id
+        );
+
+        return (
+          <tr key={index}>
+            <td className="border border-gray-300 px-2 py-1">
+              {user.imageUrl && (
+                <img
+                  src={user.imageUrl}
+                  alt={`${user.fullname}'s profile`}
+                  className="h-10 w-10 rounded-full"
+                />
+              )}
+            </td>
+            <td className="border border-gray-300 px-2 py-1">
+              {user.fullname}
+            </td>
+            <td
+              onClick={() => handleViewResume(user.resumeId)}
+              className="border cursor-pointer border-gray-300 text-red-600 px-2 py-1"
+            >
+              <GrDocumentUser />
+            </td>
+            <td className="border border-gray-300 px-2 py-1">
+              <Button
+                onClick={(event) => handleMenuClick(event, user)}
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+              >
+                Actions
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={open}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={() => handleStatusChange("Accepted" , user)}>Accept</MenuItem>
+                <MenuItem onClick={() => handleStatusChange("Rejected" , user)}>Reject</MenuItem>
+                <MenuItem onClick={() => handleStatusChange("Hired" , user)}>Hired</MenuItem>
+              </Menu>
+            </td>
+            <td className="border border-gray-300 px-2 py-1">
+              {application ? application.statusByCompany : 'N/A'}
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
                   </table>
                 </div>
               </div>
@@ -894,7 +930,7 @@ const List = () => {
                     ))}
                   </div> */}
                    <div className="absolute h-full w-full overflow-y-scroll">
-          {chatMessages.length === 0 ? (
+          {chatMessages.length > 0 ? (
             <div className="text-center text-gray-500">Start the conversation!</div>
           ) : (
             chatMessages.map((msg, index) => (

@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import CompanyProfile from "./CompanyProfile";
 import JobPost from "./JobPost";
 import HRUpdates from "./HRUpdates";
-import Candidates from "./Candidates";
+// import Candidates from "./Candidates";
 import Interviews from "./Interviews";
 import Payment from "./Payment";
 import { useAuth } from './AuthContext';
 import RejectedCandidates from "./RejectedCandidates";
 import List from "./List";
+import HiredCandidates from "./HiredCandidates";
 
 const CompanyDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -32,12 +33,14 @@ const CompanyDashboard = () => {
         return <HRUpdates/>;
       case "List":
         return <List/>;
-        case "Candidate":
-          return <Candidates/>
+        // case "Candidate":
+        //   return <Candidates/>
           case "Interview":
             return <Interviews/>
           case "RejectedCandidates":
             return <RejectedCandidates/>
+          case "HiredCandidates":
+            return <HiredCandidates/>
           case "Payment":
             return <Payment/>
         default:
@@ -123,7 +126,7 @@ const CompanyDashboard = () => {
             >
               List
             </li>
-            <li
+            {/* <li
               className="mb-4 cursor-pointer"
               onClick={() => {
                 setActiveComponent("Candidate");
@@ -132,7 +135,7 @@ const CompanyDashboard = () => {
               }}
             >
               Candidates Update
-            </li>
+            </li> */}
             <li
               className="mb-4 cursor-pointer"
               onClick={() => {
@@ -152,6 +155,16 @@ const CompanyDashboard = () => {
               }}
             >
               Rejected candidates
+            </li>
+            <li
+              className="mb-4 cursor-pointer"
+              onClick={() => {
+                setActiveComponent("HiredCandidates");
+                // navigate("/company-dashboard/interviews");
+                toggleSidebar();
+              }}
+            >
+              Hired candidates
             </li>
             <li
               className="mb-4 cursor-pointer"

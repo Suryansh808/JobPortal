@@ -36,22 +36,22 @@ const SelectedByCompany = () => {
                 <tbody className="block md:table-row-group">
                     <tr className="bg-gray-300 border border-gray-500 md:border-none block md:table-row hover:bg-gray-100">
                         <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
-                         01
+                        
                         </td>
                         <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
-                          Danish Raja Akhtar
+                          
                         </td>
                         <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
-                        9876543210
+                       
                         </td>
                         <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
-                           hello@gmail.com
+                           
                         </td>
                         <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
-                           <button>Download resume</button>
+                           <button></button>
                         </td>
                         <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">
-                           Plan DEtail
+                           
                         </td>
                        
                        

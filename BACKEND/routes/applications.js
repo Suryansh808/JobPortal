@@ -37,13 +37,6 @@ router.post('/', async (req, res) => {
       { new: true, useFindAndModify: false }
     );
     
-
-    // Add userId to the job's userApplicationIds array
-    // const jobUpdate = await Job.findByIdAndUpdate(
-    //   jobId,
-    //   { $addToSet: { userApplicationIds: userId , status:null} },  // Use $addToSet to avoid duplicates
-    //   { new: true, useFindAndModify: false }
-    // );
      console.log(jobUpdate);
     if (!jobUpdate) {
       return res.status(404).json({ message: 'Job not found' });
@@ -63,7 +56,7 @@ router.get('/', async (req, res) => {
     // Fetch all applications and populate jobId and userId fields in hr page - all applicant details
     const applications = await Application.find()
       .populate('jobId', 'jobTitle companyName location jobType jobTiming salary companyLogo desiredSkills chatBox') // Populate job details
-      .populate('userId', 'email phone fullname resumeId'); // Populate user details
+      .populate('userId', 'email phone fullname resumeId') // Populate user details
     
     res.status(200).json(applications);
   } catch (error) {

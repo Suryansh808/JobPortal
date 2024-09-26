@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const hrSchema = new mongoose.Schema({
   hrName: { type: String, required: true },
   hrUserId: { type: String, required: true, unique: true },
+  hrNumber:{type:String, required:true, unique:true},
   hrPassword: { type: String, required: true },
   hrId: { type: String, unique: true }
 });

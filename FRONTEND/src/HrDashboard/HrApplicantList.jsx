@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Menu, MenuItem } from "@mui/material";
 import { FiFileText } from "react-icons/fi";
+import { TfiHandPointDown } from "react-icons/tfi";
 
 const ApplicantList = ({ userId }) => {
   const [applications, setApplications] = useState([]);
@@ -81,7 +82,7 @@ const ApplicantList = ({ userId }) => {
 
   return (
     <div className="flex flex-col items-center justify-center text-zinc-900 p-4">
-      <h2 className="text-2xl font-bold mb-4 text-white">All Applicant Details</h2>
+      <h2 className="text-2xl font-bold mb-4 text-white flex items-center gap-2">Details of all candidates who have applied on any jobs which asigned to you <TfiHandPointDown /></h2>
 
       <table className="min-w-full border-collapse block md:table">
         <thead className="block md:table-header-group whitespace-nowrap">
