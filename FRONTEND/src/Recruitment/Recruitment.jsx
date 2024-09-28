@@ -28,6 +28,7 @@ const Recruitment = () => {
 
               <h2>COMPANY</h2>
               <div >
+                <marquee behavior="" direction="">
 
                 <img src={comp2} alt="" />
                 <img src={comp3} alt="" />
@@ -44,6 +45,7 @@ const Recruitment = () => {
                 <img src={comp2} alt="" />
                 <img src={comp3} alt="" />
                 <img src={comp4} alt="" />
+                </marquee>
 
               </div>
             </div>
@@ -60,6 +62,7 @@ const Recruitment = () => {
               style={{ borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }}>
               <h2>HIRING PARTNERS</h2>
               <div >
+                <marquee behavior="" direction="">
                 <img src={comp1} alt="" />
                 <img src={comp2} alt="" />
                 <img src={comp3} alt="" />
@@ -72,6 +75,7 @@ const Recruitment = () => {
                 <img src={comp2} alt="" />
                 <img src={comp3} alt="" />
                 <img src={comp4} alt="" />
+                </marquee>
 
               </div>
             </div>

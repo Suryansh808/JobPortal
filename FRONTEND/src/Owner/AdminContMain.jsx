@@ -1,98 +1,152 @@
-// const AdminControlMain = () => {
-  
-//     return (
-//       <div id="ContMain">
-//         <h1>Admin Control Main page</h1>
-//         <div className="ContForm">
-//         <label for="myfile">Logo M :</label>
-//         <input type="file" id="myfile" name="myfile" accept="image/*"/> <br />
-//         <label for="myfile">Image 1 :</label>
-//         <input type="file" id="myfile" name="myfile"/> <br />
-//         <label for="myfile">Image 2 :</label>
-//         <input type="file" id="myfile" name="myfile"/> <br />
-//         <label for="myfile">Image 3 :</label>
-//         <input type="file" id="myfile" name="myfile"/> <br />
-//         <label for="myfile">Image 3 :</label>
-//         <textarea name="" id=""></textarea>
-//         </div>
-//         <iframe src="http://localhost:5173" frameborder="0" width="700px" height="400px"></iframe>
-
-//       </div>
-//     );
-//   };
-//   export default AdminControlMain;
-  
-
 import React, { useState } from 'react';
 
 const AdminControlMain = () => {
-  const [images, setImages] = useState({
-    logo: null,
-    image1: null,
-    image2: null,
-    image3: null,
+  const [openSections, setOpenSections] = useState({
+    logo: false,
+    firstSlider: false,
+    secondSlider: false,
+    thirdSlider: false,
   });
 
-  const handleFileChange = (e, key) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImages({
-        ...images,
-        [key]: URL.createObjectURL(file),
-      });
-    }
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
+
+
 
   return (
     <div id="ContMain">
       <h1>Admin Control Main Page</h1>
       <div className="ContForm">
-        <label htmlFor="logo">Logo M:</label>
-        <input
-          type="file"
-          id="logo"
-          accept="image/*"
-          onChange={(e) => handleFileChange(e, 'logo')}
-        />
-        {images.logo && <img src={images.logo} alt="Logo" width="100" />}
+        <div className='update-div' style={{ width: '50%' }} >
+          <div className='update1'>
+            <h2 onClick={() => toggleSection('logo')}>LOGO MAIN WEBSITE</h2>
+            {openSections.logo && (
+              <div className='update2'>
+                <form>
+                  <input type="file" name="file" required />
+                  <button >Update</button>
 
-        <br />
+                </form>
+                <table>
+                  <tr>
+                    <td><img src="" alt="Your logo" /></td>
+                    <td><button>Delete</button></td>
+                  </tr>
+                </table>
+              </div>
+            )}
+          </div>
 
-        <label htmlFor="image1">Image 1:</label>
-        <input
-          type="file"
-          id="image1"
-          onChange={(e) => handleFileChange(e, 'image1')}
-        />
-        {images.image1 && <img src={images.image1} alt="Image 1" width="100" />}
+          <div className='update1'>
+            <h2 onClick={() => toggleSection('firstSlider')}>First SLIDER IMAGE</h2>
+            {openSections.firstSlider && (
+              <div className='update2'>
+                <form action="">
+                  <input type="file" name="file" required />
+                  <button>INSERT</button>
+                </form>
+                <table>
+                  <tr>
+                    <th>IMAGE</th>
+                    <th>ACTION</th>
+                  </tr>
+                  <tr>
+                    <td><img src='' alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td><img src='' alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td><img src='' alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                </table>
+              </div>
+            )}
+          </div>
 
-        <br />
+          <div className='update1'>
+            <h2 onClick={() => toggleSection('secondSlider')}>SECOND SLIDER SERVICES </h2>
 
-        <label htmlFor="image2">Image 2:</label>
-        <input
-          type="file"
-          id="image2"
-          onChange={(e) => handleFileChange(e, 'image2')}
-        />
-        {images.image2 && <img src={images.image2} alt="Image 2" width="100" />}
+            {openSections.secondSlider && (
+              <div className='update2'>
+                <form action="">
+                  <input type="text" placeholder='Enter Services TITLE' required />
+                  <input type="file" required />
+                  <button>INSERT</button>
+                  <textarea placeholder='Description' rows="6" required></textarea>
+                </form>
+                <table>
+                  <tr>
+                    <th>TITLE</th>
+                    <th>IMAGE</th>
+                    <th>ACTION</th>
+                  </tr>
+                  <tr>
+                    <td>One</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td>two</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td>three</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                </table>
+              </div>
+            )}
+          </div>
 
-        <br />
+          <div className='update1'>
+            <h2 onClick={() => toggleSection('thirdSlider')}>THIRD SLIDER PROJECT </h2>
 
-        <label htmlFor="image3">Image 3:</label>
-        <input
-          type="file"
-          id="image3"
-          onChange={(e) => handleFileChange(e, 'image3')}
-        />
-        {images.image3 && <img src={images.image3} alt="Image 3" width="100" />}
+            {openSections.thirdSlider && (
+              <div className='update2'>
+                <form action="">
+                  <input type="text" placeholder='Enter Services TITLE' required />
+                  <input type="file" required />
+                  <button>INSERT</button>
+                  <textarea placeholder='Description' rows="6" required></textarea>
+                </form>
+                <table>
+                  <tr>
+                    <th>TITLE</th>
+                    <th>IMAGE</th>
+                    <th>ACTION</th>
+                  </tr>
+                  <tr>
+                    <td>One</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td>two</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td>three</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                </table>
+              </div>
+            )}
+          </div>
 
-        <br />
-
-        <label htmlFor="description">Description:</label>
-        <textarea id="description"></textarea>
+        </div>
+        <div style={{ width: '50%' }}>
+          <iframe src="http://localhost:5173" frameBorder="0" width="100%" height="100%"></iframe>
+        </div>
       </div>
-
-      <iframe src="http://localhost:5173" frameBorder="0" width="700px" height="400px"></iframe>
     </div>
   );
 };
