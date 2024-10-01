@@ -100,6 +100,8 @@ const AdminControlMain = () => {
                     <td><img src="" alt="img" /></td>
                     <td><button>DELETE</button></td>
                   </tr>
+
+                  
                 </table>
               </div>
             )}
@@ -140,6 +142,7 @@ const AdminControlMain = () => {
                 </table>
               </div>
             )}
+            
           </div>
 
         </div>

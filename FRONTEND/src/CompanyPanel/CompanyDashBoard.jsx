@@ -11,6 +11,7 @@ import RejectedCandidates from "./RejectedCandidates";
 import List from "./List";
 
 const CompanyDashboard = () => {
+  
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState("Profile");
 
@@ -60,7 +61,7 @@ const CompanyDashboard = () => {
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="bg-black h-[8vh] text-white p-3 flex justify-between items-center border-b">
-        <h1 className="text-xl">Company Dashboard</h1>
+        <h1 className="text-xl">HIRING PARTNER</h1>
         <button
           className="bg-[#1d1c1c60] text-white p-2 rounded"
           onClick={toggleSidebar}

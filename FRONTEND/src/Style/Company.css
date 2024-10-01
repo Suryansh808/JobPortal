@@ -1,0 +1,20 @@
+#CompanyProfile {
+    /* height: 80vh; */
+}
+#CompanyProfile .First{
+    display: flex;
+}
+#CompanyProfile .Company-Detail{
+background-color:rgb(13, 104, 183) ;
+width:fit-content;
+}
+#CompanyProfile .job-detail{
+    background-color: aqua;
+    
+
+    
+}
+#CompanyProfile iframe{
+    width: 500px;
+    height: 400px;
+}
