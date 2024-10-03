@@ -1,86 +1,88 @@
-import React, { useEffect, useRef } from 'react';
- import { Navigation, Pagination, Scrollbar, A11y, Autoplay , EffectCoverflow, EffectCards, Zoom} from 'swiper/modules';
- import { Swiper, SwiperSlide } from 'swiper/react';
- import 'swiper/swiper-bundle.css';
-import {Link} from 'react-router-dom'
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-import 'swiper/css/autoplay';
-import 'swiper/css/effect-coverflow';
-import Image1 from '../assets/dm.webp';
-import Image2 from '../assets/fm.webp';
-import Image3 from '../assets/h&n.webp';
-import Image4 from '../assets/m&a.webp';
-import { IoArrowDownSharp } from "react-icons/io5";
-import { MdCallMade } from "react-icons/md";
-import { gsap } from 'gsap';
-// import ParallaxText from './ParallaxText';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger)
+import React from 'react';
+//  import { Navigation, Pagination, Scrollbar, A11y, Autoplay , EffectCoverflow, EffectCards, Zoom} from 'swiper/modules';
+//  import { Swiper, SwiperSlide } from 'swiper/react';
+//  import 'swiper/swiper-bundle.css';
+// import {Link} from 'react-router-dom'
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+// import 'swiper/css/pagination';
+// import 'swiper/css/scrollbar';
+// import 'swiper/css/autoplay';
+// import 'swiper/css/effect-coverflow';
+// import Image1 from '../assets/dm.webp';
+// import Image2 from '../assets/fm.webp';
+// import Image3 from '../assets/h&n.webp';
+// import Image4 from '../assets/m&a.webp';
+// import { IoArrowDownSharp } from "react-icons/io5";
+// import { MdCallMade } from "react-icons/md";
+// import { gsap } from 'gsap';
+// // import ParallaxText from './ParallaxText';
+// import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TextParallaxContentExample } from './TextParallaxContent';
+// import Footer from './Footer';
+// import FooterWithSocialLinks from "./Components/Footer";
+// // Register ScrollTrigger plugin
+// gsap.registerPlugin(ScrollTrigger)
 
 
 const Home = () => {
 
-    const Card = [
-       { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-       { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-     { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-     { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-    { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
-    { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://plus.unsplash.com/premium_photo-1678216285963-253d94232eb7?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGJ1c2luZXNzJTIwaWRlYXxlbnwwfHwwfHx8MA%3D%3D"},
-    ]
+  //   const Card = [
+  //      { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+  //      { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+  //    { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+  //    { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+  //   { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
+  //   { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://plus.unsplash.com/premium_photo-1678216285963-253d94232eb7?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGJ1c2luZXNzJTIwaWRlYXxlbnwwfHwwfHx8MA%3D%3D"},
+  //   ]
 
-    const sliderRef = useRef(null);
-    useEffect(() => {
-      gsap.fromTo(
-        sliderRef.current,
-        { y: 100,
-          opacity: 0 }, // Start from bottom and transparent
-        { y: 0, opacity: 1, duration: 1  } // Move to top and fully visible
-      );
-    }, []);
+  //   const sliderRef = useRef(null);
+  //   useEffect(() => {
+  //     gsap.fromTo(
+  //       sliderRef.current,
+  //       { y: 100,
+  //         opacity: 0 }, // Start from bottom and transparent
+  //       { y: 0, opacity: 1, duration: 1  } // Move to top and fully visible
+  //     );
+  //   }, []);
    
-     // Create refs for each section
-  const sectionRef = useRef([]);
-  sectionRef.current = [];
+  //    // Create refs for each section
+  // const sectionRef = useRef([]);
+  // sectionRef.current = [];
 
-  // Function to add refs
-  const addToRefs = (el) => {
-    if (el && !sectionRef.current.includes(el)) {
-      sectionRef.current.push(el);
-    }
-  };
+  // // Function to add refs
+  // const addToRefs = (el) => {
+  //   if (el && !sectionRef.current.includes(el)) {
+  //     sectionRef.current.push(el);
+  //   }
+  // };
 
-  useEffect(() => {
-    // Animate each section
-    sectionRef.current.forEach((el) => {
-      gsap.fromTo(el, 
-        { opacity: 0, y: 50 }, 
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 2, 
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 80%', // Start animation when the top of the element is 80% from the top of the viewport
-            end: 'bottom 20%', // End animation when the bottom of the element is 20% from the top of the viewport
-            toggleActions: 'play reverse play reverse', // Play the animation when entering and reverse it when leaving
-          },
-        }
-      );
-    });
-  }, []);
+  // useEffect(() => {
+  //   // Animate each section
+  //   sectionRef.current.forEach((el) => {
+  //     gsap.fromTo(el, 
+  //       { opacity: 0, y: 50 }, 
+  //       { 
+  //         opacity: 1, 
+  //         y: 0, 
+  //         duration: 2, 
+  //         ease: 'power2.out',
+  //         scrollTrigger: {
+  //           trigger: el,
+  //           start: 'top 80%', // Start animation when the top of the element is 80% from the top of the viewport
+  //           end: 'bottom 20%', // End animation when the bottom of the element is 20% from the top of the viewport
+  //           toggleActions: 'play reverse play reverse', // Play the animation when entering and reverse it when leaving
+  //         },
+  //       }
+  //     );
+  //   });
+  // }, []);
  
     
   return (
     <>  
-      <section className='w-full h-screen bg-black max-[600px]:h-1/2'>
-       <Swiper
+      <section className='w-full h-screen -mt-20 bg-black max-[600px]:h-1/2'>
+       {/* <Swiper
        ref={sliderRef}
       modules={[Navigation, Pagination, Scrollbar, A11y , Autoplay ,]}
       navigation
@@ -92,9 +94,10 @@ const Home = () => {
       <SwiperSlide ><img className='w-full h-full bg-cover bg-center' src={Image2}/></SwiperSlide>
       <SwiperSlide ><img className='w-full h-full bg-cover bg-center' src={Image3}/></SwiperSlide>
       <SwiperSlide ><img className='w-full h-full bg-cover bg-center' src={Image4}/></SwiperSlide>
-        </Swiper>
+        </Swiper> */}
+        <TextParallaxContentExample/>
       </section>
-     <section ref={addToRefs} className=' section business-slider w-full text-white flex flex-col items-center gap-5'>
+     {/* <section ref={addToRefs} className=' section business-slider w-full text-white flex flex-col items-center gap-5'>
      <div className=' w-full flex flex-col items-center justify-center'>
      <h2 className='font-medium text-[2rem] max-[600px]:text-lg pt-4 uppercase'>Services</h2>
      <h1 className=' font-light text-2xl max-[600px]:text-base pb-2 pt-2  max-[600px]:text-center max-[600px]:tracking-tighter '>Transform your business with advanced technologies</h1>
@@ -153,12 +156,6 @@ const Home = () => {
       <div className='max-[600px]:-mt-12 max-[600px]:mb-4 mb-4 hover:bg-white hover:scale-110 ease-linear duration-700 hover:text-black inline  border rounded-full px-6 py-2'>
           <Link to='/career' className='flex items-center gap-3'>All businesses <IoArrowDownSharp /></Link>
         </div>
-     </section>
-     <section >
-     {/* <section className='text-[8rem] uppercase bg-black text-white'> 
-      <ParallaxText baseVelocity={-5}>company name here company name here company name here </ParallaxText>
-      <ParallaxText baseVelocity={5}>company name here  company name here company name here </ParallaxText>
-    </section> */}
      </section>
      <section ref={addToRefs} className='  project w-full bg-black text-white  px-3 py-4 flex flex-col items-center justify-center gap-4'>
        <h1 className='text-center text-[2rem] font-semibold '>Our Projects</h1>
@@ -220,7 +217,9 @@ const Home = () => {
         <div className='hover:scale-110 ease-linear duration-700 hover:bg-white hover:text-black  border rounded-full px-8 py-2'>
           <Link to='/career' className='flex items-center hover:text-black gap-2' >Explore careers <MdCallMade /></Link>
         </div>
-     </section>
+     </section> */}
+     {/* <FooterWithSocialLinks/> */}
+     {/* <Footer/> */}
   </>
     
   )

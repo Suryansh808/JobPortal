@@ -1,6 +1,7 @@
   // models/companyjobpost.js
   const mongoose = require("mongoose");
-
+const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getFullYear()}`
   const jobSchema = new mongoose.Schema({
     jobTitle: { type: String, required: true },
     companyName: { type: String, required: true },
@@ -25,7 +26,7 @@
     hrName:{type:String , default:null},
     userApplicationIds: [String],
     updatedOn: { type: Date, default: Date.now },
-    chatBox: [  {    user: { type: String},    message: { type: String },    timestamp: {type: String, default: () => new Date().toLocaleTimeString()}},],
+    chatBox: [  {    user: { type: String},    message: { type: String },    timestamp: {type: String, default:formattedDate }},],
   });
 
   const Job = mongoose.model("CompanyJobPostData", jobSchema);

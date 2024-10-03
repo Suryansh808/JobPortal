@@ -51,6 +51,7 @@ app.use('/api/hr/profile', hrRoutes);
 app.use('/api/applications/:id', applicationRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use("/api", applicationRoutes);
+app.use("/", applicationRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/studentDatas', resumeRoutes); // Add this line
 app.use('/jobs', chatBox);

@@ -37,7 +37,6 @@ const NewNavbar = () => {
     const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
 
     const headerRef = useRef(null);
-
     useEffect(() => {
       gsap.fromTo(
         headerRef.current,
@@ -46,12 +45,65 @@ const NewNavbar = () => {
       );
     }, []);
 
+    const navbarRef = useRef(null);
+  const [isBlurred, setIsBlurred] = useState(false);
+
+    const handleScroll = () => {
+    const scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    setIsBlurred(scrollPercentage > 0.2);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    gsap.to(navbarRef.current, {
+      background: isBlurred ? 'rgba(0, 0, 0, 0.9)' : 'transparent',
+      duration: 0.5,
+    });
+  }, [isBlurred]);
+
+//   useEffect(() => {
+//     // Animate the blur effect with GSAP
+//     if (isBlurred) {
+//       gsap.to(navbarRef.current, {
+//         background: 'rgba(255, 255, 255, 0.3)',
+//         filter: 'blur(2px)',
+//         duration: 0.5,
+//       });
+//     } else {
+//       gsap.to(navbarRef.current, {
+//         background: 'transparent',
+//         filter: 'blur(0px)',
+//         duration: 0.5,
+//       });
+//     }
+//   }, [isBlurred]);
+
+//   const styles = {
+//     navbar: {
+//       position: 'fixed',
+//       top: 0,
+//       left: 0,
+//       right: 0,
+//       padding: '10px 20px',
+//       zIndex: 1000,
+//       transition: 'background 0.5s ease',
+//     },
+//   };
+  
+
     return (
         <>
-            {
-                showHeaderFooter &&
-                <div id="header" >
-                    <div ref={headerRef} className="navbar" >
+            {showHeaderFooter &&
+                <div id="header" ref={navbarRef} >
+                    <div ref={headerRef} className="navbar" style={{boxShadow:'none'}}>
                         <div onClick={() => toggleDropdown()}>
                         <Link to='/'> 
                             <h1><span>D</span>-Solution</h1> </Link>

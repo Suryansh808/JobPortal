@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 import { BsArrowLeftCircle } from "react-icons/bs";
+import WaterDropGrid from "../Owner/WaterDropGrid";
 // import { useCompany } from "./CompanyContext";
 
 const CompanySignUpPage = () => {
@@ -119,41 +120,41 @@ const CompanySignUpPage = () => {
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
-      <div className="max-w-md mx-auto text-[#000000d3] px-3 py-2 border rounded shadow-md">
+      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto text-[#000000d3] px-2 py-2 border rounded-xl shadow-md">
        <Link to='/Recruitment' className="text-white flex items-center justify-end"><BsArrowLeftCircle /></Link>
-        <h1 className="text-2xl font-bold text-white mb-3">Company Signup</h1>
+        <h1 className="text-2xl font-bold text-center text-white mb-3">Company Signup</h1>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <input
+              type="file"
+              name="companyLogo"
+              onChange={handleChange}
+              className="mb-2 p-2 w-full border rounded-xl bg-white text-black"
+              required
+            />
           <input
             type="text"
             name="companyName"
             placeholder="Company Name"
             value={formData.companyName}
             onChange={handleChange}
-            className="mb-4 p-2 w-full border rounded"
+            className="mb-2 p-2 w-full border rounded-xl"
             required
           />
           <input
-              type="file"
-              name="companyLogo"
-              onChange={handleChange}
-              className="mb-4 p-2 w-full border rounded"
-              required
-            />
-          {/* <input
-            type="text"
-            name="companyLocation"
-            placeholder="Company Location"
-            value={formData.companyLocation}
+            type="email"
+            name="email"
+            placeholder="Company Email"
+            value={formData.email}
             onChange={handleChange}
-            className="mb-4 p-2 w-full border rounded"
+            className="mb-2 p-2 w-full border rounded-xl"
             required
-          /> */}
+          />
               <div>
         <select
           name="companyType"
           value={formData.companyType}
           onChange={handleChange}
-          className="mb-4 p-2 w-full border rounded"
+          className="mb-2 p-2 w-full border rounded-xl"
           required
         >
           <option value="" disabled>Select company type</option>
@@ -171,7 +172,7 @@ const CompanySignUpPage = () => {
             placeholder="Please specify"
             value={formData.otherCompanyType}
             onChange={handleChange}
-            className="mb-4 p-2 w-full border rounded"
+            className="mb-2 p-2 w-full border rounded-xl"
             required={formData.companyType === "Other"} // Only required if "Other" is selected
           />
         )}
@@ -182,7 +183,7 @@ const CompanySignUpPage = () => {
             placeholder="Your Position"
             value={formData.position}
             onChange={handleChange}
-            className="mb-4 p-2 w-full border rounded"
+            className="mb-2 p-2 w-full border rounded-xl"
             required
           />
           <textarea
@@ -191,20 +192,12 @@ const CompanySignUpPage = () => {
             placeholder="Your Business Model"
             value={formData.businessmodel}
             onChange={handleChange}
-            className="mb-4 p-2 w-full border rounded"
+            className="mb-2 p-2 w-full border rounded-xl resize-none"
             required
           />
-          <input
-            type="email"
-            name="email"
-            placeholder="Company Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mb-4 p-2 w-full border rounded"
-            required
-          />
+        
           <div>
-            <div className="relative mb-4">
+            <div className="relative mb-2">
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -212,18 +205,18 @@ const CompanySignUpPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 onBlur={validatePasswords}
-                className="p-2 w-full border rounded"
+                className="p-2 w-full border rounded-xl"
                 required
               />
               <span
                 onClick={handleTogglePasswordVisibility}
                 className="absolute right-3 top-3 text-2xl cursor-pointer"
               >
-                {showPassword ? <IoMdEyeOff /> : <IoEye />}
+                {showPassword ?  <IoEye /> :  <IoMdEyeOff />}
               </span>
             </div>
 
-            <div className="relative mb-4">
+            <div className="relative mb-2">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
@@ -231,23 +224,23 @@ const CompanySignUpPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 onBlur={validatePasswords}
-                className="p-2 w-full border rounded"
+                className="p-2 w-full border rounded-xl"
                 required
               />
               <span
                 onClick={handleToggleConfirmPasswordVisibility}
                 className="absolute right-3 top-3 text-2xl cursor-pointer"
               >
-                {showConfirmPassword ? <IoMdEyeOff /> : <IoEye />}
+                {showConfirmPassword ?<IoEye /> :  <IoMdEyeOff />}
               </span>
             </div>
 
-            {error && <p className="text-red-500 mb-4">{error}</p>}
+            {error && <p className="text-red-500 mb-2">{error}</p>}
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded"
+            className="w-full bg-black text-white p-2 rounded-xl"
           >
             Sign Up
           </button>
@@ -256,6 +249,7 @@ const CompanySignUpPage = () => {
           </div>
         </form>
       </div>
+      <WaterDropGrid/>
     </div>
   );
 };

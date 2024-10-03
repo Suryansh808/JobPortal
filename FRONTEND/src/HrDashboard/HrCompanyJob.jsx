@@ -1,9 +1,6 @@
 
 import React, { useEffect, useState } from "react";
 
-
-
-
 const HrCompanyJob = () => {
   const [companyjobs, setCompanyJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);

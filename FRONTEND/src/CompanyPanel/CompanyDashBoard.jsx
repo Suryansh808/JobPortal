@@ -29,8 +29,8 @@ const CompanyDashboard = () => {
         return <CompanyProfile />;
       case "PostJobs":
         return <JobPost/>;
-      case "HRupdates":
-        return <HRUpdates/>;
+      // case "HRupdates":
+      //   return <HRUpdates/>;
       case "List":
         return <List/>;
         // case "Candidate":
@@ -106,7 +106,7 @@ const CompanyDashboard = () => {
             >
               Post Jobs
             </li>
-            <li
+            {/* <li
               className="mb-4 cursor-pointer"
               onClick={() => {
                 setActiveComponent("HRupdates");
@@ -115,7 +115,7 @@ const CompanyDashboard = () => {
               }}
             >
               HR Updates
-            </li>
+            </li> */}
             <li
               className="mb-4 cursor-pointer"
               onClick={() => {

@@ -77,9 +77,11 @@ router.post("/send-otp", userpicture.single("image"), async (req, res) => {
 });
 
 router.post("/verify-otp", async (req, res) => {
+  console.log(req.body); // Log the entire request body
   const { phone, otp } = req.body;
+  console.log('Received Phone:', phone);
+    console.log('Received OTP:', otp); // Log the OTP received
   const user = await User.findOne({ phone, otp });
-
   if (user && user.otpExpiration > Date.now()) {
     user.isVerified = true; // Example field to mark the user as verified
     user.lastLogin = new Date(); // Update last login time
@@ -156,4 +158,54 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+// // Apply for a job route
+// router.post("/apply-job", async (req, res) => {
+//   const { userId } = req.body; // Get userId from the request body
+
+//   try {
+//     // Log the incoming request
+//     console.log(`Received job application request for user: ${userId}`);
+
+//     // Validate the input
+//     if (!userId) {
+//       console.log(`User ID is missing`);
+//       return res.status(400).json({ message: "User ID is required." });
+//     }
+
+//     // Find the user by userId
+//     const user = await User.findOne({ userId });
+
+//     if (!user) {
+//       console.log(`User not found with ID: ${userId}`);
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     // Log the retrieved user and job limit
+//     console.log(`User found: ${user.fullname}, Job Limit: ${user.jobLimit}`);
+
+//     // Check if user has an active subscription
+//     if (user.subscriptionStatus && user.subscriptionExpiryDate > new Date()) {
+//       console.log("User has an active subscription");
+//       return res.status(200).json({ message: "Job application successful", jobLimit: 'unlimited' });
+//     }
+
+//     // Check if the user has free job applications left
+//     if (user.jobLimit <= 0) {
+//       console.log(`User ${user.fullname} has reached the job application limit`);
+//       return res.status(403).json({ message: "You have reached your free application limit. Please subscribe to continue applying." });
+//     }
+
+//     // Deduct from jobLimit
+//     console.log(`Decreasing job limit for user ${user.fullname}. Current limit: ${user.jobLimit}`);
+//     user.jobLimit -= 1;
+//     await user.save();
+//     console.log(`Job application successful. Remaining job limit for ${user.fullname}: ${user.jobLimit}`);
+
+//     return res.status(200).json({ message: "Job application successful", jobLimit: user.jobLimit });
+//   } catch (error) {
+//     console.error("Error applying for job:", error.message || error);
+//     return res.status(500).json({ message: "Internal server error", error: error.message });
+//   }
+// });
+
 module.exports = router;

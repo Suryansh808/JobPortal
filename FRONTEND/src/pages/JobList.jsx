@@ -21,6 +21,7 @@ const JobList = () => {
   const [searchParams, setSearchParams] = useState({ jobTitle: "", location: "" });
   const { setApplicationStatus } = useContext(ApplicationStatusContext);
   const [openDialog, setOpenDialog] = useState(false);
+  // const [jobLimit , setJobLimit] = useState(2);
   const [dialogMessage, setDialogMessage] = useState("");
   const filtersRef = useRef(null);
   const sortRef = useRef(null);
@@ -82,6 +83,7 @@ const JobList = () => {
   
   const handleJobClick = (job) => {
     setSelectedJob(job);
+    // alert(userId)
   };
 
   const [isApplying, setIsApplying] = useState(false);
@@ -96,25 +98,25 @@ const JobList = () => {
 
   const handleApplyClick = async (job) => {
 
-    if (isApplying || hasApplied) return;
+    // if (isApplying || hasApplied) return;
 
-    setIsApplying(true);
+    // setIsApplying(true);
 
     const hrName = job.hrName; // Assuming hrName is part of the job object
 
     // Check if the user has already applied
-    if (job.userApplicationIds.includes(userId)) {
-      setDialogMessage('You have already applied for this position.');
-      setOpenDialog(true);
-      setIsApplying(false);
-      return;
-    }
+    // if (job.userApplicationIds.includes(userId)) {
+    //   setDialogMessage('You have already applied for this position.');
+    //   setOpenDialog(true);
+    //   setIsApplying(false);
+    //   return;
+    // }
     // Prepare the application data
     const applicationData = {
       jobId: job._id,
       userId: userId,
       hrName: hrName,
-      status: 'pending',
+      status: 'Pending',
     };
     // Send the application data to the server
     try {
@@ -126,8 +128,8 @@ const JobList = () => {
         body: JSON.stringify(applicationData)
       });
       if (response.ok) {
-        console.log(response.data);
-        setHasApplied(true); // Mark as applied
+        console.log("getting updated data after click on apply btn",response.data);
+        // setHasApplied(true); 
         setDialogMessage(`You have successfully applied for the position of ${job.jobTitle} at ${job.companyName}. Check your status in your profile...`);
         setOpenDialog(true);
         setApplicationStatus("We have received your application. It's under review.");
@@ -138,11 +140,26 @@ const JobList = () => {
       console.error('Error:', error);
       setDialogMessage('There was an error applying for the position. Please try again.');
       setOpenDialog(true);
-    } finally {
-      setIsApplying(false); // Re-enable button after operation completes
-    }
+    } 
+    // finally {
+    //   setIsApplying(false); // Re-enable button after operation completes
+    // }
   };
-
+  const [userApplyJob, setUserApplyJob] = useState([]);
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/applications`);
+        const fetchedApplications = response.data;
+        const userApplyjob = fetchedApplications.filter(application => application.userId && application.userId._id === userId);
+        setUserApplyJob(userApplyjob)
+        // alert(userApplyjob.length)
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+      }
+    };
+    fetchApplications();
+  }, [userId]);
   
   const handleTypeChange = (type) => {
     setSelectedTypes((prev) => {
@@ -571,11 +588,11 @@ const JobList = () => {
           <p className="text-black text-2xl">No jobs available</p>
         ) : (
           <ul>
-            {filteredJobs.map((job) => (
+            {/* {filteredJobs.map((job) => (
               <li key={job.id} className="p-4 border-b">
                 
               </li>
-            ))}
+            ))} */}
           </ul>
         ) }
       </div>
@@ -649,7 +666,7 @@ const JobList = () => {
                     <h2 className="text-2xl font-bold group-hover:text-blue-300 ">{selectedJob.jobTitle}</h2>
                     <p className="text-gray-600">{selectedJob.companyName}</p>
                     <div className="flex items-center justify-end pr-5">
-                      <button
+                      {/* <button
                         id="apply_btn"
                         onClick={() => handleApplyClick(selectedJob)}
                         disabled={isApplying || hasUserApplied(selectedJob)}
@@ -659,8 +676,64 @@ const JobList = () => {
     hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl`}
                       >
                         {hasUserApplied(selectedJob) ? 'Already Applied' : 'Apply Now'}
-                      </button>
+                      </button> */}
+{selectedJob.userApplicationIds.includes(userId) ? (
+  <h2 className="text-white p-3 bg-red-500 rounded-2xl" >Already Applied</h2>
+) : (
+  userApplyJob.length ===0 || userApplyJob.length < userApplyJob[0].userId.jobLimit ? (
+    <button className="text-white px-8 py-2 bg-blue-600 rounded-xl" onClick={() => handleApplyClick(selectedJob)}>Apply</button>
+  ) : (
+    <button className="text-white px-8 py-2 bg-orange-600 rounded-xl" >Upgrade Limit</button>
+  )
+)}
+                      
+
+
+
+
+
                     </div>
+                     {/* <ul>
+                      {jobs.map((job) => (
+                        <li key={job.id}>
+                          <div>
+                            <div className="flex items-center justify-end pr-5">
+                              <button
+                                id="apply_btn"
+                                onClick={() => handleApplyClick(job)} // Use handleApplyClick with the job passed as argument
+                                disabled={
+                                  isApplying ||
+                                  jobLimit <= 0 ||
+                                  job.userApplicationIds.includes(
+                                    localStorage.getItem("userId")
+                                  )
+                                }
+                                className={`w-[150px] h-[50px] flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md 
+              ${
+                jobLimit <= 0
+                  ? "bg-red-700 text-white cursor-not-allowed"
+                  : "bg-blue-600 text-[#fff]"
+              }
+              ${
+                job.userApplicationIds.includes(localStorage.getItem("userId"))
+                  ? "before:bg-red-600 hover:before:left-0"
+                  : "before:bg-blue-500 hover:before:left-0"
+              }
+              hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl`}
+                              >
+                                {job.userApplicationIds.includes(
+                                  localStorage.getItem("userId")
+                                )
+                                  ? "Already Applied"
+                                  : jobLimit <= 0
+                                  ? "Subscribe to Apply"
+                                  : "Apply Now"}
+                              </button>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul> */}
                     <ApplyMsg open={openDialog} onClose={() => setOpenDialog(false)} message={dialogMessage} />
                   </div>
                 </div>
@@ -696,6 +769,7 @@ const JobList = () => {
                     <p className="text-gray-600 flex items-center gap-1">
                       <CiLocationOn />{selectedJob.location}
                     </p>
+                    <p>{selectedJob.userApplicationIds}</p>
                   </div>
                   <img className="h-[8rem] image -mr-12" src="https://i.pinimg.com/564x/45/e6/f1/45e6f1e0ac33c3d93727f1777ea25bfa.jpg" alt="" />
                 </div>

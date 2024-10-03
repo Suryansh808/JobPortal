@@ -19,7 +19,7 @@ const ApplicantList = ({ userId }) => {
         const response = await axios.get(`http://localhost:5000/api/applications`);
         const fetchedApplications = response.data;
         console.log(fetchedApplications);
-        setFilteredApplications(fetchedApplications.filter(app => app.status === 'pending'));
+        setFilteredApplications(fetchedApplications.filter(app => app.status === 'Pending'));
         setApplications(fetchedApplications);
         // Filter to show only applications with status 'pending'
       } catch (error) {
@@ -42,7 +42,7 @@ const ApplicantList = ({ userId }) => {
       return;
     }
     // Update status in the backend
-    axios.put(`http://localhost:5000/api/applications/status/${selectedApplication._id}`, { status: action })
+    axios.put(`http://localhost:5000/api/applications/status/${selectedApplication._id}`, { status: action})
       .then(() => {
         // Update state with new status
         // setApplications(applications.map(app =>

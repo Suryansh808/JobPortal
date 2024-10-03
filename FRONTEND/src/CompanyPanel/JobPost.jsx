@@ -282,7 +282,7 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
                   onClick={() => handleSendToHR(job)}
                   className="bg-white text-black border  p-1 rounded"
                 >
-                  Send to HR
+                  Update
                 </Button>
               </td>
             </tr>

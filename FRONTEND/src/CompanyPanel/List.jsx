@@ -9,6 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 // import ApplyMsg from "./ApplyMsg";
 import { ApplicationStatusContext } from "../ApplicationStatusContext";
 import { GrDocumentUser } from "react-icons/gr";
+import { AiFillEdit } from "react-icons/ai";
 import { Button, Menu, MenuItem } from "@mui/material";
 
 const List = () => {
@@ -18,7 +19,7 @@ const List = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [selectedTypes, setSelectedTypes] = useState([]);
-  const [noJobsFound, setNoJobsFound] = useState(false);
+  // const [noJobsFound, setNoJobsFound] = useState(false);
   const [searchParams, setSearchParams] = useState({
     jobTitle: "",
     location: "",
@@ -31,7 +32,6 @@ const List = () => {
   const [selectedJobUsers, setSelectedJobUsers] = useState([]);
   const [users, setUsers] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [chatBox, setChatBox] = useState([]);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -39,11 +39,20 @@ const List = () => {
         const response = await axios.get("http://localhost:5000/api/jobs");
         setJobs(response.data);
 
-        setJobs(response.data); // Set jobs data
-        //console.log("Jobs response:", response.data);
+        const allJobs = response.data;
+
+        // Get the stored company name from localStorage
+        const storedCompanyName = localStorage.getItem("companyName");
+
+        // Filter jobs that match the stored company name
+        const filteredJobs = allJobs.filter(
+          (job) => job.companyName === storedCompanyName
+        );
+
+        setJobs(filteredJobs); // Set the filtered jobs
 
         // Now fetch user details based on userApplicationIds
-        const userIds = response.data.flatMap((job) => job.userApplicationIds ); // Flatten the array of IDs
+        const userIds = filteredJobs.flatMap((job) => job.userApplicationIds); // Flatten the array of IDs
         const uniqueUserIds = [...new Set(userIds)]; // Get unique user IDs
 
         if (uniqueUserIds.length > 0) {
@@ -53,8 +62,8 @@ const List = () => {
           setUsers(usersResponse.data); // Assuming this returns an array of user objects
           console.log("user id data", usersResponse.data);
         }
-        setFilteredJobs(response.data);
-        console.log('API Response:', response.data); // Log the full response
+        setFilteredJobs(filteredJobs);
+        console.log("API Response:", filteredJobs); // Log the full response
       } catch (error) {
         console.error("There was an error fetching the jobs!", error);
       }
@@ -461,27 +470,27 @@ const List = () => {
 
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [applications, setApplications] = useState([]);
- // Fetch applications when the component mounts
- useEffect(() => {
-  const fetchApplications = async () => {
-    try {
-      // Replace with your actual API endpoint
-      const response = await fetch("http://localhost:5000/api/applications"); 
-      const data = await response.json();
-      console.log("getting application data",data);
-      setApplications(data); // Set the fetched applications data
-      console.log(applications)
-    } catch (error) {
-      console.error("Error fetching applications:", error);
-    }
-  };
+  // Fetch applications when the component mounts
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        // Replace with your actual API endpoint
+        const response = await fetch("http://localhost:5000/api/applications");
+        const data = await response.json();
+        // console.log("getting application data", data);
+        setApplications(data); // Set the fetched applications data
+        // console.log(applications);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+      }
+    };
 
-  fetchApplications();
-}, []);
+    fetchApplications();
+  }, []);
 
   const handleJobClick = (job) => {
     setSelectedJob(job);
-    
+
     // Filter users based on the selected job's userApplicationIds and accepted status
     const relatedUsers = users.filter((user) => {
       // Find the application related to this user and job
@@ -491,13 +500,22 @@ const List = () => {
       //console.log("Found application for user:", application);
       //console.log("selectedapplication data", application.statusByCompany);
       // Check if the application exists and its status is 'accepted'
-      return job.userApplicationIds.includes(user._id) && application?.status === 'Accepted' ;
+      //alert(application?.hrUpdated.round[application?.hrUpdated.round.length-1])
+      return (
+        job.userApplicationIds.includes(user._id) &&
+        application?.status === "Accepted" &&
+        application?.hrUpdated.round[
+          application?.hrUpdated.round.length - 1
+        ] !== "Hired" &&
+        application?.hrUpdated.round[
+          application?.hrUpdated.round.length - 1
+        ] !== "Rejected"
+      );
     });
+
     //console.log("Filtered related users:", relatedUsers , applications);
-    setSelectedJobUsers(relatedUsers , applications);
-    
+    setSelectedJobUsers(relatedUsers, applications);
   };
-  
 
   const handleMenuClick = (event, user) => {
     setAnchorEl(event.currentTarget);
@@ -505,57 +523,96 @@ const List = () => {
     setSelectedApplication(user);
   };
 
-  const handleStatusChange = ( newStatus, user) => {
+  const [remark, setRemark] = useState("");
+  const handleStatusChange = (newStatus, user) => {
     if (!selectedApplication || !selectedApplication._id) {
       console.error("No selected application or missing _id");
       return;
     }
     const id = selectedApplication._id;
     const jobId = selectedJob._id;
-    // Update status in the backend
+    let remark1 = remark;
+
+    if (
+      newStatus === "Accepted" &&
+      (remark.length <= 4 || remark.startsWith(" "))
+    ) {
+      alert(
+        '"Remark must be longer than 4 character and not start with empty !!!!"'
+      );
+      return;
+    } else if (newStatus === "Rejected") {
+      remark1 = "Rejected";
+    } else if (newStatus === "Hired") {
+      remark1 = "Hired";
+    }
+
     axios
       .put(`http://localhost:5000/api/applications/statusByCompany/${id}`, {
         statusByCompany: newStatus,
         jobId: jobId,
+        remark: remark1,
       })
       .then((response) => {
         const updatedApplication = response.data; // Get the updated application from the response
         console.log("Updated Application:", updatedApplication);
-        setAnchorEl(null);
+        setAnchorEl(null); // Close the menu
       })
+
       .catch((error) => {
         console.error("Error updating application status:", error);
       });
-
-
-      const application = applications.find(
-        (app) => app.userId._id === user._id && app.jobId._id === selectedJob._id
-      );
-    
-      if (application) {
-        application.statusByCompany = newStatus;
-        setApplications([...applications]); // Update state to re-render
-      }
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
   const open = Boolean(anchorEl);
-
   const [chatMessages, setChatMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const chatEndRef = useRef(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
-  
+  useEffect(() => {
+    if (!selectedJob || !selectedJob._id) return; // Check for valid selectedJob
+    const jobId = selectedJob._id;
+
+    const fetchChatMessages = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/jobs/${jobId}/chat`
+        );
+        const updatedChat = await response.json();
+        setChatMessages(updatedChat);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    fetchChatMessages(); // Initial fetch
+
+    // Setup SSE
+    const eventSource = new EventSource(
+      `http://localhost:5000/jobs/${jobId}/chat/stream`
+    );
+
+    eventSource.onmessage = (event) => {
+      const newChatMessage = JSON.parse(event.data);
+      setChatMessages((prevMessages) => [...prevMessages, newChatMessage]);
+    };
+
+    return () => {
+      eventSource.close(); // Cleanup on unmount
+    };
+  }, [selectedJob]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim()) {
       const chatMessage = { user: "cm", message: newMessage };
       const jobId = selectedJob._id;
-      console.log("jobId",jobId);
-      // Send the message to the server
+
       try {
+        // Send the message to the server
         const response = await fetch(
           `http://localhost:5000/jobs/${jobId}/chat`,
           {
@@ -570,10 +627,10 @@ const List = () => {
         if (!response.ok) {
           throw new Error("Failed to send message");
         }
-
-        const updatedChat = await response.json();
-        setChatMessages(updatedChat); // Update local chat messages
+        // Immediately update local chat state
+        //  setChatMessages((prevMessages) => [...prevMessages, chatMessage]);
         setNewMessage("");
+        // No need to fetch updated messages again since we're using SSE
       } catch (error) {
         console.error("Error sending message:", error);
       }
@@ -582,14 +639,15 @@ const List = () => {
 
   const navigate = useNavigate();
   const handleViewResume = (resumeId) => {
-    navigate(`/Cv/${resumeId}`);
+    // navigate(`/Cv/${resumeId}`);
+    window.open(`/Cv/${resumeId}`, '_blank');
   };
- 
+
   const preStyle = {
-    minWidth: "40%", // Limit maximum width
-    width: "auto",
-    padding: "0.5rem 1rem", // Corresponds to px-3 py-1
-    borderRadius: "1.5rem", // Adjust for your rounded classes
+    // minWidth: "40%", // Limit maximum width
+    // width: "auto",
+    // padding: "0.5rem 1rem", // Corresponds to px-3 py-1
+    // borderRadius: "1.5rem", // Adjust for your rounded classes
     overflow: "auto",
     whiteSpace: "pre-wrap",
     wordWrap: "break-word", // Ensures long words break to the next line
@@ -713,7 +771,7 @@ const List = () => {
       </div>
       <div className="w-full flex flex-grow mt-1 bg-slate-100 ">
         {/* Job Listings */}
-        <div className=" w-1/5 p-2 h-[80vh] overflow-y-auto border-r-2">
+        <div className=" w-1/5 p-2 h-[80vh] overflow-y-auto">
           {filteredJobs.map((job, index) => (
             <div
               key={index}
@@ -737,10 +795,10 @@ const List = () => {
           ))}
         </div>
         {/* Job Details */}
-        <div className="w-full p-2 h-[80vh]   ">
-          {selectedJob ?(
+        <div className="w-full p-2 h-[80vh] relative  ">
+          {selectedJob ? (
             <div className=" h-full w-full bg-white rounded-lg p-1 group flex gap-3">
-              <div className="mb-2 min-w-[55vw] rounded-md shadow-sm px-2 py-2 overflow-y-auto scrollbar-hide">
+              <div className=" w-full rounded-md shadow-sm px-2 py-2 overflow-y-auto scrollbar-hide">
                 <div className="flex gap-2 mb-1">
                   <div className="h-[4rem] w-[4rem] rounded-md overflow-hidden">
                     <img
@@ -764,9 +822,33 @@ const List = () => {
                 <strong className="text-gray-700">
                   Updated On: <span> {selectedJob.updatedOn}</span>
                 </strong>
-                
-                <div className="overflow-x-auto text-black mt-4">
-                  <h3 className="text-lg font-bold">Applicants:</h3>
+                  <div className="text-black">
+                  <p>Job Type: {selectedJob.jobType}</p>
+                   <p>Job Time: {selectedJob.jobTiming}</p>
+                   <p>Working Days: {selectedJob.workingDays}</p>
+                   <p>Job Description: {selectedJob.jobDescription}</p>
+                   <p>Job Type: {selectedJob.jobType}</p>
+                   <p>salary: {selectedJob.salary.minSalary}</p>
+                   <p>salary: {selectedJob.salary.maxSalary}</p>
+                   <p>salary: {selectedJob.salary.currency}</p>
+                   <p>salary: {selectedJob.salary.per}</p>
+                   <p>Skills: {selectedJob.desiredSkills}</p>
+                  </div>
+                <div className="overflow-x-auto text-black">
+                  <div className="flex items-center justify-between gap-1 px-3 py-1 ">
+                    <h3 className="text-lg font-bold">Applicant lists:</h3>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="text"
+                        value={remark}
+                        required
+                        onChange={(e) => setRemark(e.target.value)}
+                        className="py-1 px-2 border"
+                        placeholder="write a remark like 1st Round"
+                      />
+                      <AiFillEdit className="text-xl" />
+                    </div>
+                  </div>
                   <table className="border-collapse border w-full capitalize whitespace-nowrap border-gray-300">
                     <thead>
                       <tr>
@@ -780,200 +862,197 @@ const List = () => {
                           Resume
                         </th>
                         <th className="border border-gray-300 px-2 py-1">
-                          Action
+                          {/* <input
+                            type="text"
+                            value={remark}
+                            required
+                            onChange={(e) => setRemark(e.target.value)}
+                            className=" w-full py-1 px-1"
+                            placeholder="write a remake like 1st Round "
+                          
+                          /> */}
+                          Interview Rounds
                         </th>
                         <th className="border border-gray-300 px-2 py-1">
-                          Status 
+                          Action
                         </th>
+                        {/* <th className="border border-gray-300 px-2 py-1">
+                          Status
+                        </th> */}
                       </tr>
                     </thead>
-                    {/* <tbody>
-                      {selectedJobUsers.map((user, index) => (
-                        <tr key={index}>
-                          <td className="border border-gray-300 px-2 py-1">
-                            {user.imageUrl && (
-                              <img
-                                src={user.imageUrl}
-                                alt={`${user.fullname}'s profile`}
-                                className="h-10 w-10 rounded-full"
-                              />
-                            )}
-                          </td>
-                          <td className="border border-gray-300 px-2 py-1">
-                            {user.fullname}
-                          </td>
-                          <td
-                            onClick={() => handleViewResume(user.resumeId)}
-                            className="border cursor-pointer border-gray-300 text-red-600 px-2 py-1"
-                          >
-                            <GrDocumentUser />
-                          </td>
-                          <td className="border border-gray-300 px-2 py-1">
-                            <Button
-                              onClick={(event) => handleMenuClick(event, user)}
-                              aria-controls="simple-menu"
-                              aria-haspopup="true"
-                            >
-                              Actions
-                            </Button>
-                            <Menu
-                              id="simple-menu"
-                              anchorEl={anchorEl}
-                              keepMounted
-                              open={open}
-                              onClose={handleMenuClose}
-                            >
-                              <MenuItem
-                                onClick={() => handleStatusChange("Accepted")}
-                              >
-                                Accept
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => handleStatusChange("Rejected")}
-                              >
-                                Reject
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => handleStatusChange("Hired")}
-                              >
-                                Hired
-                              </MenuItem>
-                            </Menu>
-                          </td>
-                          <td className="border border-gray-300 px-2 py-1">
-                      {selectedJobUsers.statusByCompany}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody> */}
                     <tbody>
-      {selectedJobUsers.map((user, index) => {
-        const application = applications.find(
-          (app) => app.userId._id === user._id && app.jobId._id === selectedJob._id
-        );
+                      {selectedJobUsers.map((user, index) => {
+                        return (
+                          <tr key={index}>
+                            <td className="border border-gray-300 px-2 py-1">
+                              {user.imageUrl && (
+                                <img
+                                  src={user.imageUrl}
+                                  alt={`${user.fullname}'s profile`}
+                                  className="h-10 w-10 rounded-full"
+                                />
+                              )}
+                            </td>
+                            <td className="border border-gray-300 px-2 py-1">
+                              {user.fullname}
+                            </td>
+                            <td
+                              onClick={() => handleViewResume(user.resumeId)}
+                              className="border cursor-pointer border-gray-300 text-red-600 px-2 py-1"
+                            >
+                              <GrDocumentUser />
+                            </td>
+                            <td className="border border-gray-300 px-2 py-1">
+                              {(() => {
+                                const userId = user._id;
 
-        return (
-          <tr key={index}>
-            <td className="border border-gray-300 px-2 py-1">
-              {user.imageUrl && (
-                <img
-                  src={user.imageUrl}
-                  alt={`${user.fullname}'s profile`}
-                  className="h-10 w-10 rounded-full"
-                />
-              )}
-            </td>
-            <td className="border border-gray-300 px-2 py-1">
-              {user.fullname}
-            </td>
-            <td
-              onClick={() => handleViewResume(user.resumeId)}
-              className="border cursor-pointer border-gray-300 text-red-600 px-2 py-1"
-            >
-              <GrDocumentUser />
-            </td>
-            <td className="border border-gray-300 px-2 py-1">
-              <Button
-                onClick={(event) => handleMenuClick(event, user)}
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-              >
-                Actions
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={() => handleStatusChange("Accepted" , user)}>Accept</MenuItem>
-                <MenuItem onClick={() => handleStatusChange("Rejected" , user)}>Reject</MenuItem>
-                <MenuItem onClick={() => handleStatusChange("Hired" , user)}>Hired</MenuItem>
-              </Menu>
-            </td>
-            <td className="border border-gray-300 px-2 py-1">
-              {application ? application.statusByCompany : 'N/A'}
-            </td>
-          </tr>
-        );
-      })}
-    </tbody>
+                                const application = applications.find(
+                                  (app) =>
+                                    app.userId._id === userId &&
+                                    app.jobId._id === selectedJob._id
+                                );
+
+                                console.log(
+                                  "Current application data:",
+                                  application
+                                ); // Log the found application
+
+                                if (
+                                  application &&
+                                  application.companyUpdated &&
+                                  application.companyUpdated.length > 0
+                                ) {
+                                  return (
+                                    <ul>
+                                      {application.companyUpdated.map(
+                                        (remark, index) => (
+                                          <li key={`${remark}-${index}`}>
+                                            {remark}
+                                          </li>
+                                        )
+                                      )}
+                                    </ul>
+                                  );
+                                }
+
+                                return null; // No application or remarks found
+                              })()}
+                            </td>
+                            <td className="border border-gray-300 px-2 py-1">
+                              <Button
+                                onClick={(event) =>
+                                  handleMenuClick(event, user)
+                                }
+                                aria-controls="simple-menu"
+                                aria-haspopup="true"
+                              >
+                                Actions
+                              </Button>
+                              <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={open}
+                                onClose={handleMenuClose}
+                              >
+                                <MenuItem
+                                  onClick={() =>
+                                    handleStatusChange("Accepted", user)
+                                  }
+                                >
+                                  Take Interview
+                                </MenuItem>
+                                <MenuItem
+                                  onClick={() =>
+                                    handleStatusChange("Rejected", user)
+                                  }
+                                >
+                                  Reject
+                                </MenuItem>
+                                <MenuItem
+                                  onClick={() =>
+                                    handleStatusChange("Hired", user)
+                                  }
+                                >
+                                  Hired
+                                </MenuItem>
+                              </Menu>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
                   </table>
                 </div>
               </div>
-              <div className="mb-2 h-[100%] min-w-[25vw] overflow-hidden  border relative rounded-md bg-blue-700 shadow-sm py-2">
-                <div className="h-[5%]">
-                  <h1 className="text-center font-bold">Chat with HR</h1>
-                </div>
-                <div className="h-[76%] bg-slate-400 relative text-black px-3 py-1 w-full overflow-hidden">
-                  {/* <div className="absolute h-full w-full overflow-y-scroll">
-                    {chatMessages.map((msg, index) => (
-                      <div
-                        key={index}
-                        className={`flex ${
-                          msg.user === "cm" ? "justify-end" : "justify-start"
-                        } mb-2`}
-                      >
-                        <pre
-                          style={preStyle}
-                          className={`resize-none ${
-                            msg.user === "cm"
-                              ? "bg-blue-200 rounded-l-3xl rounded-br-3xl text-start" // User message styling
-                              : "bg-white rounded-r-3xl rounded-bl-3xl text-start" // HR message styling
-                          }  px-3 py-1`} // Adjust max-width if necessary
-                          readOnly
-                        >
-                          {msg.message}{" "}
-                        </pre>
-                      </div>
-                    ))}
-                  </div> */}
-                   <div className="absolute h-full w-full overflow-y-scroll">
-          {chatMessages.length > 0 ? (
-            <div className="text-center text-gray-500">Start the conversation!</div>
+            </div>
           ) : (
-            chatMessages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${msg.user === "cm" ? "justify-end" : "justify-start"} mb-2`}
-              >
-                <pre
-                  style={preStyle}
-                  className={`resize-none ${
-                    msg.user === "cm"
-                      ? "bg-blue-200 rounded-l-3xl rounded-br-3xl text-start"
-                      : "bg-white rounded-r-3xl rounded-bl-3xl text-start"
-                  } px-3 py-1`}
-                  readOnly
-                >
-                  {msg.message}
-                </pre>
-              </div>
-            ))
+            <div className=" h-full w-full flex items-center justify-center uppercase">
+              <p className="text-black font-semibold">
+                select a job to see the details
+              </p>
+            </div>
           )}
-        </div>
+          {/* //chat box starts */}
+          <div className="absolute">
+            <button
+              className="bg-blue-600 fixed bottom-12 right-4 text-white px-3 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300"
+              onClick={() => setIsChatOpen(!isChatOpen)} // Toggle chat box visibility
+            >
+              {isChatOpen ? "Close Chat" : "Chat with HR"}
+            </button>
+            {isChatOpen && (
+              <div className="fixed bottom-10 right-4 w-[25vw] min-w-[350px] bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden mt-4">
+                <div className="bg-blue-600 text-white py-3 px-4 flex justify-between items-center">
+                  <h1 className="text-lg font-semibold">   Chat with HR {selectedJob ? (selectedJob.hrName) : null}</h1>
+                  <button
+                    className="text-white hover:text-gray-200"
+                    onClick={() => setIsChatOpen(false)}
+                  >
+                    &#x2715;
+                  </button>
                 </div>
-                <div className="h-[20%] w-[100%] flex absolute bottom-0">
+                <div className="h-[50vh] bg-gray-100  py-2 overflow-y-scroll">
+                  {chatMessages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`flex ${
+                        msg.user === "cm" ? "justify-end" : "justify-start"
+                      } mb-3`}
+                    >
+                      <div
+                        style={preStyle}
+                        className={`max-w-[70%] px-4 py-2 text-sm shadow-sm ${
+                          msg.user === "cm"
+                            ? "bg-blue-100 text-black rounded-l-2xl"
+                            : "bg-blue-600 text-white rounded-r-2xl"
+                        }`}
+                      >
+                        {msg.message}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center border-t border-gray-300 p-3 bg-gray-50">
                   <textarea
-                    className="bg-white text-black w-[85%] h-[100%] resize-none px-1"
+                    className="flex-1 bg-white border text-black border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all resize-none"
+                    rows="1"
+                    placeholder="Type your message..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                   />
                   <button
-                    className="bg-blue-600 w-[15%] h-[100%]"
+                    className="ml-3 bg-blue-600 text-black px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300"
                     onClick={handleSendMessage}
                   >
                     Send
                   </button>
                 </div>
               </div>
-            </div>
-          ):(
-           <div className=" h-full w-full flex items-center justify-center uppercase">
-             <p className="text-black font-semibold">select a job to see the details</p>
-           </div>
-          )}
+            )}
+          </div>
+          {/* //chat box ends */}
         </div>
       </div>
     </div>

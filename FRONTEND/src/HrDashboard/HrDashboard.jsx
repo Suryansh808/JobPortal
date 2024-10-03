@@ -42,8 +42,8 @@ const HrPDashboard = () => {
         return <ApplicantList />;
       case "InterViewProcessList":
         return <InterViewProcessList/>;
-        case "SelectedByCompany":
-          return <SelectedByCompany />;
+        // case "SelectedByCompany":
+        //   return <SelectedByCompany />;
       case "RejectedByCompany":
         return <RejectedByCompany />;
       case "SelectedApplicant":
@@ -128,7 +128,7 @@ const HrPDashboard = () => {
             >
               Interview Process
             </li>
-            <li
+            {/* <li
               className="mb-4 cursor-pointer"
               onClick={() => {
                 setActiveComponent("SelectedByCompany");
@@ -136,7 +136,7 @@ const HrPDashboard = () => {
               }}
             >
               Seleted By Company
-            </li>
+            </li> */}
             <li
               className="mb-4 cursor-pointer"
               onClick={() => {
@@ -184,7 +184,7 @@ const HrPDashboard = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-6 ">{renderContent()}</div>
+        <div className="flex-1">{renderContent()}</div>
       </div>
       <RecruitmentFooter />
     </div>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from './AuthContext';
 import { BsArrowLeftCircle } from "react-icons/bs";
+import WaterDropGrid from "../Owner/WaterDropGrid";
 
 const CompanyLogInPage = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -47,7 +48,7 @@ const CompanyLogInPage = () => {
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
-      <div className="max-w-md mx-auto my-10 text-blaack px-3 py-3 border rounded shadow-md">
+      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto my-10 text-blaack px-2 py-3 border rounded shadow-md">
       <Link to='/Recruitment' className="text-white flex items-center justify-end" ><BsArrowLeftCircle /></Link>
       <h1 className="text-2xl font-bold text-white text-center mb-2">Company Login</h1>
       <form onSubmit={handleSubmit}>
@@ -57,7 +58,7 @@ const CompanyLogInPage = () => {
           placeholder="Email"
           value={loginData.email}
           onChange={handleChange}
-          className="mb-4 p-2 w-full text-[#000000d5] border rounded"
+          className="mb-4 p-2 w-full text-[#000000d5] border rounded-xl"
           required
         />
         <input
@@ -66,11 +67,11 @@ const CompanyLogInPage = () => {
           placeholder="Password"
           value={loginData.password}
           onChange={handleChange}
-          className="mb-4 p-2 w-full text-[#000] border rounded"
+          className="mb-4 p-2 w-full text-[#000] border rounded-xl"
           required
         />
-         <Link to="/ForgotPassword" className="text-blue-500">Forgot Password?</Link>
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
+         <Link to="/ForgotPassword" className="text-white px-2">Forgot Password?</Link>
+        <button type="submit" className="w-full bg-black text-white p-2 rounded-xl">
           Login
         </button>
         <div className="flex items-center justify-center gap-3 my-3">
@@ -78,6 +79,7 @@ const CompanyLogInPage = () => {
         </div>
       </form>
     </div>
+    <WaterDropGrid/>
     </div>
   );
 };

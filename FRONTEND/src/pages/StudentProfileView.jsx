@@ -21,7 +21,7 @@ const StudentProfileView = () => {
       console.log("Applications data:", applications);
       if (response.status === 200) {
         // Filter applications where status is 'pending'
-        const pendingApplications = applications.filter(app => app.status === 'pending' && app.userId._id === userId);
+        const pendingApplications = applications.filter(app => app.status === 'Pending' && app.userId._id === userId);
         console.log("pending jobs",pendingApplications);
         setJobApplications(pendingApplications);
       } else {
@@ -144,9 +144,9 @@ const StudentProfileView = () => {
                     <td className="px-4 py-2 border-b border-gray-200">
                       <span
                         className={`px-3 py-1 text-sm font-semibold rounded-full ${
-                          application.status === "pending"
+                          application.status === "Pending"
                             ? "bg-yellow-100 text-yellow-800"
-                            : application.status === "accepted"
+                            : application.status === "Accepted"
                             ? "bg-green-100 text-green-800"
                             : "bg-red-100 text-red-800" // Handle rejected status
                         }`}

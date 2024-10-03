@@ -20,7 +20,7 @@ const Recruitment = () => {
             <div>
               <h2>Are you a Looking for a job?</h2>
               <p>Kickstart your career by applying for the latest job opportunities tailored for students. Explore roles that match your skills and start your journey towards a successful career</p>
-              <button><Link to='/StudentLogIn'>Apply</Link></button>
+             <Link to='/StudentLogIn'><button>Apply</button></Link>
             </div>
           </div>
           <div style={{ backgroundImage: 'conic-gradient(black 0deg, black 90deg, #fefdfe 90deg, #fefdfe 180deg, #fefdfe 180deg, #fefdfe 270deg, #9bd7e0 270deg)' }}>
@@ -52,7 +52,7 @@ const Recruitment = () => {
             <div>
               <h2>Are you a Looking for hire Talent?</h2>
               <p>Join our network of hiring partner and gain access to a pool of talented students eager to start their careers. Find the perfect candidates for your company's needs</p>
-              <button><Link to='/CompanyLogInPage' >Hiring</Link></button>
+              <Link to='/CompanyLogInPage'><button>Hiring</button></Link>
             </div>
           </div>
           <div style={{ backgroundColor: 'white' }}>
