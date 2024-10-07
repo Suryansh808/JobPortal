@@ -27,6 +27,7 @@
 }
 .update1 h2{
     text-align: center;
+    cursor: pointer;
 }
 .update2 form input,textarea{
     padding: 5px;

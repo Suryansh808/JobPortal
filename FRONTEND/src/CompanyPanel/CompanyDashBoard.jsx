@@ -15,7 +15,7 @@ const CompanyDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState("Profile");
 
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout} = useAuth();
   const navigate = useNavigate();
 
 
@@ -60,7 +60,7 @@ const CompanyDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-black h-[8vh] text-white p-3 flex justify-between items-center border-b">
+      <header className="bg-black h-[8vh] text-white p-3 flex justify-between items-center border-b sticky top-0 z-50">
         <h1 className="text-xl">HIRING PARTNER</h1>
         <button
           className="bg-[#1d1c1c60] text-white p-2 rounded"
@@ -79,14 +79,14 @@ const CompanyDashboard = () => {
           } transition-transform duration-300 ease-in-out z-50`}
         >
           <button
-            className="text-xl p-4 text-right w-full"
+            className="text-xl pr-6 text-right w-full"
             onClick={toggleSidebar}
           >
             &times;
           </button>
-          <ul className="p-4">
+          <ul className="pl-4">
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3  cursor-pointer"
               onClick={() => {
                 setActiveComponent("Profile/:companyId");
                 toggleSidebar();
@@ -95,7 +95,7 @@ const CompanyDashboard = () => {
               Profile
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3 cursor-pointer"
               onClick={() => {
                 setActiveComponent("PostJobs");
                 // navigate("/CompanyPanel/JobPost");
@@ -105,7 +105,7 @@ const CompanyDashboard = () => {
               Post Jobs
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3 cursor-pointer"
               onClick={() => {
                 setActiveComponent("HRupdates");
                 // navigate("/company-dashboard/hr-updates");
@@ -115,7 +115,7 @@ const CompanyDashboard = () => {
               HR Updates
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3 cursor-pointer"
               onClick={() => {
                 setActiveComponent("List");
                 // navigate("/company-dashboard/hr-updates");
@@ -125,7 +125,7 @@ const CompanyDashboard = () => {
               List
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3 cursor-pointer"
               onClick={() => {
                 setActiveComponent("Candidate");
                 // navigate("/company-dashboard/candidates");
@@ -135,7 +135,7 @@ const CompanyDashboard = () => {
               Candidates Update
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3 cursor-pointer"
               onClick={() => {
                 setActiveComponent("Interview");
                 // navigate("/company-dashboard/interviews");
@@ -145,7 +145,7 @@ const CompanyDashboard = () => {
               Interview Update
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3 cursor-pointer"
               onClick={() => {
                 setActiveComponent("RejectedCandidates");
                 // navigate("/company-dashboard/interviews");
@@ -155,7 +155,7 @@ const CompanyDashboard = () => {
               Rejected candidates
             </li>
             <li
-              className="mb-4 cursor-pointer"
+              className="mb-3 cursor-pointer"
               onClick={() => {
                 setActiveComponent("Payment");
                 // navigate("/company-dashboard/interviews");
@@ -164,13 +164,13 @@ const CompanyDashboard = () => {
             >
               Payment
             </li>
-          </ul>
-          <div>
-           {/* loggedin btn code */}
-           <button onClick={handleLogout} className="bg-red-500 text-white p-2 rounded">
+            <li
+            className="mb-3 cursor-pointer">
+              <button onClick={handleLogout} className="bg-red-500 text-white p-2 rounded">
         Log Out
       </button>
-          </div>
+            </li>
+          </ul>
         </div>
 
         {/* Content Area */}

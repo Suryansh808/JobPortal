@@ -27,7 +27,7 @@ const CompanyProfile = () => {
 
         const data = await response.json();
         setCompanyData(data);
-        
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -77,43 +77,103 @@ const CompanyProfile = () => {
 
   return (
     <div id="CompanyProfile">
-      <div className="First">
-        <div className="Company-Detail">
+      <div className="first">
+        <div className="first-div">
           {companyData ? (
             <div>
               <img className="w-20 h-20 rounded-full" src={`http://localhost:5000/${companyData.companyLogo}`} alt="Company Logo" />
               <p>Your Position: {companyData.position}</p>
               <p>Email: {companyData.email}</p>
               <h1>Company Name: {companyData.companyName}</h1>
-              <p>Type: {companyData.companyType}</p>
-              <p>Business Model: {companyData.businessmodel}</p>
+
+              {/* <p>Business Model: {companyData.businessmodel}</p> */}
             </div>
           ) : (
             <p>No company data found</p>
           )}
         </div>
-        <div className="job-detail">
+        <div className="first-div">
+          <h2>JOB</h2>
+          <div className="detail">
+            <span>005</span> <h2>TOTAL POSTED JOB</h2>
+          </div>
+          <div className="detail">
+            <span style={{ backgroundColor: 'orange' }}>005</span><h2>ACTIVE JOB</h2>
+          </div>
 
         </div>
-        
-    
-        
 
-   
+        <div className="first-div">
+          <h2>APPLICANT</h2>
+          <div className="detail">
+            <span>005</span> <h2>UNDER REVIEW</h2>
+          </div>
+          <div className="detail" >
+            <span style={{ backgroundColor: 'orange' }}>005</span><h2>HIRED</h2>
+          </div>
+        </div>
       </div>
-      <div className="Second">
-      <div className="calender">
-        <iframe
+      <div className="second">
+        <h2>HIRING PIPELINE</h2>
+        <table>
+          <tr>
+            <th style={{textAlign:'left'}}> <span >ROLE</span></th>
+            <th></th>
+            <th>REQUIREMENT</th>
+            <th>TOTAL</th>
+            <th>PROCESS</th>
+            <th>HIRED</th>
+          </tr>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+        </table>
+      </div>
+      <div className="third">
+
+      
+      <iframe
         src={`https://calendar.google.com/calendar/embed?src=${encodeURIComponent(companyData.email)}&ctz=Asia%2FKolkata`}
         
-      ></iframe>
-      </div>
+      ></iframe> 
 
-        
-        
-      </div>
+</div>
+
     </div>
   );
 };
 
+
+
 export default CompanyProfile;
+
+ 
