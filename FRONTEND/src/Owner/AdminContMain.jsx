@@ -69,9 +69,64 @@ const AdminControlMain = () => {
           </div>
 
           <div className='update1'>
-            <h2 onClick={() => toggleSection('secondSlider')}>SECOND SLIDER SERVICES </h2>
+            <h2 onClick={() => toggleSection('overview')}>OVER-VIEW </h2>
 
-            {openSections.secondSlider && (
+            {openSections.overview && (
+              <div className='update2'>
+                <form action="">
+                  <textarea placeholder='Description' rows="6" required></textarea>
+                  <button>INSERT</button>
+                </form>
+              </div>
+            )}
+          </div>
+
+          <div className='update1'>
+            <h2 onClick={() => toggleSection('industry')}>INDUSTRIES </h2>
+
+            {openSections.industry && (
+              <div className='update2'>
+                <form action="">
+                  <input type="text" placeholder='Enter Services TITLE' required />
+                  <input type="file" required />
+                  <button>INSERT</button>
+                  <textarea placeholder='Description' rows="6" required></textarea>
+                </form>
+                <table>
+                  <tr>
+                    <th>TITLE</th>
+                    <th>IMAGE</th>
+                    <th>ACTION</th>
+                  </tr>
+                  <tr>
+                    <td>One</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td>two</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td>three</td>
+                    <td><img src="" alt="img" /></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+
+                  
+                </table>
+              </div>
+            )}
+          </div>
+
+
+
+
+          <div className='update1'>
+            <h2 onClick={() => toggleSection('service')}>SERVICES </h2>
+
+            {openSections.service && (
               <div className='update2'>
                 <form action="">
                   <input type="text" placeholder='Enter Services TITLE' required />
@@ -108,9 +163,9 @@ const AdminControlMain = () => {
           </div>
 
           <div className='update1'>
-            <h2 onClick={() => toggleSection('thirdSlider')}>THIRD SLIDER PROJECT </h2>
+            <h2 onClick={() => toggleSection('project')}>PROJECT </h2>
 
-            {openSections.thirdSlider && (
+            {openSections.project && (
               <div className='update2'>
                 <form action="">
                   <input type="text" placeholder='Enter Services TITLE' required />

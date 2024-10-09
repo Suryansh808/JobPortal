@@ -30,7 +30,9 @@ const RecruitmentNavbar = () => {
                     <div className="careeroption" onClick={toggleMobileMenu} ><h1>&#9776;</h1></div>
 
                     <div>
-                        <ToggleComponent />
+                        {/* <ToggleComponent /> */}
+                        <Link to='/'> <ToggleComponent /></Link>
+
                     </div>
                 </div>
                 {isMobileMenuOpen && (
