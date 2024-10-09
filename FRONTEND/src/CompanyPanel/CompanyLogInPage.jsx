@@ -48,7 +48,7 @@ const CompanyLogInPage = () => {
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
-      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto my-10 text-blaack px-2 py-3 border rounded shadow-md">
+      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto my-10 text-blaack px-2 py-3 rounded shadow-md">
       <Link to='/Recruitment' className="text-white flex items-center justify-end" ><BsArrowLeftCircle /></Link>
       <h1 className="text-2xl font-bold text-white text-center mb-2">Company Login</h1>
       <form onSubmit={handleSubmit}>

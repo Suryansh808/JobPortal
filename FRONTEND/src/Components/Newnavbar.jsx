@@ -124,7 +124,7 @@ const NewNavbar = () => {
                             </svg>
                         </label>
                         <div onClick={() =>{toggleDropdown();}}>
-                        <ToggleComponent />
+                        <Link to='/Recruitment'> <ToggleComponent /></Link>
                         </div>
                         
                     </div>

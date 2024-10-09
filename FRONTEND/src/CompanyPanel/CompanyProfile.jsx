@@ -1,12 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-// import { useParams } from 'react-router-dom'; 
+
 const CompanyProfile = () => {
   const [companyData, setCompanyData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // const { companyName } = useParams();
 
   useEffect(() => {
     const fetchCompanyData = async () => {
@@ -16,7 +14,7 @@ const CompanyProfile = () => {
         setLoading(false);
         return;
       }
-  
+
       try {
         const response = await fetch(`http://localhost:5000/api/company`, {
           headers: {
@@ -26,100 +24,156 @@ const CompanyProfile = () => {
         if (!response.ok) {
           throw new Error('Company not found');
         }
-  
+
         const data = await response.json();
-        console.log(data);
         setCompanyData(data);
+
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchCompanyData();
   }, []);
-  
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-  if (loading) return <div>Loading...</div>;
+
+  useEffect(() => {
+    if (companyData) {
+      // Load the Google Charts library
+      const loadGoogleCharts = () => {
+        const script = document.createElement('script');
+        script.src = "https://www.gstatic.com/charts/loader.js";
+        script.onload = () => {
+          window.google.charts.load('current', { packages: ['corechart'] });
+          window.google.charts.setOnLoadCallback(drawChart);
+        };
+        document.body.appendChild(script);
+      };
+
+      const drawChart = () => {
+        const data = window.google.visualization.arrayToDataTable([
+          ['Applicant', 'Mhl'],
+          ['PROCESS', 2],
+          ['HIRED', 5],
+          ['REJECTED', 3],
+        ]);
+
+        const options = {
+          title: 'Total Application 10',
+          is3D: true,
+        };
+
+        const chart = new window.google.visualization.PieChart(document.getElementById('myChart'));
+        chart.draw(data, options);
+      };
+
+      loadGoogleCharts();
+    }
+  }, [companyData]); // Only run when companyData is available
+
+  if (loading) return <p>Loading...</p>;
   if (error) return <div>Error: {error}</div>;
 
-  const students = [
-    { name: 'John Doe', status: 'Hired', position: 'Software Engineer', date: '2024-09-01' },
-    { name: 'Jane Smith', status: 'Rejected', position: 'Marketing Intern', date: '2024-09-05' },
-    { name: 'Alex Brown', status: 'Pending', position: 'Data Analyst', date: '2024-09-10' },
-  ];
-
-  const overview = {
-    totalApplied: students.length,
-    totalHired: students.filter(s => s.status === 'Hired').length,
-    totalRejected: students.filter(s => s.status === 'Rejected').length,
-    totalPending: students.filter(s => s.status === 'Pending').length,
-  };
-
-
   return (
-    <div>
-     {companyData ? (
-        <div>
-          <img className="w-40 h-40 rounded-full" src={`http://localhost:5000/${companyData.companyLogo}`} alt="CompanyLogo" />
-          <h1>Company Name: {companyData.companyName}</h1>
-          <p>Type: {companyData.companyType}</p>
-          <p>Position: {companyData.position}</p>
-          <p>Business Model: {companyData.businessmodel}</p>
-          <p>Email: {companyData.email}</p>
-          <p>CompanyId: {companyData.companyId}</p>
-        </div>
-      ) : (
-        <p>No company data found</p>
-      )}
+    <div id="CompanyProfile">
+      <div className="first">
+        <div className="first-div">
+          {companyData ? (
+            <div>
+              <img className="w-20 h-20 rounded-full" src={`http://localhost:5000/${companyData.companyLogo}`} alt="Company Logo" />
+              <p>Your Position: {companyData.position}</p>
+              <p>Email: {companyData.email}</p>
+              <h1>Company Name: {companyData.companyName}</h1>
 
-<div className="bg-white shadow-md text-black rounded-lg p-4 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Overview</h2>
-        <div className="grid grid-cols-4 gap-4">
-          <div className="bg-blue-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Applied</h3>
-            <p>{overview.totalApplied}</p>
+              {/* <p>Business Model: {companyData.businessmodel}</p> */}
+            </div>
+          ) : (
+            <p>No company data found</p>
+          )}
+        </div>
+        <div className="first-div">
+          <h2>JOB</h2>
+          <div className="detail">
+            <span>005</span> <h2>TOTAL POSTED JOB</h2>
           </div>
-          <div className="bg-green-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Hired</h3>
-            <p>{overview.totalHired}</p>
+          <div className="detail">
+            <span style={{ backgroundColor: 'orange' }}>005</span><h2>ACTIVE JOB</h2>
           </div>
-          <div className="bg-red-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Rejected</h3>
-            <p>{overview.totalRejected}</p>
+
+        </div>
+
+        <div className="first-div">
+          <h2>APPLICANT</h2>
+          <div className="detail">
+            <span>005</span> <h2>UNDER REVIEW</h2>
           </div>
-          <div className="bg-yellow-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Pending</h3>
-            <p>{overview.totalPending}</p>
+          <div className="detail" >
+            <span style={{ backgroundColor: 'orange' }}>005</span><h2>HIRED</h2>
           </div>
         </div>
       </div>
-     <table className="min-w-full bg-white border text-black border-gray-200">
-      
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="py-2 px-4 border">Student Name</th>
-            <th className="py-2 px-4 border">Status</th>
-            <th className="py-2 px-4 border">Position Applied For</th>
-            <th className="py-2 px-4 border">Date of Application</th>
+      <div className="second">
+        <h2>HIRING PIPELINE</h2>
+        <table>
+          <tr>
+            <th style={{textAlign:'left'}}> <span >ROLE</span></th>
+            <th></th>
+            <th>REQUIREMENT</th>
+            <th>TOTAL</th>
+            <th>PROCESS</th>
+            <th>HIRED</th>
           </tr>
-        </thead>
-        <tbody>
-          {students.map((student, index) => (
-            <tr key={index} className="hover:bg-gray-100">
-              <td className="py-2 px-4 border">{student.name}</td>
-              <td className="py-2 px-4 border">{student.status}</td>
-              <td className="py-2 px-4 border">{student.position}</td>
-              <td className="py-2 px-4 border">{student.date}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style={{textAlign:'left'}}>Software Engineer</td>
+            <td><span>&#9673;</span></td>
+            <td>5</td>
+            <td>100</td>
+            <td>50</td>
+            <td>3</td>
+          </tr>
+        </table>
+      </div>
+      <div className="third">
+
+      
+      <iframe
+        src={`https://calendar.google.com/calendar/embed?src=${encodeURIComponent(companyData.email)}&ctz=Asia%2FKolkata`}
+        
+      ></iframe> 
+
+</div>
+
     </div>
   );
 };
 
+
+
 export default CompanyProfile;
+
+ 

@@ -19,7 +19,9 @@ const ApplicantList = ({ userId }) => {
         const response = await axios.get(`http://localhost:5000/api/applications`);
         const fetchedApplications = response.data;
         console.log(fetchedApplications);
-        setFilteredApplications(fetchedApplications.filter(app => app.status === 'Pending'));
+        const hrname = localStorage.getItem('HrName');
+        console.log(hrname)
+        setFilteredApplications(fetchedApplications.filter(app => app.status === 'Pending' && app.hrName === hrname));
         setApplications(fetchedApplications);
         // Filter to show only applications with status 'pending'
       } catch (error) {

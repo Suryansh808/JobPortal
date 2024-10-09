@@ -4,6 +4,9 @@ import axios from "axios";
 
 const JobPost = () => {
 
+
+  
+
   const [jobDetails, setJobDetails] = useState({
     jobTitle: "",
     companyName:"",
@@ -30,6 +33,11 @@ const JobPost = () => {
   const [editingIndex, setEditingIndex] = useState(null); // To track which job is being edited
   const [confirmationOpen, setConfirmationOpen] = useState(false); // Confirmation dialog state
   const [selectedJob, setSelectedJob] = useState(null); // Job to be sent to HR
+
+  const [postedList,setpostedList] = useState();
+  const [jobLimit,setjobLimit] = useState();
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -123,7 +131,7 @@ const handleSubmit = async (e) => {
 const [companyName, setCompanyName] = useState(null);  // Ensure companyName is properly set
 
   // Combined useEffect for fetching company name and jobs
-  useEffect(() => {
+  // useEffect(() => {
     const fetchCompanyNameAndJobs = async () => {
       // Fetch company name from localStorage
       const storedCompanyName = localStorage.getItem('companyName');
@@ -142,6 +150,13 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
           console.log("API Response:", response.data); // Debugging line
           setJobs(response.data.filter(job => !job.jobtoadmin));
           console.log("Fetched from database:", response.data);
+
+          // const postedList = (response.data.filter(job => job.jobtoadmin).length);
+          setpostedList(response.data.filter(job => job.jobtoadmin).length);
+      console.log(postedList);
+
+          // response.data.filter(job => job.jobtoadmin).length
+          con
         } catch (error) {
           console.error("Error fetching jobs:", error);
         }
@@ -149,6 +164,7 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
         console.log("Company name is missing in localStorage."); // Debugging line
       }
     };
+  useEffect(() => {
     fetchCompanyNameAndJobs(); // Invoke the combined function
   }, []); // Empty dependency array ensures it runs once on component mount
 
@@ -170,28 +186,37 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
 
  
   const handleSendToHR = (job) => {
-    setSelectedJob(job);
+      setSelectedJob(job);
     setConfirmationOpen(true);
+
+    
   };
 
   const handleConfirmSendToHR = async () => {
     if (!selectedJob) return;
+    
 
     const updatedJob = { ...selectedJob, jobtoadmin: true, admintohr: false };
     try {
       // const response = 
       await axios.put(`http://localhost:5000/api/jobs/${selectedJob._id}`, updatedJob);
       setJobs((prevJobs) => prevJobs.filter((job) => job._id !== selectedJob._id));
+      
     } catch (error) {
       console.error('Error sending job to HR:', error.response?.data?.message || error.message);
     }
+    fetchCompanyNameAndJobs();
+   
     setConfirmationOpen(false);
     setSelectedJob(null);
+  
+
   };
 
   const handleCancelSendToHR = () => {
     setConfirmationOpen(false);
     setSelectedJob(null);
+    danish();
   };
 
   const [companyLogo ,setCompanyLogo] = useState(null);
@@ -216,6 +241,7 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
   
         const data = await response.json();
         console.log("response data",data);
+        setjobLimit(data.jobPostLimit);
         setCompanyLogo(data.companyLogo);
       } catch (err) {
         setError(err.message);
@@ -227,7 +253,7 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
 
 
   return (
-    <div className="flex flex-col items-center justify-center text-zinc-900 p-4">
+    <div className="flex flex-col items-center justify-center text-zinc-900 p-4" > 
       <h2 className="text-2xl font-bold mb-4 text-white">Job Listings of {companyName}</h2>
       
       <table className="min-w-full border-collapse block md:table">
@@ -278,12 +304,29 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
                 >
                   Edit
                 </Button>
-                <Button
+
+
+                {
+  postedList < jobLimit ? (
+    <Button
+      onClick={() => handleSendToHR(job)}
+      className="bg-white text-black border p-1 rounded"
+    >
+      Update
+    </Button>
+  ) : (
+    <button className="bg-blue-500 text-white p-1 rounded">Subscribe</button>
+  )
+}
+
+
+
+                {/* <Button
                   onClick={() => handleSendToHR(job)}
                   className="bg-white text-black border  p-1 rounded"
                 >
                   Update
-                </Button>
+                </Button> */}
               </td>
             </tr>
           ))}

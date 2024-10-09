@@ -497,15 +497,12 @@ const List = () => {
 
   //update msg to user start
   const [remark, setRemark] = useState("");
-  const handleStatusChange = (userRemark) => {
-    if (!selectedApplication || !selectedApplication._id) {
-      console.error("No selected application or missing _id");
-      return;
-    }
-    const id = selectedApplication._id;
+  const handleStatusChange = (userRemark, user, selectedJob) => {
+    
+    const id = user._id;
     const jobId = selectedJob._id;
     axios
-      .put(`http://localhost:5000/api/applications/statusByCompany/${id}`, {
+      .put(`http://localhost:5000/api/applications/showtouser/${id}`, {
         showToUser: userRemark,
         jobId: jobId,
       })
@@ -519,13 +516,13 @@ const List = () => {
       });
   };
 
-  const handleUpdateStatus = () => {
-    // const wordCount = remark.trim().split(/\s+/).length;
+  const handleUpdateStatus = (user, selectedJob) => {
+   
 
     if (remark.trim() === "" || remark.length < 6) {
       alert("Please enter at least 6 words in the remark.");
     } else {
-      handleStatusChange(remark);
+      handleStatusChange(remark , user, selectedJob);
     } 
   };
   //update msg to user end
@@ -579,7 +576,7 @@ const List = () => {
 
       try {
         // Immediately update local chat state
-        // setChatMessages((prevMessages) => [...prevMessages, chatMessage]);
+        //  setChatMessages((prevMessages) => [...prevMessages, chatMessage]);
         setNewMessage("");
 
         // Send the message to the server
@@ -627,7 +624,7 @@ const List = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(() => {
+  // useEffect(() => {
     const fetchApplications = async () => {
       try {
         const response = await axios.get(
@@ -642,6 +639,8 @@ const List = () => {
         setLoading(false);
       }
     };
+
+    useEffect(() => {
     fetchApplications();
   }, []);
 
@@ -675,6 +674,10 @@ const List = () => {
       console.error("Error updating:", error);
       // alert("Failed to update");
     }
+    setTimeout(() => {
+      fetchApplications();
+  }, 500); 
+
   };
 
   // here ends
@@ -974,7 +977,7 @@ const List = () => {
                             })()}
                           </td>
                           <td className="border border-gray-300 px-2 py-1">
-                            <Button onClick={() => handleUpdateStatus()}>
+                            <Button onClick={() => handleUpdateStatus(user, selectedJob)}>
                               Update status
                             </Button>
                           </td>

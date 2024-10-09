@@ -1,15 +1,48 @@
+// const multer = require("multer");
+// const { CloudinaryStorage } = require("multer-storage-cloudinary");
+// const cloudinary = require("./cloudinaryConfig");
+
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: "user_images",  // Folder in Cloudinary where images will be stored
+//     allowedFormats: ["jpg", "jpeg", "png"],
+//   },
+// });
+
+// const userpicture = multer({ storage });
+
+// module.exports = userpicture;
+// multerConfig.js
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("./cloudinaryConfig");
 
-const storage = new CloudinaryStorage({
+// Storage for user images
+const imageStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "user_images",  // Folder in Cloudinary where images will be stored
+    folder: "user_images",  // Folder in Cloudinary for user images
     allowedFormats: ["jpg", "jpeg", "png"],
   },
 });
 
-const userpicture = multer({ storage });
+// Storage for offer letters
+const offerLetterStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "offer_letters", // Folder in Cloudinary for offer letters
+    allowedFormats: ["pdf", "doc", "docx"], // Allow specific formats for offer letters
+  },
+});
 
-module.exports = userpicture;
+// Multer instance for user pictures
+const uploadUserImage = multer({ storage: imageStorage });
+
+// Multer instance for offer letters
+const uploadOfferLetter = multer({ storage: offerLetterStorage });
+
+module.exports = {
+  uploadUserImage,
+  uploadOfferLetter,
+};

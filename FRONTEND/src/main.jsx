@@ -12,6 +12,7 @@ import './Style/navbar2career.css'
 import './Style/careerpagefooter.css'
 import './Style/switch.css'
 import './Style/mainpage.css'
+import './Style/Company.css'
 
 
 import { ApplicationStatusProvider } from './ApplicationStatusContext';

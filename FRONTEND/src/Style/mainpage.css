@@ -1,19 +1,54 @@
 #mainpage{
-    height:80vh;
-    padding: 30px;
-    text-align: center;
-    transform: translateY(100px); /* Start position */
-    animation: fadeInUp 0.5s forwards; /* Animation name and duration */
+    /* height:80vh; */
+    padding: 10px;
+    /* text-align: center; */
+    /* transform: translateY(100px); */
+    /* animation: fadeInUp 0.5s forwards;  */
     margin-bottom: 50px;
+
 }
-#mainpage div{
-    padding: 20px;
+#mainpage h1{
+    font-size: 30px;
+    text-align: center;
+
 }
-#mainpage div h2{
-    transform: translateX(-100px); /* Start position */
-    animation: fadeInUp 0.5s forwards; /* Animation name and duration */
+
+#mainpage .list h2{
+    text-align: center;
+    margin-bottom: 10px;
 }
-#mainpage div p{
-    margin-top: 20px;
+#mainpage .list{
+/* height: fit-content; */
+    margin: 20px 10px;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid white;
+    overflow: hidden;
+    text-align: center;
+    
+}
+#mainpage .list img{
+    width: 500px;
+  border-radius: 20px;
+  padding:10px;
+    float: left;
+    transform: translateX(-100px);
+    animation: fadeInUp 2s forwards; 
+}
+#mainpage .list p{
     text-align: justify;
+    transform: translateX(100px);
+    animation: fadeInUp 2s forwards; 
 }
+#mainpage .list a{
+    text-align: center;
+    background-color: orange;
+border-radius: 10px;
+    padding: 5px 30px;
+    
+}
+
+/* #mainpage div h2{
+    transform: translateX(-100px); 
+    animation: fadeInUp 0.5s forwards; 
+}  */

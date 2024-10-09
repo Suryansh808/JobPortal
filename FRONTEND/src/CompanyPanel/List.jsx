@@ -471,20 +471,21 @@ const List = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [applications, setApplications] = useState([]);
   // Fetch applications when the component mounts
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        // Replace with your actual API endpoint
-        const response = await fetch("http://localhost:5000/api/applications");
-        const data = await response.json();
-        // console.log("getting application data", data);
-        setApplications(data); // Set the fetched applications data
-        // console.log(applications);
-      } catch (error) {
-        console.error("Error fetching applications:", error);
-      }
-    };
+  // useEffect(() => {
+  const fetchApplications = async () => {
+    try {
+      // Replace with your actual API endpoint
+      const response = await fetch("http://localhost:5000/api/applications");
+      const data = await response.json();
+      // console.log("getting application data", data);
+      setApplications(data); // Set the fetched applications data
+      // console.log(applications);
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchApplications();
   }, []);
 
@@ -546,13 +547,14 @@ const List = () => {
     } else if (newStatus === "Hired") {
       remark1 = "Hired";
     }
-
+    // alert(remark1);
     axios
       .put(`http://localhost:5000/api/applications/statusByCompany/${id}`, {
         statusByCompany: newStatus,
         jobId: jobId,
         remark: remark1,
       })
+      
       .then((response) => {
         const updatedApplication = response.data; // Get the updated application from the response
         console.log("Updated Application:", updatedApplication);
@@ -562,6 +564,9 @@ const List = () => {
       .catch((error) => {
         console.error("Error updating application status:", error);
       });
+      setTimeout(() => {
+        fetchApplications();
+    }, 500); 
   };
 
   const handleMenuClose = () => {
@@ -640,7 +645,8 @@ const List = () => {
   const navigate = useNavigate();
   const handleViewResume = (resumeId) => {
     // navigate(`/Cv/${resumeId}`);
-    window.open(`/Cv/${resumeId}`, '_blank');
+    // http://localhost:5173/#/Cv/67039eaeae86f646fbe191b2
+    window.open(`/#/Cv/${resumeId}`, "_blank");
   };
 
   const preStyle = {
@@ -822,18 +828,18 @@ const List = () => {
                 <strong className="text-gray-700">
                   Updated On: <span> {selectedJob.updatedOn}</span>
                 </strong>
-                  <div className="text-black">
+                <div className="text-black">
                   <p>Job Type: {selectedJob.jobType}</p>
-                   <p>Job Time: {selectedJob.jobTiming}</p>
-                   <p>Working Days: {selectedJob.workingDays}</p>
-                   <p>Job Description: {selectedJob.jobDescription}</p>
-                   <p>Job Type: {selectedJob.jobType}</p>
-                   <p>salary: {selectedJob.salary.minSalary}</p>
-                   <p>salary: {selectedJob.salary.maxSalary}</p>
-                   <p>salary: {selectedJob.salary.currency}</p>
-                   <p>salary: {selectedJob.salary.per}</p>
-                   <p>Skills: {selectedJob.desiredSkills}</p>
-                  </div>
+                  <p>Job Time: {selectedJob.jobTiming}</p>
+                  <p>Working Days: {selectedJob.workingDays}</p>
+                  <p>Job Description: {selectedJob.jobDescription}</p>
+                  <p>Job Type: {selectedJob.jobType}</p>
+                  <p>salary: {selectedJob.salary.minSalary}</p>
+                  <p>salary: {selectedJob.salary.maxSalary}</p>
+                  <p>salary: {selectedJob.salary.currency}</p>
+                  <p>salary: {selectedJob.salary.per}</p>
+                  <p>Skills: {selectedJob.desiredSkills}</p>
+                </div>
                 <div className="overflow-x-auto text-black">
                   <div className="flex items-center justify-between gap-1 px-3 py-1 ">
                     <h3 className="text-lg font-bold">Applicant lists:</h3>
@@ -1005,7 +1011,10 @@ const List = () => {
             {isChatOpen && (
               <div className="fixed bottom-10 right-4 w-[25vw] min-w-[350px] bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden mt-4">
                 <div className="bg-blue-600 text-white py-3 px-4 flex justify-between items-center">
-                  <h1 className="text-lg font-semibold">   Chat with HR {selectedJob ? (selectedJob.hrName) : null}</h1>
+                  <h1 className="text-lg font-semibold">
+                    {" "}
+                    Chat with HR {selectedJob ? selectedJob.hrName : null}
+                  </h1>
                   <button
                     className="text-white hover:text-gray-200"
                     onClick={() => setIsChatOpen(false)}

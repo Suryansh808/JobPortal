@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
-const userpicture = require("../multerConfig");
+const {uploadUserImage} = require("../multerConfig");
 const router = express.Router();
 const Resume = require('../models/resumeModel');
 const UserIdCounter = require("../models/userIdCounter");
@@ -20,7 +20,7 @@ router.post("/check-user", async (req, res) => {
   res.json({ exists: !!user });
 });
 
-router.post("/send-otp", userpicture.single("image"), async (req, res) => {
+router.post("/send-otp", uploadUserImage.single("image"), async (req, res) => {
   const { fullname, phone, email } = req.body;
   // Check if email and phone are provided
   if (!email || !phone) {

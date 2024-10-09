@@ -3,8 +3,8 @@ import { Routes, Route} from "react-router-dom";
 import { HashRouter } from "react-router-dom";
 import Home from "./Components/Home";
 // import Navbar from "./Components/Navbar";
-import WhatWeDo from "./Components/WhatWeDo";
-import WhoWeAre from "./Components/WhoWeAre";
+// import WhatWeDo from "./Components/WhatWeDo";
+// import WhoWeAre from "./Components/WhoWeAre";
 import Insights from "./Components/Insights";
 import Career from "./Components/Career";
 import ContactUs from "./Components/ContactUs";
@@ -95,8 +95,8 @@ const App = () => {
         <Routes>
           <Route index path="/" element={<Home/>} />
           {/* <Route index path="/HeroAnimate" element={<SmoothScrollHero/>} /> */}
-          <Route index path="/what-we-do" element={<WhatWeDo/>} />
-          <Route index path="/who-we-are" element={<WhoWeAre/>} />
+          {/* <Route index path="/what-we-do" element={<WhatWeDo/>} />
+          <Route index path="/who-we-are" element={<WhoWeAre/>} /> */}
           <Route index path="/insights" element={<Insights/>} />
           <Route index path="/newsroom" element={<Newsroom/>} />
           <Route index path="/career" element={<Career/>} />

@@ -1,9 +1,13 @@
 // routes/applications.js
 const express = require('express');
+const { uploadOfferLetter } = require("../multerConfig");
+const multer = require("multer");
 const mongoose = require('mongoose');
 const router = express.Router();
 const Application = require('../models/application');
+const multerStorageCloudinary = require("multer-storage-cloudinary");
 const Job = require('../models/comapnyjobpost');
+const cloudinary = require("../cloudinaryConfig");
 
  const currentDate = new Date();
     const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getFullYear()}`
@@ -159,13 +163,14 @@ router.post("/api/updateCompany", async (req, res) => {
 router.put('/statusByCompany/:id', async (req, res) => {
   try {
     const { id} = req.params;
-    const { statusByCompany ,jobId , remark , showToUser } = req.body;
-   console.log("getting value from frontend" , req.body , showToUser);
+    const { statusByCompany ,jobId , remark } = req.body;
+   console.log("getting value from frontend" , req.body);
 
     if (!statusByCompany) {
       return res.status(400).json({ message: 'statusByCompany is required' });
     }
 
+    
   // Validate the ID format
   if (!mongoose.isValidObjectId(id)) {
     return res.status(400).json({ message: 'Invalid application ID' });
@@ -173,7 +178,7 @@ router.put('/statusByCompany/:id', async (req, res) => {
 
      const application = await Application.findOneAndUpdate(
       { userId: id , jobId: jobId}, // Ensure it matches both ID and userId
-      { statusByCompany : statusByCompany, $push: { companyUpdated: remark }, $push:{showToUser: showToUser}},
+      { statusByCompany : statusByCompany, $push: { companyUpdated: remark }},
       { new: true } // Return the updated document
     );
    // console.log("find the value and update in the database  ", application);
@@ -188,8 +193,64 @@ router.put('/statusByCompany/:id', async (req, res) => {
   }
 });
 
+//Route to show any message to user if any update form hr portal 
+router.put('/showtouser/:id' , async (req,res) => {
+  const {jobId, showToUser} = req.body;
+  const { id} = req.params;
+   console.log(showToUser);
+  // console.log(req.body , req.params);
+  try {
+    const updateUserStatus = await Application.findOneAndUpdate(
+      {
+        userId: id,  // Match documents by userId
+        jobId: jobId     // Match documents by jobId
+      },
+      {
+        $push: {
+          showToUser: showToUser,
+        },
+      },
+      { new: true }
+    );
+    console.log(updateUserStatus);
+    if (!updateUserStatus) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User Status updated successfully", data: updateUserStatus });
+  } catch (error) {
+    console.error("Error updating company:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 
+// Define your route for uploading offer letters
+router.post('/api/application/upload-offer-letter/:id', uploadOfferLetter.single('offerLetter'), async (req, res) => {
+  const { id } = req.params;
 
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  try {
+    // Update the application with the offer letter URL from Cloudinary
+    const updatedApplication = await Application.findByIdAndUpdate(
+      id,
+      { offerLetterUrl: req.file.path }, // Save Cloudinary URL in offerLetterUrl
+      { new: true }
+    );
+
+    if (!updatedApplication) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+
+    // Respond with success and updated application data
+    res.status(200).json({ message: 'File uploaded successfully', application: updatedApplication });
+  } catch (error) {
+    console.error('Error saving offer letter:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 module.exports = router;

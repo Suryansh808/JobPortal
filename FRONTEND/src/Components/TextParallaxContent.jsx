@@ -15,12 +15,17 @@ import { gsap } from 'gsap';
 import { IoArrowDownSharp } from "react-icons/io5";
 import { MdCallMade } from "react-icons/md";
 import Footer from "./Footer";
+
+
+
 export const TextParallaxContentExample = () => {
+
   const addToRefs = (el) => {
     if (el && !sectionRef.current.includes(el)) {
       sectionRef.current.push(el);
     }
   };
+
   const Card = [
     { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
     { title : "Business idea", description : "Transform your business with advanced technologies", imageURL : "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"},
@@ -42,12 +47,33 @@ export const TextParallaxContentExample = () => {
   // Create refs for each section
 const sectionRef = useRef([]);
 sectionRef.current = [];
+  useEffect(() => {
+    // Animate each section
+    sectionRef.current.forEach((el) => {
+      gsap.fromTo(el, 
+        { opacity: 0, y: 50 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 2, 
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%', // Start animation when the top of the element is 80% from the top of the viewport
+            end: 'bottom 20%', // End animation when the bottom of the element is 20% from the top of the viewport
+            toggleActions: 'play reverse play reverse', // Play the animation when entering and reverse it when leaving
+          },
+        }
+      );
+    });
+  }, []);
+
   return (
     <div>
         <NewNavbar/>
         <div className="bg-black">
       <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        imgUrl="https://images.unsplash.com/photo-1455849318743-b2233052fcff?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
          subheading="Doltec."
         heading="Building awareness of wisdom."
       >
@@ -61,7 +87,7 @@ sectionRef.current = [];
      </section>
       </TextParallaxContent>
       <TextParallaxContent
-       imgUrl="https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+       imgUrl="https://images.unsplash.com/photo-1662972580899-b64ac990c9e9?q=80&w=1642&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading="Quality"
         heading="Never compromise."
       >
@@ -125,10 +151,10 @@ sectionRef.current = [];
       <div className='max-[600px]:-mt-12 max-[600px]:mb-4 mb-4 hover:bg-white hover:scale-110 ease-linear duration-700 hover:text-black inline  border rounded-full px-6 py-2'>
           <Link to='/career' className='flex items-center gap-3'>All businesses <IoArrowDownSharp /></Link>
         </div>
-     </section>
+       </section>
       </TextParallaxContent>
       <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1504610926078-a1611febcad3?q=80&w=2416&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        imgUrl="https://images.unsplash.com/photo-1727002530981-d172fde291d5?q=80&w=1700&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading="Modern"
         heading="Dress for the best."
       >

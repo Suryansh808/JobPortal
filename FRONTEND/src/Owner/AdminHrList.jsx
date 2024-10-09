@@ -119,7 +119,8 @@ const HRUpdates = () => {
           </tr>
         </thead>
         <tbody className="block md:table-row-group">
-          {hrs.map((hr, index) => (
+          {hrs.length >0?(
+          hrs.map((hr, index) => (
             <tr key={hr._id} className="bg-gray-300 border text-black border-gray-500 md:border-none block md:table-row hover:bg-gray-100">
               <td className=" p-2 text-black font-bold md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
               <td className=" p-2 capitalize text-black font-bold md:border md:border-gray-500 text-left block md:table-cell">{hr.hrName}</td>
@@ -127,7 +128,13 @@ const HRUpdates = () => {
               <td className=" p-2 text-black font-bold md:border md:border-gray-500 text-left block md:table-cell">{hr.hrNumber}</td>
               <td className=" p-2 text-black font-bold md:border md:border-gray-500 text-left block md:table-cell">{hr.hrPassword}</td>
             </tr>
-          ))}
+          ))
+        
+        ):(
+          <tr>
+            <td colSpan="5" className="p-2 text-center">No HRs found</td>
+        </tr>
+        )}
         </tbody>
       </table>
     </div>

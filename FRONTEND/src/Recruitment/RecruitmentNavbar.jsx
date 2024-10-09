@@ -11,8 +11,8 @@ const RecruitmentNavbar = () => {
         setMobileMenuOpen(prevState => !prevState);
     };
 
-    
-    
+
+
     return (
         <>
             <header id="RecruitmentNavbar">
@@ -28,22 +28,24 @@ const RecruitmentNavbar = () => {
                         <li >COMPANY</li>
                     </ul>
                     <div className="careeroption" onClick={toggleMobileMenu} ><h1>&#9776;</h1></div>
-                    
+
                     <div>
-                        <ToggleComponent />
+                        {/* <ToggleComponent /> */}
+                        <Link to='/'> <ToggleComponent /></Link>
+
                     </div>
                 </div>
                 {isMobileMenuOpen && (
-                <div className="mobile-view">
-                    <ul>
-                    <li ><Link to='/Recruitment'> HOME</Link></li>
-                        <li >CAREER</li>
-                        <li >PARTNER</li>
-                        <li >COMPANY</li>
-                    </ul>
-                </div>
+                    <div className="mobile-view">
+                        <ul>
+                            <li ><Link to='/Recruitment'> HOME</Link></li>
+                            <li >CAREER</li>
+                            <li >PARTNER</li>
+                            <li >COMPANY</li>
+                        </ul>
+                    </div>
                 )}
-                 </header>
+            </header>
         </>
     );
 };

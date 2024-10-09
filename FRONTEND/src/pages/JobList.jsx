@@ -29,7 +29,7 @@ const JobList = () => {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/jobs');
@@ -39,20 +39,27 @@ const JobList = () => {
         console.error('There was an error fetching the jobs!', error);
       }
     };
-    fetchJobs();
-    const handleClickOutside = (event) => {
-      if (
-        filtersRef.current && !filtersRef.current.contains(event.target) &&
-        sortRef.current && !sortRef.current.contains(event.target) &&
-        categoryRef.current && !categoryRef.current.contains(event.target)
-      ) {
-        setDropdownOpen(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    // fetchJobs();
+    
+    useEffect(() => {
+      fetchJobs();
+
+      const handleClickOutside = (event) => {
+        if (
+          filtersRef.current && !filtersRef.current.contains(event.target) &&
+          sortRef.current && !sortRef.current.contains(event.target) &&
+          categoryRef.current && !categoryRef.current.contains(event.target)
+        ) {
+          setDropdownOpen(null);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+
+      
+
   }, []);
 
   useEffect(() => {
@@ -144,20 +151,23 @@ const JobList = () => {
     // finally {
     //   setIsApplying(false); // Re-enable button after operation completes
     // }
+    fetchJobs();
+    fetchApplications();
+
   };
   const [userApplyJob, setUserApplyJob] = useState([]);
-  useEffect(() => {
+  // useEffect(() => {
     const fetchApplications = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/applications`);
         const fetchedApplications = response.data;
         const userApplyjob = fetchedApplications.filter(application => application.userId && application.userId._id === userId);
         setUserApplyJob(userApplyjob)
-        // alert(userApplyjob.length)
       } catch (error) {
         console.error("Error fetching applications:", error);
       }
     };
+  useEffect(() => {
     fetchApplications();
   }, [userId]);
   
@@ -680,10 +690,10 @@ const JobList = () => {
 {selectedJob.userApplicationIds.includes(userId) ? (
   <h2 className="text-white p-3 bg-red-500 rounded-2xl" >Already Applied</h2>
 ) : (
-  userApplyJob.length ===0 || userApplyJob.length < userApplyJob[0].userId.jobLimit ? (
-    <button className="text-white px-8 py-2 bg-blue-600 rounded-xl" onClick={() => handleApplyClick(selectedJob)}>Apply</button>
+  userApplyJob.length === 0 || userApplyJob.length < userApplyJob[0].userId.jobLimit ? (
+    <button className="relative transition-all duration-300 ease-in-out shadow-lg p-3 bg-blue-600 rounded-2xl flex items-center justify-center text-white gap-2 font-bold border-3 border-white/50 outline-none overflow-hidden text-base cursor-pointer hover:scale-105 hover:border-white/75" onClick={() => handleApplyClick(selectedJob)}>Apply</button>
   ) : (
-    <button className="text-white px-8 py-2 bg-orange-600 rounded-xl" >Upgrade Limit</button>
+    <button className="relative flex items-center justify-center w-36 h-10 border-none rounded-lg bg-gradient-to-r from-[#77530a] via-[#ffd277] to-[#77530a] bg-[length:250%_100%] text-[#ffd277] cursor-pointer overflow-hidden transition-all duration-1000 hover:bg-[position:right] active:scale-95" >Upgrade Limit</button>
   )
 )}
                       

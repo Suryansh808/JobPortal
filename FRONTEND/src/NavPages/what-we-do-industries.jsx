@@ -1,19 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import pic from '../assets/dm.webp'
 
 const WhatwedoIndustries = () => {
   return (
     <>
-    <div id="mainpage">
-        <h1>WHAT WE DO</h1>
-        <div>
-            <h2>Industries</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio aspernatur praesentium ipsa, tempore amet, laborum rerum vitae odio magnam ea facere? Culpa nihil minus dignissimos corrupti laudantium sed architecto enim porro! Quaerat nisi quisquam laboriosam veritatis magni ea, consequatur reprehenderit sequi id sit atque, quia non enim facere. Id expedita dignissimos consectetur placeat. Delectus quam maiores asperiores. Laborum, impedit, maiores cum laboriosam minus exercitationem dolorum hic rem eaque minima doloremque voluptate fugit, ad mollitia aspernatur ex reprehenderit nobis amet dolor at veniam! Magni nemo maiores at pariatur officia magnam nobis odio? Totam minima itaque alias. Quasi dignissimos accusamus ad quibusdam maxime expedita illo consequatur distinctio recusandae doloribus. Perspiciatis sequi asperiores quia rem nulla id eaque corporis odio aperiam hic facere repudiandae, alias, quaerat neque minus aut delectus, consectetur quis culpa libero voluptas optio? Enim itaque assumenda deserunt iste accusamus, totam, tempora doloribus fuga ut repellat consequuntur aperiam voluptate omnis aliquid! Porro cumque, ut cupiditate facere vitae accusantium aperiam, reprehenderit saepe possimus maxime quidem maiores reiciendis repellendus? Quas maiores reprehenderit accusamus maxime, libero ad perspiciatis officiis explicabo, eius dolorem atque. Debitis distinctio, similique eius incidunt, numquam recusandae aspernatur sed deserunt cum iusto corrupti soluta cumque doloremque quos eum impedit. Culpa id dicta cum ducimus expedita? Saepe quasi deleniti harum error temporibus dignissimos possimus enim voluptates, iste fuga. Debitis ab enim quae. Unde, minus ratione, delectus amet quis dignissimos corrupti asperiores maiores deleniti accusantium animi assumenda culpa obcaecati enim tempora repudiandae dolor nostrum vero quibusdam sed perferendis similique. Nesciunt sunt fugiat quae, voluptas commodi impedit quasi magni quam qui, placeat ut est recusandae adipisci, nihil debitis iure. Dolores, ut? Maiores necessitatibus minus voluptas iure voluptatum quisquam est cumque repellat doloribus recusandae? Animi obcaecati sequi modi temporibus deserunt alias at. Corrupti maiores voluptatem nostrum quis! Nemo repellendus laborum sit, temporibus dignissimos quam quod!</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, veniam?</p>
-        </div>
+      <div id="mainpage">
+        <h1>INDUSTRIES</h1>
+        <div className="list">
+          <h2>Industries1</h2>
+          <img src={pic} alt="" />
+          <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error obcaecati enim numquam maiores accusamus, fugit quaerat ratione optio, temporibus beatae quibusdam iure voluptatibus dolor facilis ullam, eum non consequatur hic eaque debitis doloremque neque iste. Exercitationem iusto ullam recusandae sapiente velit necessitatibus dolore error, quod facere eos deserunt repudiandae soluta excepturi, quibusdam maxime laborum voluptas quas, minus hic? Eos nihil consequatur at natus voluptas illum mollitia minus dolor aliquid perspiciatis et, delectus quas voluptatibus molestias, dolore temporibus sed, magni similique ipsum aperiam totam! Fuga possimus aut illum maxime pariatur ut, cupiditate voluptas suscipit quidem quibusdam deleniti quaerat quia. Harum itaque tempore saepe molestias, est debitis pariatur a accusamus aspernatur quidem asperiores minus provident! Iure cum minus unde, accusamus culpa ducimus eveniet asperiores alias magni voluptas quo aperiam inventore totam reiciendis ex veritatis? Delectus quibusdam, veritatis ratione ipsum nemo neque fugit voluptatem velit ad nesciunt quo commodi fuga! Modi, repudiandae quae.</p>
+        </div>     
 
 
-    </div>
+        
+      </div>
 
     </>
   );
