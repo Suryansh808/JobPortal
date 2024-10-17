@@ -10,7 +10,7 @@ import Career from "./Components/Career";
 import ContactUs from "./Components/ContactUs";
 import ReadMore from "./Components/ReadMore";
 // import FooterWithSocialLinks from "./Components/Footer";
-import DashBoard from "./layouts/DashBoard";
+// import DashBoard from "./layouts/DashBoard";
 import Profile from "./layouts/Profile";
 import Newsroom from "./Components/Newsroom";
 import Resume from "./Components/Resume";
@@ -62,6 +62,9 @@ import Insight1 from './NavPages/insight1';
 import Insight2 from './NavPages/insight2';
 import Insight3 from './NavPages/insight3';
 import Insight4 from './NavPages/insight4';
+import StudentDashboard from './pages/StudentDashBoard';
+import CreateResume from './Components/CreateResume';
+import CollapsibleTable from './NavPages/CollapsibleTable';
 // import SubscriptionPage from './pages/SubscriptionPage';
 // import { SmoothScrollHero } from './Components/HeroAnimate';
 
@@ -83,7 +86,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div basename="/Doltec">
       <SmoothScroll/>
        <HashRouter>
         <TitleUpdater/>
@@ -103,11 +106,13 @@ const App = () => {
           <Route index path="/contact-us" element={<ContactUs/>} />
           <Route index path="/read-more" element={<ReadMore/>} />
           <Route index path ="/Resume" element={<Resume/>}/>
-          <Route index path="/DashBoard" element={<DashBoard />}/>
+          {/* <Route index path="/DashBoard" element={<DashBoard />}/> */}
           <Route path="/Profile" element={<Profile/>}/>
+          <Route path="/StudentDashBoard" element={<StudentDashboard/>}/>
           {/* <Route path="/SubscriptionPage" element={<SubscriptionPage/>}/> */}
-
           <Route path="/ResumePreview" element={<ResumePreview/>}/>
+          <Route path="/CreateResume" element={<CreateResume/>}/>
+
           <Route path="/StudentSignUp" element={<StudentSignUp/>} />
           <Route path="/StudentLogIn" element={<StudentLogIn/>} />
           <Route path="/StudentProfileView" element={<StudentProfileView/>} />
@@ -153,6 +158,7 @@ const App = () => {
           <Route path="/Insight2" element={<Insight2/>}/>
           <Route path="/Insight3" element={<Insight3/>}/>
           <Route path="/Insight4" element={<Insight4/>}/>
+          <Route path="/CollapsibleTable" element={<CollapsibleTable/>}/>
 
 
 

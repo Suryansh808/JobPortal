@@ -226,6 +226,8 @@ router.put('/showtouser/:id' , async (req,res) => {
 
 
 // Define your route for uploading offer letters
+
+// Define your route for uploading offer letters
 router.post('/api/application/upload-offer-letter/:id', uploadOfferLetter.single('offerLetter'), async (req, res) => {
   const { id } = req.params;
 
@@ -250,6 +252,28 @@ router.post('/api/application/upload-offer-letter/:id', uploadOfferLetter.single
   } catch (error) {
     console.error('Error saving offer letter:', error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+router.put('/applications/:applicationId/send-offer-letter', async (req, res) => {
+  const { applicationId } = req.params; // Corrected the applicationId from route
+  const { offerLetterUrl } = req.body; // Getting offerLetterUrl from the request body
+
+  try {
+    // Find the application by its ID
+    const application = await Application.findById(applicationId);
+    
+    if (!application) {
+      return res.status(404).send('Application not found');
+    }
+
+    // Update the offer letter URL in the application document
+    application.offerLetterUrl = offerLetterUrl; // Storing offer letter URL in the correct field
+    await application.save();
+
+    res.status(200).send('Offer letter sent successfully.');
+  } catch (error) {
+    console.error("Error sending offer letter:", error);
+    res.status(500).send('Server error');
   }
 });
 

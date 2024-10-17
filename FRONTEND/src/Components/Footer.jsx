@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate , Link } from 'react-router-dom';
+import { useLocation,  Link } from 'react-router-dom';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
@@ -8,14 +8,6 @@ export default function Footer() {
 
   const currentYear=new Date().getFullYear();
 
-  const navigate = useNavigate();
-  const handleNavigation = (section) => {
-    navigate(`/what-we-do#${section}`);
-  };
-   
-  const handleWhoWeAre = (section) => {
-    navigate(`/Who-We-Are#${section}`);
-  }
   const location = useLocation();
   const noHeaderFooterRoutes = ['/CompanyDashBoard', '/CompanyLogInPage', '/Cv/:resumeId', "/ViewResume",'/ResumeView' ,'/CompanySignUpPage' , '/StudentLogIn','/AllApplicationStatus' , '/StudentSignUp', '/StudentProfileView' , '/AdminLogInPage' ,'/HrLogin' ,'/HRHome','/Recruitment','/AdminDashboard','/HrPDashboard'];
   const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname);
@@ -53,7 +45,7 @@ export default function Footer() {
 
       <section className=''>
         <MDBContainer className='text-center text-md-start mt-5'>
-          <MDBRow className='mt-3'>
+          <MDBRow className=''>
             <MDBCol md="3" lg="4" xl="3" className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4'>
                 <MDBIcon icon="gem" className="me-3" />
@@ -64,52 +56,6 @@ export default function Footer() {
                 consectetur adipisicing elit.
               </p>
               <Link to='/HrLogin'>HR Pnael</Link>
-            </MDBCol>
-
-            <MDBCol md="2" lg="2" xl="2" className='mx-auto mb-4 flex flex-col items-center justify-center gap-1'>
-              <h6 className='text-uppercase fw-bold mb-2'>Suggestion</h6>
-          
-               <button onClick={() => handleNavigation('overviewRef')} className='text-reset'>
-                Overview
-               </button>
-            
-          
-              <button onClick={() => handleNavigation('industriesRef')} className='text-reset'>Industries</button>
-            
-          
-                <button onClick={() => handleNavigation('servicesRef')} className='text-reset'>
-                  Services
-                </button>
-            
-          
-                <button onClick={() => handleNavigation('productsRef')} className='text-reset'>
-                  Product and Platform
-                </button>
-            
-            </MDBCol>
-
-            <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4 flex flex-col items-center justify-center gap-1'>
-              <h6 className='text-uppercase fw-bold mb-2'>About us </h6>
-        
-                <button onClick={() => handleWhoWeAre('OurMission')} className='text-reset'>
-                  Our mission 
-                </button>
-          
-        
-                <button onClick={() => handleWhoWeAre('OurVision')} className='text-reset'>
-                Our vision 
-                </button>
-          
-        
-                <button onClick={() => handleWhoWeAre('OurProject')} className='text-reset'>
-                 Our projects
-                </button>
-          
-        
-                <button onClick={() => handleWhoWeAre('CoreValues')} className='text-reset'>
-                  Core values
-                </button>
-          
             </MDBCol>
 
             <MDBCol md="4" lg="3" xl="3" className='mx-auto mb-md-0 mb-4'>

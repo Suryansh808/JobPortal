@@ -11,7 +11,6 @@ const CompanySignUpPage = () => {
   const [formData, setFormData] = useState({
     companyLogo: null,
     companyName: "",
-    // companyLocation: "",
     companyType: "",
     otherCompanyType: "",
     position: "",
@@ -21,7 +20,7 @@ const CompanySignUpPage = () => {
     confirmPassword:"",
     
   });
-  // const { setCompanyId } = useCompany(); // Get the setCompanyId function from context
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
@@ -45,6 +44,18 @@ const CompanySignUpPage = () => {
       }
     };
 
+    // const handleChange = (e) => {
+    //   const { name, value } = e.target;
+    //   setFormData({ ...formData, [name]: value });
+  
+    //   // Check for minimum word count
+    //   const wordCount = value.trim().split(/\s+/).length;
+    //   if (wordCount < 150) {
+    //     setError('Please write at least 150 words.');
+    //   } else {
+    //     setError('');
+    //   }
+    // };
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShow) => !prevShow);
@@ -120,10 +131,10 @@ const CompanySignUpPage = () => {
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
-      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto text-[#000000d3] px-2 py-2 border rounded-xl shadow-md">
-       <Link to='/Recruitment' className="text-white flex items-center justify-end"><BsArrowLeftCircle /></Link>
-        <h1 className="text-2xl font-bold text-center text-white mb-3">Company Signup</h1>
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto text-[#000000d3] px-2 py-2 rounded-xl shadow-md">
+       <Link to='/Recruitment' className="text-white float-right"><BsArrowLeftCircle /></Link>
+        <h1 className="text-2xl font-bold text-center text-white mb-4 mt-1">Company Signup</h1>
+        <form  onSubmit={handleSubmit} encType="multipart/form-data">
         <input
               type="file"
               name="companyLogo"
@@ -154,7 +165,7 @@ const CompanySignUpPage = () => {
           name="companyType"
           value={formData.companyType}
           onChange={handleChange}
-          className="mb-2 p-2 w-full border rounded-xl"
+          className="mb-2 p-2 w-full  rounded-xl"
           required
         >
           <option value="" disabled>Select company type</option>
@@ -186,13 +197,13 @@ const CompanySignUpPage = () => {
             className="mb-2 p-2 w-full border rounded-xl"
             required
           />
-          <textarea
+          <input
             type="text"
             name="businessmodel"
             placeholder="Your Business Model"
             value={formData.businessmodel}
             onChange={handleChange}
-            className="mb-2 p-2 w-full border rounded-xl resize-none"
+            className="mb-2 p-2 w-full border rounded-xl"
             required
           />
         
@@ -240,7 +251,7 @@ const CompanySignUpPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-black text-white p-2 rounded-xl"
+            className="w-full bg-gradient-to-r from-[#000000] to-[#00000059] text-white p-2 rounded-xl"
           >
             Sign Up
           </button>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
 
 const AllApplicationStatus = () => {
   const [jobApplications, setJobApplications] = useState([]);
@@ -25,7 +25,7 @@ const AllApplicationStatus = () => {
       console.log("Applications data:", applications);
       if (response.status === 200) {
         const userApplications = applications.filter(
-          (app) => app.userId._id === userId
+          (app) => app.userId && app.userId._id === userId
         );
         setJobApplications(userApplications);
         if (userApplications.length > 0) {
@@ -46,23 +46,14 @@ const AllApplicationStatus = () => {
   const position = [51.505, -0.09];
   return (
     <div>
-      <div className="flex items-center justify-between px-10 py-2 border-b mb-2">
-        <h2 className="text-2xl">All Applications Status</h2>
-        <Link to="/Profile">
-          <span className="text-black bg-white rounded-full p-1">
-            {" "}
-            &#129184;
-          </span>
-        </Link>
-      </div>
       {/* Job Applications Section */}
-      <div className="flex gap-1 px-2 w-full  ">
+      <div className="flex items-center w-full">
         {/* Left Side: Application List */}
-        <div className="flex-none h-[90vh] bg-[#F6F6F6]  rounded-lg overflow-y-scroll w-1/5 border-gray-200">
+        <div className="flex-none h-[90vh] bg-[#F8F9FA] px-1 py-2 rounded-lg overflow-y-scroll scrollbar-hide w-1/5 border-gray-200">
           {jobApplications.map((application) => (
             <div
-              key={application._id}
-              className={`flex items-center text-black  bg-[#FFFFFF] px-2 py-3 mb-1 cursor-pointer rounded-lg`}
+             key={application._id}
+              className={`flex items-center text-black  shadow-sm bg-[#fff] px-2 py-3 mb-1 cursor-pointer rounded-lg`}
               onClick={() => setSelectedApplication(application)}
             >
               <img
@@ -80,9 +71,9 @@ const AllApplicationStatus = () => {
           ))}
         </div>
         {/* Right Side: Application Details */}
-        <div className="flex-1 h-[90vh] bg-[#F6F6F6]  rounded-lg overflow-y-scroll ">
+        <div className="flex-1 h-[90vh] bg-[#F8F9FA]  rounded-lg overflow-y-scroll scrollbar-hide ">
           {selectedApplication ? (
-            <div className="bg-[#ffffff50]  capitalize text-black rounded-lg px-2 py-1">
+            <div className="bg-[#ffffff50] capitalize text-black rounded-lg px-2 py-1">
               <div className="py-1">
                 <div className="flex items-center w-full shadow-sm rounded-md p-2 bg-[#fff]">
                   <img
@@ -145,6 +136,7 @@ const AllApplicationStatus = () => {
                   {selectedApplication.status}
                 </span>
               </div>
+                 
               <div className="w-full flex justify-between ">
                 <dl className="w-1/2 rounded-md ">
                   {selectedApplication.hrUpdated.round.map((round, index) => (
@@ -157,7 +149,21 @@ const AllApplicationStatus = () => {
                       </dd>
                     </div>
                   ))}
+                  {/* Offer Letter Button (Only shows if status is Hired) */}
+                  {selectedApplication.status === "Accepted" && selectedApplication.offerLetterUrl && (
+                <div className="mt-4">
+                  <a
+                    href={selectedApplication.offerLetterUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  >
+                    Download Offer Letter
+                  </a>
+                </div>
+              )}
                 </dl>
+                
                 <div className="px-2 w-full rounded-md ">
                   <p className="text-lg font-bold">Important Notes:</p>
                   <ol className="">
@@ -169,10 +175,13 @@ const AllApplicationStatus = () => {
                       <p>No update</p>
                     )}
                   </ol>
+                   
                 </div>
               </div>
             </div>
-          ) : null}
+          ) : <div className="text-black w-full h-full flex items-center justify-center">
+                <h1 className="text-3xl"> you have't applied any jobs yet...</h1>
+            </div>}
         </div>
       </div>
     </div>

@@ -4,20 +4,20 @@ const router = express.Router();
 const Resume = require('../models/resumeModel'); // Adjust the path if needed
 
 // Route to get resume by ID
-router.get('/:resumeId', async (req, res) => {
+router.get('/:userID', async (req, res) => {
   try {
     // Extract resumeId from route parameters
-    const { resumeId } = req.params;
-    console.log("Received resumeId:", resumeId);
+    const { userID } = req.params;
+  
 
     // Convert resumeId to mongoose ObjectId if it's a valid hexadecimal string
-    if (!mongoose.Types.ObjectId.isValid(resumeId)) {
+    if (!mongoose.Types.ObjectId.isValid(userID)) {
       return res.status(400).json({ message: 'Invalid resume ID' });
     }
 
     // Find resume by ID
-    const resume = await Resume.findById(resumeId);
-    console.log("Fetched resume:", resume);
+    const resume = await Resume.find({userID: userID});
+
 
     if (!resume) {
       return res.status(404).json({ message: 'Resume not found' });

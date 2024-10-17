@@ -84,7 +84,7 @@ const RejectedCandidates = () => {
           <td   onClick={() => handleRowClick(application)}  className="p-2 cursor-pointer md:border md:border-gray-500 text-left block md:table-cell">{index + 1}</td>
           <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.jobId.jobTitle}</td>
           <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.userId.fullname}</td>
-          <td  onClick={() => handleViewResume(application.userId.resumeId)} className="p-2 md:border md:border-gray-500 text-left block md:table-cell">< FiFileText/></td>
+          <td  onClick={() => handleViewResume(application.userId.resumeId)} className="p-2 md:border md:border-gray-500 cursor-pointer text-left block md:table-cell">< FiFileText/></td>
           <td className="p-2 md:border md:border-gray-500 text-left block md:table-cell">{application.hrName}</td>
         </tr>
       ))}

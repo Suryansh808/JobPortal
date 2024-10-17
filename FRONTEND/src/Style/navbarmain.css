@@ -84,9 +84,9 @@
   
   }
   
-  li:hover span {
+  /* li:hover span {
     transform: rotate(180deg);
-  }
+  } */
   
   #header .option .option_content {
     padding: 30px;
@@ -161,8 +161,7 @@
     width: 100%;
     position: absolute;
     opacity: 0;
-    /* text-align: center; */
-
+    /* text-align: center; */;
     transform: translateY(-100px); /* Start position */
     animation: fadeInUp 0.5s forwards; /* Animation name and duration */
   }
@@ -190,7 +189,8 @@
     background-color: rgba(0, 0, 0, 0.9);
     /* transition: all opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease; */
     opacity: 0;
-
+    top: 0;
+    padding: 60px 0;
     transform: translateY(-100px); /* Start position */
     animation: fadeInUp 0.5s forwards; /* Animation name and duration */
   }

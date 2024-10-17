@@ -1,9 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import NewNavbar from "../Components/Newnavbar";
+import Footer from "../Components/Footer";
+
 
 const Insight1 = () => {
   return (
     <>
+    <NewNavbar />
     <div id="mainpage">
         <h1>INSIGHT</h1>
         <div>
@@ -15,6 +19,7 @@ const Insight1 = () => {
 
 
     </div>
+    <Footer />
 
     </>
   );

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import WaterDropGrid from "../Owner/WaterDropGrid";
 
 const HrLogin = () => {
   const [username, setUsername] = useState('');
@@ -38,7 +39,7 @@ const HrLogin = () => {
         <h1 className="text-3xl font-bold text-center">HR Login</h1>
         <Link to="/">Home</Link>
       </div>
-      <div className="flex items-center justify-center w-full mt-20">
+      <div className=" absolute z-[1000] flex items-center justify-center w-full mt-20">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
             <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0">
@@ -84,6 +85,7 @@ const HrLogin = () => {
           </div>
         </form>
       </div>
+      <WaterDropGrid/>
     </div>
   );
 };

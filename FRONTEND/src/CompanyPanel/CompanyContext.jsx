@@ -13,6 +13,7 @@ export const CompanyProvider = ({ children }) => {
     <CompanyContext.Provider value={{ companyId, setCompanyId }}>
       {children}
     </CompanyContext.Provider>
+    
   );
 };
 

@@ -1,9 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import NewNavbar from "../Components/Newnavbar";
+import Footer from "../Components/Footer";
+
 
 const WhoweareProject = () => {
   return (
     <>
+    <NewNavbar />
     <div id="mainpage">
         <h1>WHO WE ARE</h1>
         <div>
@@ -14,6 +18,7 @@ const WhoweareProject = () => {
 
 
     </div>
+    <Footer />
 
     </>
   );

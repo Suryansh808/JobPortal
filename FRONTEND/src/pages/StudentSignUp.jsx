@@ -180,7 +180,7 @@ const StudentSignUp = () => {
             </div>
           )}
           <button
-            className="w-full py-2 px-4 bg-black  rounded-md shadow-lg text-white font-semibold transition duration-200"
+            className="w-full py-2 px-4 bg-gradient-to-r from-[#000000] to-[#00000059]  rounded-md shadow-lg text-white font-semibold transition duration-200"
             type="submit"
           >
             {isOtpSent ? "Verify OTP" : "Sign Up"}

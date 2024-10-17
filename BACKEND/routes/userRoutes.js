@@ -158,6 +158,17 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+router.get('/usersdata', async (req, res) => {
+  try {
+    const users = await User.find(); // Fetch all users 
+
+    res.json(users); // Return the found users
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // // Apply for a job route
 // router.post("/apply-job", async (req, res) => {
 //   const { userId } = req.body; // Get userId from the request body

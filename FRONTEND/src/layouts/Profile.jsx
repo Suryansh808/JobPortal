@@ -201,7 +201,7 @@ export default function Profile() {
     navigate('/StudentLogIn');
   }
 
-  const handlePreviewResume = () => {
+  const  handlePreviewResume = () => {
     if (!resumeDetails) {
       alert('Resume details not available');
       return;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-
+import {Link,  useParams } from 'react-router-dom';
+import { FaPrint } from "react-icons/fa";
+import { MdOutlineClose } from "react-icons/md";
 const Cv = () => {
   const { resumeId } = useParams(); // Get resumeId from URL
   const [resumeData, setResumeData] = useState(null);
@@ -24,49 +25,90 @@ const Cv = () => {
   if (!resumeData) {
     return <div>Loading...</div>; // Handle loading state
   }
-
+  const handlePrint = () => {
+    window.print();
+  };
   return (
-    <div className="resume-containe text-center">
-    <h1>{resumeData.fullName}'s Resume</h1>
-    <h2>Summary</h2>
-    <p>{resumeData.summary}</p>
-    
-    <h2>Education</h2>
-    {/* <ul>
-      {resumeData.education.map((edu, index) => (
-        <li key={index}>{edu}</li> // Adjust according to your education structure
-      ))}
-    </ul> */}
+    <div className="relative ">
+      {resumeData ? (
+        <div className="bg-gray-100 font-sans text-black">
+          <div className="container mx-auto p-2">
+            <div className="bg-white p-3 rounded-lg shadow-lg">
+              <h1 className="text-3xl text-black uppercase font-semibold">
+                {resumeData.fullName}
+              </h1>
+              <h2 className="text-xl font-semibold mt-4 mb-2">Contact</h2>
+              <ul className="list-disc list-inside text-gray-700">
+                <li>
+                  Email:{" "}
+                  <a
+                    className="text-blue-500 hover:underline"
+                    target="_blank"
+                    href="https://veilmail.io/e/880Hri"
+                  >
+                    https://veilmail.io/e/880Hri
+                  </a>
+                </li>
+                <li>
+                  LinkedIn:{" "}
+                  <a
+                    href={resumeData.linkedinURL}
+                    className="text-blue-500 hover:underline"
+                  >
+                    linkedin.com/in/johndoe
+                  </a>
+                </li>
+                <li>
+                  GitHub:{" "}
+                  <a
+                    href={resumeData.githubURL}
+                    className="text-blue-500 hover:underline"
+                  >
+                    johndoe.com
+                  </a>
+                </li>
+              </ul>
+              <hr className="my-2" />
+              <h2 className="text-xl font-semibold mb-2">Summary</h2>
+              <p className="text-gray-700">
+                {resumeData.summary}
+              </p>
 
-    <h2>Experience</h2>
-    <p>{resumeData.experience}</p>
+              <h2 className="text-xl font-semibold mt-4 mb-2">Skills</h2>
+              <ul className="list-disc list-inside text-gray-700">
+                {resumeData.skills}
+              </ul>
+              <h2 className="text-xl font-semibold mt-4 mb-2">Experience : {resumeData.experience}</h2>
 
-    <h2>Skills</h2>
-    {/* <ul>
-      {resumeData.skills.map((skill, index) => (
-        <li key={index}>{skill}</li>
-      ))}
-    </ul> */}
+              <h2 className="text-xl font-semibold mt-4 mb-2">Education</h2>
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold">
+                  Bachelor of Science in Computer Science
+                </h3>
+                <p className="text-gray-700">University of Example</p>
+                <p className="text-gray-600">Graduated in May 2018</p>
+              </div>
 
-    <h2>Projects</h2>
-    <p>{resumeData.projectDetails}</p>
-
-    <h2>Achievements</h2>
-    <p>{resumeData.achievement}</p>
-
-    <h2>Cover Letter</h2>
-    <p>{resumeData.coverLetter}</p>
-
-    <h2>Address</h2>
-    <p>{resumeData.address}</p>
-
-    <h2>Links</h2>
-    <p>GitHub: <a href={resumeData.githubURL} target="_blank" rel="noopener noreferrer">{resumeData.githubURL}</a></p>
-    <p>LinkedIn: <a href={resumeData.linkedinURL} target="_blank" rel="noopener noreferrer">{resumeData.linkedinURL}</a></p>
-
-    <h2>Created At</h2>
-    <p>{new Date(resumeData.createdAt).toLocaleDateString()}</p>
-  </div>
+             
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p>No resume data available.</p>
+      )}
+       <div className="fixed w-[50px] right-5 bottom-5">
+      <div className="relative w-full h-auto">
+        <button
+          onClick={handlePrint}
+          type="button"
+          className="absolute bottom-0 rounded-full w-[40px] h-[40px] m-[4px_auto] bg-blue-500 text-white flex items-center justify-center shadow-lg"
+          title="Print"
+        >
+          <FaPrint className="text-xl" />
+        </button>
+      </div>
+    </div>
+    </div>
   );
 };
 

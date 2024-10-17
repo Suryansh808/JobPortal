@@ -32,6 +32,17 @@ const adminMail = require("./models/adminMail");
 const expressAsyncHandler = require("express-async-handler");
 // const Otp = require("./models/adminModel");
 
+const FormData = require('./models/contactUs');
+
+const thoughtRoutes = require('./routes/thoughtRoutes');
+
+
+const adminControlRoutes = require('./routes/adminControl'); // Adjust path as necessary danish
+const AdminControl = require('./models/adminControl'); // Adjust the path as necessary danish
+
+
+
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: '300mb' }));
@@ -45,6 +56,9 @@ app.use("/api/jobs", CompanyJobPostRoute);
 app.use('/api', companyRoutes);
 app.use("/api", userRoutes);
 app.use("/api/allUser", userRoutes);
+
+app.use("/api/usersdata", userRoutes);
+
 app.use(authRoutes); // Register the auth routes
 app.use('/api/hr', hrRoutes);
 app.use('/api/hr/profile', hrRoutes);
@@ -54,19 +68,67 @@ app.use("/api", applicationRoutes);
 app.use("/", applicationRoutes);
 app.use("/api/application" , applicationRoutes);
 app.use('/api/resumes', resumeRoutes);
-app.use('/api/studentDatas', resumeRoutes); // Add this line
+app.use('/api/application', resumeRoutes); // Add this line
 app.use('/jobs', chatBox);
+
+
+app.use('/admin', adminControlRoutes);  //danish
+app.use('/api' ,adminControlRoutes); //danish
+
+app.use('/api', thoughtRoutes);
 
 mongoose.connect("mongodb://127.0.0.1:27017/otp-auth", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => {
+
+
+// .then(() => {
+//   console.log('Connected to MongoDB');
+// })
+// .catch(err => {
+//   console.error('Failed to connect to MongoDB', err);
+// });
+
+
+//start danish
+
+.then(async () => {
   console.log('Connected to MongoDB');
+
+
+  const collectionExists = await mongoose.connection.db.collection('admincontrols').countDocuments();
+  if (collectionExists === 0) {
+      // Define your initial document
+      const adminControlData = {
+          logo: "",
+          slider: [],
+          industries: [],
+          services: [],
+          products: [],
+          projects: [],
+          missionVision: { mission: "Our mission", vision: "Our vision" },
+          recentUpdate:[],
+          pressReleases: []
+      };
+
+      // Create the document
+      try {
+          const result = await AdminControl.create(adminControlData);
+          console.log('Admin Control document created:', result);
+      } catch (error) {
+          console.error('Error creating document:', error);
+      }
+  } else {
+      // console.log('Collection already exists and is not empty.');
+      console.log('done');
+  }
 })
 .catch(err => {
   console.error('Failed to connect to MongoDB', err);
 });
+
+//end danish
 
 
 
@@ -519,9 +581,29 @@ app.get('/CompanyDashBoard', authenticateToken, (req, res) => {
   res.json({ message: 'Welcome to the company dashboard!' });
 });
 
+
+app.get('/companydata', async (req, res) => {
+  try {
+    const users = await Company.find(); // Fetch all users 
+
+    res.json(users); // Return the found users
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
 // comapny server code ends
-
-
 
 // Example Express route
 app.get('/api/applications/:id', async (req, res) => {
@@ -534,6 +616,18 @@ app.get('/api/applications/:id', async (req, res) => {
   }
 });
 
+//contact us code start
+// Create a POST endpoint
+app.post('/submit', async (req, res) => {
+  try {
+    const formData = new FormData(req.body);
+    await formData.save();
+    res.status(201).send('Data saved successfully');
+  } catch (error) {
+    res.status(400).send('Error saving data');
+  }
+});
+// contact us code ends
 
 
 const PORT = process.env.PORT || 5000;

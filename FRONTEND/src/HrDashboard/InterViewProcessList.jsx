@@ -174,75 +174,75 @@ const List = () => {
   };
   const renderFilterDetails = () => {
     switch (activeFilter) {
-      case "Type":
-        const uniqueJobTypes = [...new Set(jobs.map((job) => job.jobType))];
-        return (
-          <div>
-            <h3 className="text-lg font-semibold mb-2 flex justify-between">
-              Type
-              <button
-                onClick={() => clearFilter("Type")}
-                className="text-red-500 text-sm"
-              >
-                Clear
-              </button>
-            </h3>
-            <ul className="space-y-2 overflow-y-scroll scrollbar-hide h-[22vh]">
-              {uniqueJobTypes.map((type, i) => (
-                <li key={i}>
-                  <label className="flex items-center space-x-2  cursor-pointer">
-                    <input
-                      type="radio"
-                      name="type"
-                      value={type}
-                      checked={selectedType === type}
-                      onChange={() => setSelectedType(type)}
-                      className="form-radio"
-                    />
-                    <span>{type}</span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      case "Eligibility":
-        // Create two options: "Fresher" and "Experience"
-        const eligibilityOptions = [
-          { label: "Fresher", value: "Fresher" },
-          { label: "Experience", value: "Experience" },
-        ];
+      // case "Type":
+      //   const uniqueJobTypes = [...new Set(jobs.map((job) => job.jobType))];
+      //   return (
+      //     <div>
+      //       <h3 className="text-lg font-semibold mb-2 flex justify-between">
+      //         Type
+      //         <button
+      //           onClick={() => clearFilter("Type")}
+      //           className="text-red-500 text-sm"
+      //         >
+      //           Clear
+      //         </button>
+      //       </h3>
+      //       <ul className="space-y-2 overflow-y-scroll scrollbar-hide h-[22vh]">
+      //         {uniqueJobTypes.map((type, i) => (
+      //           <li key={i}>
+      //             <label className="flex items-center space-x-2  cursor-pointer">
+      //               <input
+      //                 type="radio"
+      //                 name="type"
+      //                 value={type}
+      //                 checked={selectedType === type}
+      //                 onChange={() => setSelectedType(type)}
+      //                 className="form-radio"
+      //               />
+      //               <span>{type}</span>
+      //             </label>
+      //           </li>
+      //         ))}
+      //       </ul>
+      //     </div>
+      //   );
+      // case "Eligibility":
+      //   // Create two options: "Fresher" and "Experience"
+      //   const eligibilityOptions = [
+      //     { label: "Fresher", value: "Fresher" },
+      //     { label: "Experience", value: "Experience" },
+      //   ];
 
-        return (
-          <div>
-            <h3 className="text-lg font-semibold mb-2 flex justify-between">
-              Eligibility
-              <button
-                onClick={() => clearFilter("Eligibility")}
-                className="text-red-500 text-sm"
-              >
-                Clear
-              </button>
-            </h3>
-            <ul className="space-y-2 overflow-y-scroll scrollbar-hide h-[22vh]">
-              {eligibilityOptions.map((option, i) => (
-                <li key={i}>
-                  <label className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="eligibility"
-                      value={option.value}
-                      checked={selectedEligibility === option.value}
-                      onChange={() => setSelectedEligibility(option.value)}
-                      className="form-radio"
-                    />
-                    <span>{option.label}</span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
+      //   return (
+      //     <div>
+      //       <h3 className="text-lg font-semibold mb-2 flex justify-between">
+      //         Eligibility
+      //         <button
+      //           onClick={() => clearFilter("Eligibility")}
+      //           className="text-red-500 text-sm"
+      //         >
+      //           Clear
+      //         </button>
+      //       </h3>
+      //       <ul className="space-y-2 overflow-y-scroll scrollbar-hide h-[22vh]">
+      //         {eligibilityOptions.map((option, i) => (
+      //           <li key={i}>
+      //             <label className="flex items-center space-x-2 cursor-pointer">
+      //               <input
+      //                 type="radio"
+      //                 name="eligibility"
+      //                 value={option.value}
+      //                 checked={selectedEligibility === option.value}
+      //                 onChange={() => setSelectedEligibility(option.value)}
+      //                 className="form-radio"
+      //               />
+      //               <span>{option.label}</span>
+      //             </label>
+      //           </li>
+      //         ))}
+      //       </ul>
+      //     </div>
+      //   );
       case "Category":
         // Extract unique categories from the jobs data, filtering out undefined values
         const uniqueCategories = [
@@ -263,7 +263,7 @@ const List = () => {
             <input
               type="text"
               placeholder="Search Category..."
-              className="w-full mb-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+              className="w-full mb-2 px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none"
               onChange={(e) => setCategorySearch(e.target.value.toLowerCase())}
             />
             <ul className="space-y-2 overflow-y-scroll scrollbar-hide h-[22vh]">
@@ -337,7 +337,7 @@ const List = () => {
               placeholder="Search Location"
               value={searchLocation}
               onChange={(e) => setSearchLocation(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mb-2"
+              className="w-full p-2 border text-black border-gray-300 rounded-md mb-2"
             />
             <ul className="space-y-2 overflow-y-scroll scrollbar-hide h-[22vh]">
               {uniqueLocation
@@ -368,12 +368,12 @@ const List = () => {
   };
   const clearFilter = (filterType) => {
     switch (filterType) {
-      case "Type":
-        setSelectedType("");
-        break;
-      case "Eligibility":
-        setSelectedEligibility("");
-        break;
+      // case "Type":
+      //   setSelectedType("");
+      //   break;
+      // case "Eligibility":
+      //   setSelectedEligibility("");
+      //   break;
       case "Category":
         setSelectedCategory("");
         break;
@@ -396,10 +396,12 @@ const List = () => {
     setSeletedSortBy("");
     setSelectedLocations([]);
     setSearchLocation("");
+    setAfterFilteredJobs(jobs);
+    setFilteredJobs(jobs);
   };
   const handleApplyFilters = () => {
-    applyFilters();
-    setFilteredJobs(afterFilteredJobs);
+    const filtered = applyFilters();
+    setFilteredJobs(filtered);
   };
   const handleClickOpen = () => {
     setOpenAlert(true);
@@ -446,9 +448,10 @@ const List = () => {
       );
     }
 
-    // Update the displayed jobs
-    setAfterFilteredJobs(filtered);
+    // // Update the displayed jobs
+    // setAfterFilteredJobs(filtered);
     console.log("Filtered Jobs After Applying Filters:", filtered);
+    return filtered; // Return the filtered jobs
   };
   const handleLocationChange = (location) => {
     setSelectedLocations((prevSelected) =>
@@ -710,7 +713,7 @@ const List = () => {
                   {/* Left side filters */}
                   <div className="w-1/3 py-3 border-r px-1">
                     <ul className="space-y-1">
-                      <li
+                      {/* <li
                         className={`cursor-pointer rounded-lg hover:bg-[#f8f8f865] p-2 ${
                           activeFilter === "Type" ? "font-bold" : ""
                         } ${activeFilter === "Type" ? "bg-[#3d3838]" : ""}`}
@@ -727,7 +730,7 @@ const List = () => {
                         onClick={() => setActiveFilter("Eligibility")}
                       >
                         Eligibility
-                      </li>
+                      </li> */}
                       <li
                         className={`cursor-pointer rounded-lg hover:bg-[#e5f1fc65] p-2 ${
                           activeFilter === "Category" ? "font-bold" : ""

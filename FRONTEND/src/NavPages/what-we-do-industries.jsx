@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import pic from '../assets/dm.webp'
+import NewNavbar from "../Components/Newnavbar";
+import Footer from "../Components/Footer";
+
 
 const WhatwedoIndustries = () => {
   return (
     <>
+    <NewNavbar />
       <div id="mainpage">
         <h1>INDUSTRIES</h1>
         <div className="list">
@@ -16,6 +20,7 @@ const WhatwedoIndustries = () => {
 
         
       </div>
+      <Footer />
 
     </>
   );

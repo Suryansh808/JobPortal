@@ -1,19 +1,138 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import NewNavbar from "../Components/Newnavbar";
+import Footer from "../Components/Footer";
+
 
 const Insight4 = () => {
+  const [thought, setThought] = useState('');
+  const [thoughts, setThoughts] = useState([]);
+  const [replyText, setReplyText] = useState({}); 
+  const [selectedThought, setSelectedThought] = useState(null); 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/thoughts', { text: thought });
+      console.log('Thought saved:', response.data);
+      setThought(''); // Clear input field
+      alert("your thought has been share...")
+    } catch (error) {
+      console.error('Error saving thought:', error);
+    }
+  };
+
+ 
+  const fetchThoughts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/thoughts');
+      setThoughts(response.data);
+    } catch (error) {
+      console.error('Error fetching thoughts:', error);
+    }
+  };
+  useEffect(() => {
+    fetchThoughts();
+  }, []);
+
+
+
+  const handleReplyChange = (thoughtId, text) => {
+    setReplyText((prev) => ({
+      ...prev,
+      [thoughtId]: text,
+    }));
+  };
+
+  const handleReplySubmit = async (thoughtId) => {
+    if (!replyText[thoughtId]) return; // Prevent empty replies
+
+    try {
+      const response = await axios.post(`http://localhost:5000/api/thoughts/${thoughtId}/replies`, {
+        text: replyText[thoughtId],
+      });
+
+      // Update thoughts state with the new reply
+      setThoughts((prev) =>
+        prev.map((thought) => 
+          thought._id === thoughtId ? response.data : thought
+        )
+      );
+
+      // Clear the reply input
+      setReplyText((prev) => ({ ...prev, [thoughtId]: '' }));
+    } catch (error) {
+      console.error('Error adding reply:', error);
+    }
+  };
+
+  const handleThoughtSelect = (thought) => {
+    setSelectedThought(thought); // Update selected thought
+  };
+
   return (
     <>
-    <div id="mainpage">
-        <h1>INSIGHT</h1>
-        <div>
-            <h2>INSIGHT Four</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio aspernatur praesentium ipsa, tempore amet, laborum rerum vitae odio magnam ea facere? Culpa nihil minus dignissimos corrupti laudantium sed architecto enim porro! Quaerat nisi quisquam laboriosam veritatis magni ea, consequatur reprehenderit sequi id sit atque, quia non enim facere. Id expedita dignissimos consectetur placeat. Delectus quam maiores asperiores. Laborum, impedit, maiores cum laboriosam minus exercitationem dolorum hic rem eaque minima doloremque voluptate fugit, ad mollitia aspernatur ex reprehenderit nobis amet dolor at veniam! Magni nemo maiores at pariatur officia magnam nobis odio? Totam minima itaque alias. Quasi dignissimos accusamus ad quibusdam maxime expedita illo consequatur distinctio recusandae doloribus. Perspiciatis sequi asperiores quia rem nulla id eaque corporis odio aperiam hic facere repudiandae, alias, quaerat neque minus aut delectus, consectetur quis culpa libero voluptas optio? Enim itaque assumenda deserunt iste accusamus, totam, tempora doloribus fuga ut repellat consequuntur aperiam voluptate omnis aliquid! Porro cumque, ut cupiditate facere vitae accusantium aperiam, reprehenderit saepe possimus maxime quidem maiores reiciendis repellendus? Quas maiores reprehenderit accusamus maxime, libero ad perspiciatis officiis explicabo, eius dolorem atque. Debitis distinctio, similique eius incidunt, numquam recusandae aspernatur sed deserunt cum iusto corrupti soluta cumque doloremque quos eum impedit. Culpa id dicta cum ducimus expedita? Saepe quasi deleniti harum error temporibus dignissimos possimus enim voluptates, iste fuga. Debitis ab enim quae. Unde, minus ratione, delectus amet quis dignissimos corrupti asperiores maiores deleniti accusantium animi assumenda culpa obcaecati enim tempora repudiandae dolor nostrum vero quibusdam sed perferendis similique. Nesciunt sunt fugiat quae, voluptas commodi impedit quasi magni quam qui, placeat ut est recusandae adipisci, nihil debitis iure. Dolores, ut? Maiores necessitatibus minus voluptas iure voluptatum quisquam est cumque repellat doloribus recusandae? Animi obcaecati sequi modi temporibus deserunt alias at. Corrupti maiores voluptatem nostrum quis! Nemo repellendus laborum sit, temporibus dignissimos quam quod!</p>
-        </div>
+    <NewNavbar/>
+   <div id="mainpage" className="flex flex-col items-center">
+  <div className="form-group mb-4">
+    <input
+      className="text-black rounded-xl px-2 py-2 mr-2"
+      placeholder='write your thoughts....'
+      type="text"
+      value={thought}
+      onChange={(e) => setThought(e.target.value)}
+    />
+    <button onClick={handleSubmit} className="px-3 py-2 bg-white text-black rounded-xl" type="submit">Share</button>
+  </div>
 
-
+  <div className="flex w-full">
+    {/* Left Side: Thoughts List */}
+    <div className="w-1/4 px-2 py-2 border-r">
+      <div className='w-full h-[80vh]'>
+        {thoughts.map((thought) => (
+          <div className='border rounded-md shadow-md px-2 mb-2 py-2 cursor-pointer' key={thought._id} onClick={() => handleThoughtSelect(thought)}>
+            <p>{thought.text}</p>
+          </div>
+        ))}
+      </div>
     </div>
 
+    {/* Right Side: Selected Thought and Replies */}
+    <div className="w-2/3 px-2 py-2">
+     <div className='w-full h-[80vh] relative'>
+     {selectedThought && (
+        <>
+         <div className='mb-1'>
+          <h2>{selectedThought.text}</h2>
+         </div>
+          <div className='border-t'>
+            <p>replies:</p>
+          <div className='px-2'>
+          {selectedThought.replies.map((reply, index) => (
+              <p className='' key={index}>{reply.text}</p>
+            ))}
+          </div>
+          </div>
+         <div className=' absolute bottom-0 w-full flex items-center'>
+         <textarea
+            placeholder='reply...'
+            className='text-black w-full resize-none rounded-md px-2'
+            type="text"
+            value={replyText[selectedThought._id] || ''}
+            onChange={(e) => handleReplyChange(selectedThought._id, e.target.value)}
+          />
+          <button className='px-3 py-3 rounded-md bg-blue-500 text-black' onClick={() => handleReplySubmit(selectedThought._id)}>Share</button>
+         </div>
+         
+        </>
+      )}
+     </div>
+    </div>
+  </div>
+</div>
+
+<Footer/>
     </>
   );
 };

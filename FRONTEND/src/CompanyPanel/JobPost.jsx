@@ -33,7 +33,7 @@ const JobPost = () => {
   const [editingIndex, setEditingIndex] = useState(null); // To track which job is being edited
   const [confirmationOpen, setConfirmationOpen] = useState(false); // Confirmation dialog state
   const [selectedJob, setSelectedJob] = useState(null); // Job to be sent to HR
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [postedList,setpostedList] = useState();
   const [jobLimit,setjobLimit] = useState();
 
@@ -250,7 +250,19 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
     fetchCompanyData();
   }, []);
     
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
 
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleSubscribe = () => {
+    // Navigate to the payment page
+    // navigate('/payment'); // Change '/payment' to your actual payment page route
+    setIsDialogOpen(false); // Optionally close the dialog after subscribing
+  };
 
   return (
     <div className="flex flex-col items-center justify-center text-zinc-900 p-4" > 
@@ -318,6 +330,31 @@ const [companyName, setCompanyName] = useState(null);  // Ensure companyName is 
     <button className="bg-blue-500 text-white p-1 rounded">Subscribe</button>
   )
 }
+{isDialogOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-5 relative w-80">
+            {/* Close Button */}
+            <button
+              className="absolute top-2 right-2 text-gray-600"
+              onClick={handleCloseDialog}
+            >
+              &times;
+            </button>
+            <h2 className="text-lg font-semibold mb-4">Important Notice</h2>
+            <p className="mb-4">To upgrade your limit, please subscribe now!</p>
+            <div className="flex justify-end">
+              {/* Updated Subscribe Button */}
+              <button
+                className="bg-blue-500 text-white p-1 rounded"
+                onClick={handleSubscribe}
+              >
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
 
 

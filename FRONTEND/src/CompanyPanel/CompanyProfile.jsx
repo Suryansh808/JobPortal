@@ -1,12 +1,15 @@
+
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 
 const CompanyProfile = () => {
   const [companyData, setCompanyData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [jobs, setJobs] = useState([]);
+  const [application, setapplication] = useState([]);
 
-  useEffect(() => {
+
     const fetchCompanyData = async () => {
       const token = localStorage.getItem('token'); // Fetch token from local storage
       if (!token) {
@@ -26,7 +29,9 @@ const CompanyProfile = () => {
         }
 
         const data = await response.json();
+        
         setCompanyData(data);
+        
 
       } catch (err) {
         setError(err.message);
@@ -35,70 +40,93 @@ const CompanyProfile = () => {
       }
     };
 
-    fetchCompanyData();
+
+
+    const fetchJobs = async () => {
+      if (!companyData) return; // Ensure companyData is available
+      try {
+        const response = await axios.get("http://localhost:5000/api/jobs");
+     const filteredJobs = response.data.filter(job => job.companyName === companyData.companyName && job.jobtoadmin === true );
+    //  setJobs(filteredJobs);
+    //  console.log("jobs",s",application);
+
+
+     const jobsWithApplications = filteredJobs.map(job => {
+      // Find applications that match the current job ID
+      const applicationList = application.filter(app => app.jobId._id === job._id);
+      // console.log();
+      
+      // Add the application list to the job object
+      return {
+          ...job,
+          applicationList: applicationList // Append matching applications
+      };
+  });
+  // console.log("jobs with application lists", jobsWithApplications);
+// console.log("application", application);
+setJobs(jobsWithApplications);
+// console.log(jobs);
+
+
+
+
+
+      } catch (error) {
+        console.error("There was an error fetching the jobs!", error);
+      }
+    };
+
+    const fetchApplications = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/applications`);
+        const fetchedApplications = response.data.filter(app => app.status === 'Accepted');
+        setapplication(fetchedApplications);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+      }
+    };
+    
+
+useEffect(() => {
+      fetchCompanyData();
+      fetchApplications();
   }, []);
-
   useEffect(() => {
-    if (companyData) {
-      // Load the Google Charts library
-      const loadGoogleCharts = () => {
-        const script = document.createElement('script');
-        script.src = "https://www.gstatic.com/charts/loader.js";
-        script.onload = () => {
-          window.google.charts.load('current', { packages: ['corechart'] });
-          window.google.charts.setOnLoadCallback(drawChart);
-        };
-        document.body.appendChild(script);
-      };
-
-      const drawChart = () => {
-        const data = window.google.visualization.arrayToDataTable([
-          ['Applicant', 'Mhl'],
-          ['PROCESS', 2],
-          ['HIRED', 5],
-          ['REJECTED', 3],
-        ]);
-
-        const options = {
-          title: 'Total Application 10',
-          is3D: true,
-        };
-
-        const chart = new window.google.visualization.PieChart(document.getElementById('myChart'));
-        chart.draw(data, options);
-      };
-
-      loadGoogleCharts();
-    }
-  }, [companyData]); // Only run when companyData is available
+    fetchJobs(); // Fetch jobs only when companyData changes
+  }, [companyData]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <div>Error: {error}</div>;
 
+  const totalApplications = jobs.reduce((total, job) => total + job.applicationList.length, 0);
+  const underProcess = jobs.reduce((total, job) => total + job.applicationList.filter(app => app.statusByCompany === 'Accepted').length,  0);
+  const hired = jobs.reduce((total, job) => total + job.applicationList.filter(app => app.statusByCompany === 'Hired').length,  0);
   return (
-    <div id="CompanyProfile">
+    <> 
+
+      <div id="CompanyProfile">
       <div className="first">
+       
         <div className="first-div">
           {companyData ? (
             <div>
-              <img className="w-20 h-20 rounded-full" src={`http://localhost:5000/${companyData.companyLogo}`} alt="Company Logo" />
+              <img className="w-20 h-20 rounded-full" src={`http://localhost:5000/${companyData.companyLogo}`} alt="CompanyLogo" />
               <p>Your Position: {companyData.position}</p>
               <p>Email: {companyData.email}</p>
-              <h1>Company Name: {companyData.companyName}</h1>
+     
 
-              {/* <p>Business Model: {companyData.businessmodel}</p> */}
             </div>
           ) : (
             <p>No company data found</p>
           )}
         </div>
         <div className="first-div">
-          <h2>JOB</h2>
+          <h2>TOTAL</h2>
           <div className="detail">
-            <span>005</span> <h2>TOTAL POSTED JOB</h2>
+            <span>{jobs.length < 10 ? `00${jobs.length}` : `${jobs.length}`}</span> <h2>POSTED JOB</h2>
           </div>
           <div className="detail">
-            <span style={{ backgroundColor: 'orange' }}>005</span><h2>ACTIVE JOB</h2>
+            <span style={{ backgroundColor: 'white',color:'black' }}>{totalApplications < 10 ? `00${totalApplications}` : `${totalApplications}`}</span><h2>APLICANT</h2>
           </div>
 
         </div>
@@ -106,10 +134,10 @@ const CompanyProfile = () => {
         <div className="first-div">
           <h2>APPLICANT</h2>
           <div className="detail">
-            <span>005</span> <h2>UNDER REVIEW</h2>
+            <span>{underProcess < 10 ? `00${underProcess}` : `${underProcess}`}</span> <h2>UNDER REVIEW</h2>
           </div>
           <div className="detail" >
-            <span style={{ backgroundColor: 'orange' }}>005</span><h2>HIRED</h2>
+            <span style={{ backgroundColor: 'white',color:'black'}}>{hired < 10 ? `00${hired}` : `${hired}`}</span><h2>HIRED</h2>
           </div>
         </div>
       </div>
@@ -118,44 +146,29 @@ const CompanyProfile = () => {
         <table>
           <tr>
             <th style={{textAlign:'left'}}> <span >ROLE</span></th>
+            <th>LOCATION</th>
             <th></th>
             <th>REQUIREMENT</th>
             <th>TOTAL</th>
-            <th>PROCESS</th>
+            <th>Under PROCESS</th>
+            <th>REJECTED</th>
             <th>HIRED</th>
           </tr>
-          <tr>
-            <td style={{textAlign:'left'}}>Software Engineer</td>
+          {jobs.map((job, index) => (
+          <tr key={index}>
+            <td style={{textAlign:'left'}}>{job.jobTitle}</td>
+            <td>{job.location}</td>
             <td><span>&#9673;</span></td>
-            <td>5</td>
-            <td>100</td>
-            <td>50</td>
-            <td>3</td>
+            <td>{job.noofposition}</td>
+            <td>{job.applicationList.length}</td>
+            <td>{(job.applicationList.filter(app => app.statusByCompany=== 'Accepted')).length}</td>
+            <td>{(job.applicationList.filter(app => app.statusByCompany=== 'Rejected')).length}</td>
+
+            <td>{(job.applicationList.filter(app => app.statusByCompany=== 'Hired')).length}</td>
           </tr>
-          <tr>
-            <td style={{textAlign:'left'}}>Software Engineer</td>
-            <td><span>&#9673;</span></td>
-            <td>5</td>
-            <td>100</td>
-            <td>50</td>
-            <td>3</td>
-          </tr>
-          <tr>
-            <td style={{textAlign:'left'}}>Software Engineer</td>
-            <td><span>&#9673;</span></td>
-            <td>5</td>
-            <td>100</td>
-            <td>50</td>
-            <td>3</td>
-          </tr>
-          <tr>
-            <td style={{textAlign:'left'}}>Software Engineer</td>
-            <td><span>&#9673;</span></td>
-            <td>5</td>
-            <td>100</td>
-            <td>50</td>
-            <td>3</td>
-          </tr>
+        ))}
+          
+          
         </table>
       </div>
       <div className="third">
@@ -169,6 +182,9 @@ const CompanyProfile = () => {
 </div>
 
     </div>
+
+    </>
+
   );
 };
 

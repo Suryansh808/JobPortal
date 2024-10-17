@@ -1,7 +1,7 @@
   import React, { useEffect, useState } from 'react';
   import { useLocation, useNavigate } from 'react-router-dom';
 
-  const Resume = () => {
+  const Resume = ({ resumeDetails }) => {
     const [formData, setFormData] = useState({
       fullName: '',
       linkedinURL:'',
@@ -140,7 +140,7 @@
           if (!formData.address) errors.address = 'Address is required';
           if (!formData.summary) errors.summary = 'Summary is required';
           if (!formData.experience) errors.experience = 'Experience is required';
-          if (!formData.projectDetails) errors.projectDetails = 'projectDetails is required';
+          if (!formData.projectDetails) errors.projectDetails = 'ProjectDetails is required';
           if (!formData.skills.length) errors.skills = 'At least one skill is required';
           if (!formData.achievement) errors.achievement = 'Achievement is required';
           if (!formData.coverLetter) errors.coverLetter = 'Cover letter is required';
@@ -158,6 +158,11 @@
           return Object.keys(errors).length === 0;
         };
 
+
+        // const resume = resumeDetails[0]; // Access the first item in the array
+        // console.log("resume id in the resume editing ",resume._id);
+
+
     const handleSubmit = async (e) => {
       e.preventDefault();
 
@@ -168,7 +173,6 @@
       const formDataToSend = new FormData();
       const userId = localStorage.getItem('userId'); // Get the user ID from local storage
       const userID = localStorage.getItem('userID');
-      // formDataToSend.append('imgFile', formData.imgFile);
       formDataToSend.append('fullName', formData.fullName);
       formDataToSend.append('linkedinURL', formData.linkedinURL);
       formDataToSend.append('githubURL', formData.githubURL);
@@ -204,7 +208,7 @@
           setShowPopup(true);
           setTimeout(() => {
             setShowPopup(false);
-            navigate(isEditing ? '/Profile' : '/StudentLogIn', { state: result.StudentData || result.Studentdata });
+            navigate(isEditing ? '/StudentDashBoard' : '/StudentLogIn', { state: result.StudentData || result.Studentdata });
           }, 2000);
         } else {
           const errorResult = await response.json();
@@ -216,6 +220,7 @@
         alert('Error submitting resume. Please try again.');
       }
     };
+
     const handleCloseDialog = () => {
       setShowDialog(false); // Close the dialog
     };
@@ -223,20 +228,6 @@
      
     return (
       <div className="bg-black w-full h-full flex flex-col items-center justify-center max-[600px]:w-full">
-      {/* {showDialog ? (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl text-black font-bold mb-4">Resume Creation Instructions</h2>
-            <p className="mb-4 text-black">Please follow the steps to create your resume properly...</p>
-            <button
-              onClick={handleCloseDialog}
-              className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      ) : ( */}
       <div className="bg-black w-full h-full flex flex-col bg-current items-center justify-center max-[600px]:w-full">
         {showPopup && (
           <div className="fixed z-[999] inset-0 flex items-center justify-center">
@@ -246,73 +237,89 @@
           </div>
         </div>
         )}
-        <div className="w-full max-w-md m-2 backdrop-blur-md bg-white/40 rounded-lg p-6">
+        <div className="w-full bg-white/50 rounded-lg">
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-4">{isEditing ? 'Update Resume' : 'Create Resume'}.</h2>
           <form className="flex flex-col" onSubmit={handleSubmit}>
-            {errors.imgFile && <span className="text-red-500">{errors.imgFile}</span>}
-            <div className='flex flex-col'>
-              <label>Full Name:</label>
+             <div className="fullname-address flex">
+             <div className='flex flex-col w-full mb-1'>
               <input
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-3 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 type="text"
                 name="fullName"
+                placeholder='Full Name'
                 value={formData.fullName}
                 onChange={(e) => handleChange(e)}
               />
-            </div>
             {errors.fullName && <span className="text-red-500">{errors.fullName}</span>}
-            <div className='flex flex-col'>
-              <label>Linkdin URL:</label>
-              <input
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-3 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-                type="text"
-                name="linkedinURL"
-                value={formData.linkedinURL}
-                onChange={(e) => handleChange(e)}
-              />
             </div>
-            {errors.linkdinURL && <span className="text-red-500">{errors.linkdinURL}</span>}
-            <div className='flex flex-col'>
-              <label>githubURL:</label>
+            <div className='flex flex-col w-full mb-1'>
               <input
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-3 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-                type="text"
-                name="githubURL"
-                value={formData.githubURL}
-                onChange={(e) => handleChange(e)}
-              />
-            </div>
-            {errors.githubURL && <span className="text-red-500">{errors.githubURL}</span>}
-            <div className='flex flex-col'>
-              <label>Address:</label>
-              <input
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-3 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 type="text"
                 name="address"
+                placeholder='Address'
                 value={formData.address}
                 onChange={(e) => handleChange(e)}
               />
-            </div>
             {errors.address && <span className="text-red-500">{errors.address}</span>}
-            <div className='flex flex-col'>
-              <label>About Summary:</label>
+            </div>
+             </div>
+             <div className="social-media flex">
+             <div className='flex flex-col w-full mb-1'>
+              <input
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                type="text"
+                name="linkedinURL"
+                placeholder='Linkedin URL'
+                value={formData.linkedinURL}
+                onChange={(e) => handleChange(e)}
+              />
+            {errors.linkdinURL && <span className="text-red-500">{errors.linkdinURL}</span>}
+            </div>
+            <div className='flex flex-col w-full mb-1'>
+              <input
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                type="text"
+                name="githubURL"
+                placeholder='GitHub URL'
+                value={formData.githubURL}
+                onChange={(e) => handleChange(e)}
+              />
+            {errors.githubURL && <span className="text-red-500">{errors.githubURL}</span>}
+            </div>
+             </div>
+              <div className="summary-project-details flex">
+              <div className='flex flex-col w-full mb-1'>
               <textarea
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-3 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 name="summary"
+                placeholder='Write a summary about yourself...'
                 value={formData.summary}
                 onChange={(e) => handleChange(e)}
               />
-            </div>
             {errors.summary && <span className="text-red-500">{errors.summary}</span>}
+            </div>
+            <div className='flex flex-col w-full mb-1'>
+              <textarea
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                name="projectDetails"
+                placeholder='Project Details..'
+                value={formData.projectDetails}
+                onChange={(e) => handleChange(e)}
+              />
+            {errors.projectDetails && <span className="text-red-500">{errors.projectDetails}</span>}
+            </div>
+              </div>
+            
             {formData.education && formData.education.map((edu, index) => (
               <div key={index} className="mb-4">
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Education {index + 1}</h3>
                 <div className='flex flex-col'>
-                  <label>Degree:</label>
                   <input
                     className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                     type="text"
                     name="degree"
+                    placeholder='Degree'
                     value={edu.degree}
                     onChange={(e) => handleEducationChange(e, index)}
                   />
@@ -320,44 +327,44 @@
                 {errors[`degree-${index}`] && <span className="text-red-500">{errors[`degree-${index}`]}</span>
                 }
                 <div className='flex flex-col'>
-                  <label>Branch:</label>
                   <input
                     className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                     type="text"
                     name="branch"
+                    placeholder='Branch'
                     value={edu.branch}
                     onChange={(e) => handleEducationChange(e, index)}
                   />
                 </div>
                 {errors[`branch-${index}`] && <span className="text-red-500">{errors[`branch-${index}`]}</span>}
                 <div className='flex flex-col'>
-                  <label>CGPA:</label>
                   <input
                     className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                     type="text"
                     name="cgpa"
+                    placeholder='CGPA'
                     value={edu.cgpa}
                     onChange={(e) => handleEducationChange(e, index)}
                   />
                 </div>
                 {errors[`cgpa-${index}`] && <span className="text-red-500">{errors[`cgpa-${index}`]}</span>}
                 <div className='flex flex-col'>
-                  <label>University:</label>
                   <input
                     className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                     type="text"
                     name="university"
+                    placeholder='University'
                     value={edu.university}
                     onChange={(e) => handleEducationChange(e, index)}
                   />
                 </div>
                 {errors[`university-${index}`] && <span className="text-red-500">{errors[`university-${index}`]}</span>}
                 <div className='flex flex-col'>
-                  <label>Start Year:</label>
                   <input
                     className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                     type="number"
                     name="startDate"
+                    placeholder='Start year'
                     value={edu.startDate}
                     onChange={(e) => handleEducationChange(e, index)}
                   />
@@ -365,11 +372,11 @@
                 {errors[`startDate-${index}`] && <span className="text-red-500">{errors[`startDate-${index}`]}</span>}
                 {!edu.currentlyPursuing && (
                   <div className='flex flex-col'>
-                    <label>End Year:</label>
                     <input
                       className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                       type="number"
                       name="endDate"
+                      placeholder='End year'
                       value={edu.endDate}
                       onChange={(e) => handleEducationChange(e, index)}
                     />
@@ -400,30 +407,22 @@
             >
               Add Education
             </button>
-            <div className='flex flex-col'>
-              <label>Experience:</label>
-              <textarea
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+            <div className='flex flex-col mb-1'>
+              <input
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 name="experience"
+                type='Number'
+                placeholder='Experience..'
                 value={formData.experience}
                 onChange={(e) => handleChange(e)}
               />
+                {errors.experience && <span className="text-red-500">{errors.experience}</span>}
             </div>
-            <div className='flex flex-col'>
-              <label>projectDetails:</label>
-              <textarea
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-                name="projectDetails"
-                value={formData.projectDetails}
-                onChange={(e) => handleChange(e)}
-              />
-            </div>
-            {errors.projectDetails && <span className="text-red-500">{errors.projectDetails}</span>}
-            <div className='flex flex-col'>
-              <label>Skills:</label>
-              <div className="flex flex-wrap mb-4">
+         
+            <div className='flex flex-col mb-1'>
+            <div className="flex flex-wrap mb-2">
                 {formData.skills.map((skill, index) => (
-                  <span key={index} className="bg-gray-200 text-gray-900 p-2 rounded-full mr-2 mb-2 flex items-center">
+                  <span key={index} className="bg-gray-200 text-gray-900 p-2 rounded-md mr-2 flex items-center">
                     {skill}
                     <button
                       type="button"
@@ -436,45 +435,47 @@
                 ))}
               </div>
               <select
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 onChange={handleSkillChange}
               >
-                <option value="">Select a skill</option>
+                <option value="">Skills</option>
                 {availableSkills.map((skill, index) => (
                   <option key={index} value={skill}>
                     {skill}
                   </option>
                 ))}
               </select>
-            </div>
             {errors.skills && <span className="text-red-500">{errors.skills}</span>}
-            <div className='flex flex-col'>
-              <label>Achievements:</label>
+           
+            </div>
+           <div className="cover-achievment flex">
+           <div className='flex flex-col w-full mb-1'>
               <textarea
-                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 name="achievement"
+                placeholder='Achievement..'
                 value={formData.achievement}
                 onChange={(e) => handleChange(e)}
               />
-            </div>
             {errors.achievement && <span className="text-red-500">{errors.achievement}</span>}
-            <div className='flex flex-col mb-2'>
-              <label>Cover Letter:</label>
+            </div>
+            <div className='flex flex-col w-full mb-1'>
               <textarea
                 className="bg-gray-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                 name="coverLetter"
+                placeholder='Cover Letter...'
                 value={formData.coverLetter}
                 onChange={(e) => handleChange(e)}
               />
               {errors.coverLetter && <span className="text-red-500">{errors.coverLetter}</span>}
             </div>
+           </div>
             <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
               {isEditing ? 'Update Resume' : 'Create Resume'}
             </button>
           </form>
         </div>
       </div>
-      
       </div>
     );
   };

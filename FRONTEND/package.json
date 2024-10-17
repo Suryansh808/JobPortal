@@ -25,6 +25,7 @@
     "framer-motion": "^11.3.20",
     "gh-pages": "^6.1.1",
     "gsap": "^3.12.5",
+    "html2pdf.js": "^0.10.2",
     "json-server": "^1.0.0-beta.1",
     "jspdf": "^2.5.1",
     "lenis": "^1.1.13",

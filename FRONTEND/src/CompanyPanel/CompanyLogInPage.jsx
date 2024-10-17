@@ -48,9 +48,9 @@ const CompanyLogInPage = () => {
 
   return (
     <div className="w-full h-[100vh] flex items-center justify-center">
-      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto my-10 text-blaack px-2 py-3 rounded shadow-md">
+      <div className="absolute z-[1000] bg-[#ffffff18] backdrop-blur-sm max-w-md mx-auto my-10 text-blaack px-2 py-3 rounded-md shadow-md">
       <Link to='/Recruitment' className="text-white flex items-center justify-end" ><BsArrowLeftCircle /></Link>
-      <h1 className="text-2xl font-bold text-white text-center mb-2">Company Login</h1>
+      <h1 className="text-2xl font-bold text-white text-center mb-4">Company Login</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -71,11 +71,11 @@ const CompanyLogInPage = () => {
           required
         />
          <Link to="/ForgotPassword" className="text-white px-2">Forgot Password?</Link>
-        <button type="submit" className="w-full bg-black text-white p-2 rounded-xl">
+        <button type="submit" className="w-full bg-gradient-to-r from-[#000000] to-[#00000059] text-white font-black text-xl p-2 rounded-2xl">
           Login
         </button>
         <div className="flex items-center justify-center gap-3 my-3">
-          Don't have an account  <Link to='/CompanySignUpPage'>SingUp</Link>
+          Don't have an account  <Link to='/CompanySignUpPage'>SignUp</Link>
         </div>
       </form>
     </div>

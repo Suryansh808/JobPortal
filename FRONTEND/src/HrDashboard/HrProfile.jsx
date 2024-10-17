@@ -1,9 +1,24 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 const HrProfile = () => {
   const [hrData, setHrData] = useState(null);
   const [error, setError] = useState(''); 
+  const [showDiv, setShowDiv] = useState(false);
 
+
+  const [jobs, setJobs] = useState([]);
+  const [application, setapplication] = useState([]);
+  
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDiv(true);
+    }, 2000); // 2000 milliseconds = 2 seconds
+
+    return () => clearTimeout(timer); // Cleanup timer on unmount
+  }, []);
+
+
     // Fetch HR data when component mounts
     const fetchHrData = async () => {
       // Retrieve HRUser ID from local storage
@@ -16,7 +31,6 @@ const HrProfile = () => {
       try {
         const response = await fetch(`http://localhost:5000/api/hr/profile/${hrName}`);
         const data = await response.json();
-        console.log('Fetched HR Data:', data);
         if (response.ok) {
           setHrData(data[0]);
           console.log(hrData);
@@ -28,89 +42,150 @@ const HrProfile = () => {
       }
     };
 
+
+    const fetchJobs = async () => {
+      // if (!hrData) return; // Ensure companyData is available
+      try {
+        const response = await axios.get("http://localhost:5000/api/jobs");
+     const filteredJobs = response.data.filter(job => job.hrName === hrData.hrName );
+
+
+     const jobsWithApplications = filteredJobs.map(job => {
+      // Find applications that match the current job ID
+      const applicationList = application.filter(app => app.jobId._id === job._id);
+      // console.log();
+      
+      // Add the application list to the job object
+      return {
+          ...job,
+          applicationList: applicationList // Append matching applications
+      };
+  });
+//   console.log("jobs with application lists", jobsWithApplications);
+// console.log("application", application);
+setJobs(jobsWithApplications);
+console.log(jobs);
+
+      } catch (error) {
+        console.error("There was an error fetching the jobs!", error);
+      }
+    };
+
+    const fetchApplications = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/applications`);
+        
+        const fetchedApplications = response.data.filter(app => app.status === 'Accepted' && app.hrName === hrData.hrName );
+        setapplication(fetchedApplications);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+      }
+    };
+
+
+  
+useEffect(() => {
     fetchHrData();
+    // fetchApplications();
   }, []);
+  useEffect(() => {
+    fetchApplications();
+
+  }, [hrData]);
 
 
-  const students = [
-    { name: 'John Doe', status: 'Hired', position: 'Software Engineer', date: '2024-09-01' },
-    { name: 'Jane Smith', status: 'Rejected', position: 'Marketing Intern', date: '2024-09-05' },
-    { name: 'Alex Brown', status: 'Pending', position: 'Data Analyst', date: '2024-09-10' },
-  ];
+  useEffect(() => {
 
-  const overview = {
-    totalApplied: students.length,
-    totalHired: students.filter(s => s.status === 'Hired').length,
-    totalRejected: students.filter(s => s.status === 'Rejected').length,
-    totalPending: students.filter(s => s.status === 'Pending').length,
-  };
+    fetchJobs();
+  }, [application]);
+
+  const totalApplications = jobs.reduce((total, job) => total + job.applicationList.length, 0);
+  const underProcess = jobs.reduce((total, job) => total + job.applicationList.filter(app => app.statusByCompany === 'Accepted').length,  0);
+  const hired = jobs.reduce((total, job) => total + job.applicationList.filter(app => app.statusByCompany === 'Hired').length,  0);
 
 
 
   return (
-    <div className=''>
-      <h1>Welcome to your profile</h1>
-      {error && <p className="text-red-500">{error}</p>}
-      {hrData ? (
-        <div>
-          <h2>Hello, {hrData.hrName}!</h2>
-          <p>Email: {hrData.hrUserId}</p>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
 
-<div className="max-w-4xl mx-auto p-4">
-      <header className="flex justify-between items-center mb-3">
-        <h1 className="text-2xl font-bold">HR Profile</h1>
-        <div>
-          {/* Add more navigation items if needed */}
+
+    <div id="CompanyProfile">
+      <div className="first">
+        <div className="first-div">
+          {hrData ? (
+            <div>
+              <h2>WELCOME BACK</h2>
+              <h2>{hrData.hrName}</h2>
+          <h2>Email: {hrData.hrUserId}</h2>
+             
+            </div>
+          ) : (
+            <p>No HR data found</p>
+          )}
         </div>
-      </header>
-      <div className="bg-white shadow-md text-black rounded-lg p-4 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Overview</h2>
-        <div className="grid grid-cols-4 gap-4">
-          <div className="bg-blue-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Applied</h3>
-            <p>{overview.totalApplied}</p>
+        <div className="first-div">
+          <h2>TOTAL</h2>
+          <div className="detail">
+            <span>{jobs.length < 10 ? `00${jobs.length}` : `${jobs.length}`}</span> <h2>ASIGN JOB</h2>
           </div>
-          <div className="bg-green-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Hired</h3>
-            <p>{overview.totalHired}</p>
+          <div className="detail">
+            <span style={{ backgroundColor: 'white',color:'black' }}>{totalApplications < 10 ? `00${totalApplications}` : `${totalApplications}`}</span><h2>APLICANT</h2>
           </div>
-          <div className="bg-red-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Rejected</h3>
-            <p>{overview.totalRejected}</p>
+
+        </div>
+
+        <div className="first-div">
+          <h2>APPLICANT</h2>
+          <div className="detail">
+            <span>{underProcess < 10 ? `00${underProcess}` : `${underProcess}`}</span> <h2>UNDER REVIEW</h2>
           </div>
-          <div className="bg-yellow-100 p-4 rounded-lg">
-            <h3 className="font-semibold">Total Pending</h3>
-            <p>{overview.totalPending}</p>
+          <div className="detail" >
+            <span style={{ backgroundColor: 'white',color:'black'}}>{hired < 10 ? `00${hired}` : `${hired}`}</span><h2>HIRED</h2>
           </div>
         </div>
       </div>
-
-      <table className="min-w-full bg-white border text-black border-gray-200">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="py-2 px-4 border">Student Name</th>
-            <th className="py-2 px-4 border">Status</th>
-            <th className="py-2 px-4 border">Position Applied For</th>
-            <th className="py-2 px-4 border">Date of Application</th>
+      <div className="second">
+        <h2>HIRING PIPELINE</h2>
+        <table>
+          <tr>
+            <th style={{textAlign:'left'}}> <span >ROLE</span></th>
+            <th>LOCATION</th>
+            <th></th>
+            <th>REQUIREMENT</th>
+            <th>TOTAL</th>
+            <th>PROCESS</th>
+            <th>REJECTED</th>
+            <th>HIRED</th>
           </tr>
-        </thead>
-        <tbody>
-          {students.map((student, index) => (
-            <tr key={index} className="hover:bg-gray-100">
-              <td className="py-2 px-4 border">{student.name}</td>
-              <td className="py-2 px-4 border">{student.status}</td>
-              <td className="py-2 px-4 border">{student.position}</td>
-              <td className="py-2 px-4 border">{student.date}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          
+          
+          {jobs.map((job, index) => (
+          <tr key={index}>
+            <td style={{textAlign:'left'}}>{job.jobTitle}</td>
+            <td>{job.location}</td>
+            <td><span>&#9673;</span></td>
+            <td>{job.noofposition}</td>
+            <td>{job.applicationList.length}</td>
+            <td>{(job.applicationList.filter(app => app.statusByCompany=== 'Accepted')).length}</td>
+            <td>{(job.applicationList.filter(app => app.statusByCompany=== 'Rejected')).length}</td>
+
+            <td>{(job.applicationList.filter(app => app.statusByCompany=== 'Hired')).length}</td>
+          </tr>
+        ))}
+        </table>
+      </div>
+      {showDiv &&
+      <div className="third">
+
+      
+      <iframe
+        src={`https://calendar.google.com/calendar/embed?src=${encodeURIComponent(hrData.hrUserId)}&ctz=Asia%2FKolkata`}
+        
+      ></iframe> 
+
+</div>}
+
     </div>
-    </div>
+
   );
 };
 
